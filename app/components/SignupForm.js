@@ -3,7 +3,7 @@ import { Form, Button, Text } from 'native-base'
 import { Field, reduxForm } from 'redux-form/immutable'
 import TextInput from '../common/MyTextInput'
 
-export default class SignupForm extends Component{
+class SignupForm extends Component{
     constructor(props){
         super(props)
     }
@@ -71,3 +71,7 @@ export default class SignupForm extends Component{
         )
     }
 }
+
+export default reduxForm({
+    form: 'signup'
+})((SignupForm))
