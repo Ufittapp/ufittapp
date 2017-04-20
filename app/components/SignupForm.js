@@ -15,27 +15,18 @@ class SignupForm extends Component{
         return(
             <Form>
                 <Field
-                    name="firstName"
+                    name="fullName"
                     component={TextInput}
-                    placeholder="Nombre"
+                    placeholder="Full Name"
                     returnKeyType="next"
                     autoCapitalize="words"
                     editable={!submitting}
                 />
 
-                 <Field
-                    name="lastName"
-                    component={TextInput}
-                    placeholder="Apellido"
-                    returnKeyType="next"
-                    autoCapitalize="words"                    
-                    editable={!submitting}                    
-                />
-
                 <Field
                     name="email"
                     component={TextInput}
-                    placeholder="Tú e-mail"
+                    placeholder="Email"
                     returnKeyType="next"
                     keyboardType="email-address"
                     autoCapitalize="none"
@@ -44,19 +35,29 @@ class SignupForm extends Component{
                 />
 
                 <Field
-                    name="password"
+                    name="phone"
                     component={TextInput}
-                    placeholder="Contraseña"
+                    placeholder="PHONE"
+                    keyboardType="phone-pad"
                     returnKeyType="next"
-                    secureTextEntry
-                    editable={!submitting}                    
+                    autoCapitalize="words"
+                    editable={!submitting}
                 />
 
                 <Field
-                    name="passwordAgain"
+                    name="userName"
                     component={TextInput}
-                    placeholder="Repite tú Contraseña"
-                    returnKeyType="done"
+                    placeholder="USERNAME"
+                    returnKeyType="next"
+                    autoCapitalize="words"
+                    editable={!submitting}
+                />
+
+                <Field
+                    name="password"
+                    component={TextInput}
+                    placeholder="PASSWORD"
+                    returnKeyType="next"
                     secureTextEntry
                     editable={!submitting}                    
                 />
@@ -65,7 +66,7 @@ class SignupForm extends Component{
                     style={{marginTop: 15}}
                     onPress={handleSubmit(onSubmit)}
                     disabled={submitting || invalid}>
-                    <Text>CONTINUAR</Text>
+                    <Text>REGISTER</Text>
                 </Button>
             </Form>                         
         )

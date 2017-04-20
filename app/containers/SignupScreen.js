@@ -12,7 +12,7 @@ class SignupScreen extends Component{
 
 	onCreateAccountPressed(newUser){
 
-		console.log('Save pressed', newUser.toJS())
+		console.log('Save pressed')
 		
 	}
 	
@@ -22,7 +22,7 @@ class SignupScreen extends Component{
                 <Header>
                     <Left />
                     <Body>
-                        <Title>Create Account</Title>
+                        <Title>Signup</Title>
                     </Body>
                     <Right />
                 </Header>				

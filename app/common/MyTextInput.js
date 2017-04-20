@@ -4,7 +4,6 @@ import { Item, Input, Text, View, Icon } from 'native-base'
 class MyTextInput extends Component{
     render(){
         const { input, meta: { touched, error, dirty, invalid, valid }, ...inputProps} = this.props
-        console.log('field props', this.props)
         
         return(
             <Input
@@ -16,7 +15,7 @@ class MyTextInput extends Component{
     }
 }
 
-RFTextInput.propTypes = {
+MyTextInput.propTypes = {
     input: React.PropTypes.object.isRequired,
     meta: React.PropTypes.object.isRequired
 }
