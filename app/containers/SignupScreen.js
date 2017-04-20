@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SignUpForm from '../components/SignupForm'
-import { Container, Content, View,} from 'native-base'
+import { Container, Content, View, Header, Left, Right, Body, Title} from 'native-base'
 
 class SignUp extends Component{
 	constructor(props){
@@ -18,7 +18,14 @@ class SignUp extends Component{
 	
 	render(){
 		return(
-			<Container>					
+			<Container>
+                <Header>
+                    <Left />
+                    <Body>
+                        <Title>Create Account</Title>
+                    </Body>
+                    <Right />
+                </Header>				
 				<Content>
                     <View>
                         <SignUpForm
