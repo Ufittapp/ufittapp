@@ -45,6 +45,14 @@ class SignupForm extends Component{
                 />
 
                 <Field
+                    name="birthday"
+                    component={TextInput}
+                    placeholder="DATE OF BIRTH"
+                    returnKeyType="next"
+                    editable={!submitting}
+                />
+
+                <Field
                     name="userName"
                     component={TextInput}
                     placeholder="USERNAME"

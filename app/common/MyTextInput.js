@@ -6,11 +6,13 @@ class MyTextInput extends Component{
         const { input, meta: { touched, error, dirty, invalid, valid }, ...inputProps} = this.props
         
         return(
-            <Input
-                {...inputProps}
-                value={input.value}
-                onChangeText={input.onChange}
-            />
+            <Item regular>
+                <Input
+                    {...inputProps}
+                    value={input.value}
+                    onChangeText={input.onChange}
+                />
+            </Item>
         )
     }
 }
