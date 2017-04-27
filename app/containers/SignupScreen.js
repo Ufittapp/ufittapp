@@ -1,19 +1,34 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SignUpForm from '../components/SignupForm'
-import { Container, Content, View, Header, Left, Right, Body, Title} from 'native-base'
+import { Container, Content, View, Header, Left, Right, Body, Title, Text} from 'native-base'
+import * as actions from '../actions/auth'
+
+//console.log(createAccount ? "actions is defined" : "actions is not defined")
+console.log("actions",Object.keys(actions))
 
 class SignupScreen extends Component{
 	constructor(props){
 		super(props)
 
-		this.onCreateAccountPressed = this.onCreateAccountPressed.bind(this)
+        this.state = {
+            isFetching: false,
+            error: null
+        }
+
+		this.onFormSubmit = this.onFormSubmit.bind(this)
     }
 
-	onCreateAccountPressed(newUser){
-
-		console.log('Save pressed')
-		
+	onFormSubmit(newUser){
+		//console.log('Save pressed', newUser)
+        
+        this.setState({isFetching: true})
+        this.props.createAccount(newUser)
+            .then(() => {
+                this.setState({isFetching: false, error: null})        
+                console.log('accout created successfully')
+            })
+            .catch(error => this.setState({error, isFetching: false}))		
 	}
 	
 	render(){
@@ -28,8 +43,10 @@ class SignupScreen extends Component{
                 </Header>				
 				<Content>
                     <View>
+                        {this.state.error && <Text>{'Error: ' + this.state.error}</Text>}
+                        {this.state.isFetching && <Text>{'Creating account...'}</Text>}
                         <SignUpForm
-                            onSubmit={this.onCreateAccountPressed}
+                            onSubmit={this.onFormSubmit}
                         />
                     </View>
                 </Content>
@@ -38,4 +55,20 @@ class SignupScreen extends Component{
 	}
 }
 
-export default SignupScreen
+function mapStateToProps(state, ownProps){
+    console.log("ownProps", ownProps)   
+    return { signup: state.signup }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        createAccount: newUser => dispatch(actions.createAccount(newUser))
+    }
+}
+
+SignupScreen.propTypes = {
+    //signup: React.PropTypes.object.isRequired,
+    createAccount: React.PropTypes.func.isRequired
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen)
