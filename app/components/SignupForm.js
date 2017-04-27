@@ -3,13 +3,8 @@ import { Form, Button, Text } from 'native-base'
 import { Field, reduxForm } from 'redux-form/immutable'
 import TextInput from '../common/MyTextInput'
 
-class SignupForm extends Component{
-    constructor(props){
-        super(props)
-    }
-    
-    render(){
-        const { handleSubmit, onSubmit, dirty, submitting, invalid } = this.props
+const SignupForm = ({ handleSubmit, onSubmit, dirty, submitting, invalid }) => {
+        //const { handleSubmit, onSubmit, dirty, submitting, invalid } = this.props
         //console.log('submitting', JSON.stringify(this.props))
 
         return(
@@ -57,7 +52,7 @@ class SignupForm extends Component{
                     component={TextInput}
                     placeholder="USERNAME"
                     returnKeyType="next"
-                    autoCapitalize="words"
+                    autoCapitalize="none"
                     editable={!submitting}
                 />
 
@@ -79,8 +74,7 @@ class SignupForm extends Component{
             </Form>                         
         )
     }
-}
 
 export default reduxForm({
-    form: 'signup'
+    form: 'signupForm'
 })((SignupForm))
