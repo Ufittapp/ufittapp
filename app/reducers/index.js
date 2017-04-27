@@ -1,7 +1,9 @@
-import { combineReducers } from 'redux-immutablejs'
-import { reducer as formReducer } from 'redux-form/immutable'
-const form = formReducer
+import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
+//import signup from './signupReducer'
 
-const rootReducer = combineReducers({ form })
+const rootReducer = combineReducers({ 
+    form: formReducer
+})
 
 export default rootReducer
