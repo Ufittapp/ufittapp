@@ -3,10 +3,6 @@ import { firebaseConfigs } from '../config/secrets'
 
 export default class AuthenticationManager{
 
-  static init(){
-    firebase.initializeApp(firebaseConfigs)
-  }
-
   static isCurrentUserLoggedIn(){
       return !!firebase.auth().currentUser
   }
@@ -24,15 +20,18 @@ export default class AuthenticationManager{
   }
 
   static createUserAccount(newUser){
-    const { email, password, uid } = newUser
+    return new Promise( (resolve, reject) => {
+      const { email, password, uid } = newUser
 
-    return firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      //.then( user => this.addNewUser(uid, newUser))
-      .catch(e => {
+      if(!email || !password) reject('Email and password are required fields')
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then( user => resolve(user.toJSON()))
+        .catch(e => {
           console.log(e)
-          return Promise.reject("Error creating new user account")
-      })
+          reject('Error creating new user account')
+        })
+    })
   }
 
 }
