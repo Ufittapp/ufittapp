@@ -1,3 +1,5 @@
-import * as login from './login'
+const authActions  = require('./auth')
 
-export const actions = Object.assign({}, login)
+module.exports = { 
+    ...authActions
+}

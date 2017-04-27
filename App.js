@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 //import { fromJS } from 'immutable'
 import configureStore from './app/store/configureStore'
 import firebase from 'firebase'
-import { firebaseConfigs } from '../config/secrets'
+import { firebaseConfigs } from './app/config/secrets'
 
 firebase.initializeApp(firebaseConfigs)
 

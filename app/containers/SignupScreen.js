@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SignUpForm from '../components/SignupForm'
 import { Container, Content, View, Header, Left, Right, Body, Title, Text} from 'native-base'
-import * as actions from '../actions/auth'
-
-//console.log(createAccount ? "actions is defined" : "actions is not defined")
-console.log("actions",Object.keys(actions))
+import { createAccount } from '../actions'
 
 class SignupScreen extends Component{
 	constructor(props){
@@ -62,7 +59,7 @@ function mapStateToProps(state, ownProps){
 
 function mapDispatchToProps(dispatch){
     return {
-        createAccount: newUser => dispatch(actions.createAccount(newUser))
+        createAccount: newUser => dispatch(createAccount(newUser))
     }
 }
 
