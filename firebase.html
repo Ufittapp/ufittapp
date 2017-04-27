@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+    <input type="button" id="myButton" value="click me" />    
+</body>
+  <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+  <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+
+<script type="text/javascript">
+  // Initialize Firebase
+  var config = {
+   apiKey: "AIzaSyAozqTok9RVl6NOtEqKZz5Gt7GoJw3hjcc",
+    authDomain: "ufitt-b51d8.firebaseapp.com",
+    databaseURL: "https://ufitt-b51d8.firebaseio.com",
+    projectId: "ufitt-b51d8",
+    storageBucket: "ufitt-b51d8.appspot.com",
+    messagingSenderId: "505581301035"
+
+  };
+  firebase.initializeApp(config);
+
+
+  function myFunction(){
+      firebase.auth().createUserWithEmailAndPassword('hello@gmail.com', 'randowmpass@123')
+      .then(function(user){
+            console.log(user.toJSON());
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        
+      });
+  }
+
+  $(document).ready(function(){
+   $("#myButton").on('click', function(){
+       console.log("button clicked!")
+       myFunction()
+   })
+  });
+
+</script>
+</html>
