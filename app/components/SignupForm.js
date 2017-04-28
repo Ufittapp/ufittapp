@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { Form, Button, Text } from 'native-base'
 import { Field, reduxForm } from 'redux-form/immutable'
 import TextInput from '../common/MyTextInput'
+import validateForm from '../utils/validate'
 
-const SignupForm = ({ handleSubmit, onSubmit, dirty, submitting, invalid }) => {
-        //const { handleSubmit, onSubmit, dirty, submitting, invalid } = this.props
-        //console.log('submitting', JSON.stringify(this.props))
+class SignupForm extends Component {
+
+    render(){
+        const { handleSubmit, onSubmit, dirty, submitting, invalid } = this.props
+        console.log('submitting', submitting)
 
         return(
             <Form>
@@ -30,7 +33,7 @@ const SignupForm = ({ handleSubmit, onSubmit, dirty, submitting, invalid }) => {
                 />
 
                 <Field
-                    name="phone"
+                    name="phoneNumber"
                     component={TextInput}
                     placeholder="PHONE"
                     keyboardType="phone-pad"
@@ -40,7 +43,7 @@ const SignupForm = ({ handleSubmit, onSubmit, dirty, submitting, invalid }) => {
                 />
 
                 <Field
-                    name="birthday"
+                    name="birthdate"
                     component={TextInput}
                     placeholder="DATE OF BIRTH"
                     returnKeyType="next"
@@ -48,7 +51,7 @@ const SignupForm = ({ handleSubmit, onSubmit, dirty, submitting, invalid }) => {
                 />
 
                 <Field
-                    name="userName"
+                    name="username"
                     component={TextInput}
                     placeholder="USERNAME"
                     returnKeyType="next"
@@ -74,7 +77,9 @@ const SignupForm = ({ handleSubmit, onSubmit, dirty, submitting, invalid }) => {
             </Form>                         
         )
     }
+}
 
-export default reduxForm({
-    form: 'signupForm'
+export default reduxForm({ 
+    form: 'signupForm',
+    validate: validateForm
 })((SignupForm))
