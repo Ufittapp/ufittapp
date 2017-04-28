@@ -4,6 +4,7 @@ import SignUpForm from '../components/SignupForm'
 import { Container, Content, View, Header, Left, Right, Body, Title, Text} from 'native-base'
 import { createAccount } from '../actions'
 import { NavigationActions } from 'react-navigation';
+import { reset } from 'redux-form';
 
 class SignupScreen extends Component{
 	constructor(props){
@@ -18,17 +19,17 @@ class SignupScreen extends Component{
     }
 
 	onFormSubmit(newUser){
-		console.log('Save pressed')
+        console.log('Save pressed')
         
-       /* this.setState({isFetching: true})
+        this.setState({isFetching: true})
         this.props.createAccount(newUser)
             .then(
                 () => {
                 this.setState({isFetching: false, error: null})
+                this.props.resetForm()
                 this.props.goHome()
             })
             .catch(error => this.setState({error, isFetching: false}))
-            */
 	}
 	
 	render(){
@@ -43,7 +44,7 @@ class SignupScreen extends Component{
                 </Header>				
 				<Content>
                     <View>
-                        {this.state.error && <Text>{'Error: ' + this.state.error}</Text>}
+                        {this.state.error && <Text>{this.state.error}</Text>}
                         {this.state.isFetching && <Text>{'Creating account...'}</Text>}
                         <SignUpForm
                             onSubmit={this.onFormSubmit}
@@ -63,7 +64,8 @@ function mapStateToProps(state, ownProps){
 function mapDispatchToProps(dispatch){
     return {
         createAccount: newUser => dispatch(createAccount(newUser)),
-        goHome: () => dispatch(NavigationActions.navigate({ routeName: 'Home' }))
+        goHome: () => dispatch(NavigationActions.navigate({ routeName: 'Home' })),
+        resetForm : () => dispatch(reset('signupForm'))
     }
 }
 
