@@ -1,3 +1,6 @@
 export default {
-    signup: {}
+    signup: {},
+    global: {
+        firstTimeLogin: null
+    }
 }
