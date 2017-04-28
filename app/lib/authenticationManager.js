@@ -29,7 +29,7 @@ export default class AuthenticationManager{
         .then( user => resolve(user.toJSON()))
         .catch(e => {
           console.log(e)
-          reject('Error creating new user account')
+          reject(e)
         })
     })
   }

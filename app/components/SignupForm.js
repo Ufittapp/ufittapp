@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Form, Button, Text } from 'native-base'
-import { Field, reduxForm } from 'redux-form/immutable'
+import { Field, reduxForm, propTypes } from 'redux-form'
 import TextInput from '../common/MyTextInput'
 import validateForm from '../utils/validate'
 
 class SignupForm extends Component {
 
     render(){
-        const { handleSubmit, onSubmit, dirty, submitting, invalid } = this.props
-        console.log('submitting', submitting)
+        const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine } = this.props
+        console.log('form props', this.props)
 
         return(
             <Form>
@@ -71,12 +71,17 @@ class SignupForm extends Component {
                 <Button 
                     style={{marginTop: 15}}
                     onPress={handleSubmit(onSubmit)}
-                    disabled={submitting || invalid}>
+                    disabled={pristine || submitting}>
                     <Text>REGISTER</Text>
                 </Button>
             </Form>                         
         )
     }
+}
+
+SignupForm.propTypes = {
+    ...propTypes,
+    onSubmit: React.PropTypes.func.isRequired
 }
 
 export default reduxForm({ 
