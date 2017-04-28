@@ -18,17 +18,17 @@ class SignupScreen extends Component{
     }
 
 	onFormSubmit(newUser){
-        this.props.goHome()
-
-		//console.log('Save pressed', newUser)
+		console.log('Save pressed')
         
-        /*this.setState({isFetching: true})
+       /* this.setState({isFetching: true})
         this.props.createAccount(newUser)
-            .then(() => {
-                this.setState({isFetching: false, error: null})        
-                console.log('accout created successfully')
+            .then(
+                () => {
+                this.setState({isFetching: false, error: null})
+                this.props.goHome()
             })
-            .catch(error => this.setState({error, isFetching: false}))	*/	
+            .catch(error => this.setState({error, isFetching: false}))
+            */
 	}
 	
 	render(){
@@ -70,7 +70,8 @@ function mapDispatchToProps(dispatch){
 SignupScreen.propTypes = {
     //signup: React.PropTypes.object.isRequired,
     createAccount: React.PropTypes.func.isRequired,
-    navigation: React.PropTypes.object.isRequired
+    navigation: React.PropTypes.object.isRequired,
+    goHome: React.PropTypes.func.isRequired
 }
 
 SignupScreen.navigationOptions = {

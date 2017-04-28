@@ -6,13 +6,17 @@ class MyTextInput extends Component{
         const { input, meta: { touched, error, dirty, invalid, valid }, ...inputProps} = this.props
         
         return(
-            <Item regular>
-                <Input
-                    {...inputProps}
-                    value={input.value}
-                    onChangeText={input.onChange}
-                />
-            </Item>
+            <View>
+                <Item success={dirty && valid ? true : false} error={invalid && dirty ? true : false}>
+                    <Input
+                        {...inputProps}
+                        value={input.value}
+                        onChangeText={input.onChange}
+                    />
+                    {dirty && invalid ? <Icon name='close-circle' /> : dirty && valid ? <Icon name='checkmark-circle' /> : undefined}
+                </Item>
+                {dirty && error && <Text style={ { color: '#e74c3c', fontSize: 15} }>{error}</Text>}
+            </View>
         )
     }
 }
