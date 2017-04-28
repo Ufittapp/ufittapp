@@ -68,4 +68,8 @@ SignupScreen.propTypes = {
     createAccount: React.PropTypes.func.isRequired
 }
 
+SignupScreen.navigationOptions = {
+    header: null
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen)
