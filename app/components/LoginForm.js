@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Text, Form, Button } from 'native-base'
 import { Field, reduxForm, propTypes } from 'redux-form'
-import TextInput from '../common/LoginTextInput'
+import TextInput from '../common/MyTextInput'
+import { emailValidationResult, validateFieldIsNotEmpty } from '../utils/validate'
 
 class LoginForm extends Component{
     render(){
@@ -44,6 +45,17 @@ LoginForm.propTypes = {
     onSubmit: React.PropTypes.func.isRequired
 }
 
+
 export default reduxForm({
-    form: 'loginForm'
+    form: 'loginForm',
+    validate: values => {
+        let { email, password } = values
+        const errros = {}
+
+        errros.email = emailValidationResult(email)
+        errros.password = validateFieldIsNotEmpty(password)
+
+        return errros
+    }
+
 })(LoginForm)

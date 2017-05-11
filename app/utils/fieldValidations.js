@@ -27,6 +27,8 @@ export const validateUserName = username => validate.single(username, createPres
 
 export const validatePassword = password => validate.single(password, passwordConstraints)
 
+export const validateFieldIsNotEmpty = value => validate.single(value, { presence: true })
+
 //export const isValidConfirmPassword = (password, confirmPassword) => validate({password, confirmPassword}, passwordAgainConstraints)
 
 

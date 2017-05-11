@@ -15,8 +15,11 @@ export default  validateSignupFormFields = values => {
     return errors
 }
 
+export const validateFieldIsNotEmpty = value => createValidationResult(fieldValidations.validateFieldIsNotEmpty(value))
+
+export const emailValidationResult = email => createValidationResult(fieldValidations.validateEmail(email))
+
 const fullNameValidationResult = fullName => createValidationResult(fieldValidations.validateFullName(fullName))
-const emailValidationResult = email => createValidationResult(fieldValidations.validateEmail(email))
 const phoneNumberValidationResult = phoneNumber => createValidationResult(fieldValidations.validatePhoneNumber(phoneNumber))
 const birthdateValidationResult = date => createValidationResult(fieldValidations.validateBirthdate(date))
 const usernameValidationResult = date => createValidationResult(fieldValidations.validateUserName(date))
