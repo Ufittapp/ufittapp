@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, Content, View, Text} from 'native-base'
 import LoginForm from '../components/LoginForm'
@@ -40,6 +41,10 @@ class LoginScreen extends Component{
                         {this.state.isFetching && <Text>{'signing in...'}</Text>}
                     </View>
                     <LoginForm onSubmit={this.onLoginFormSubmit} />
+                    <TouchableWithoutFeedback onPress={this.props.goToSignup}>
+                        <Text> Create Account </Text>
+                    </TouchableWithoutFeedback>
+
                 </Content>
             </Container>
         )
@@ -48,6 +53,7 @@ class LoginScreen extends Component{
 
 LoginScreen.PropTypes = {
     goHome: React.PropTypes.func.isRequired,
+    goToSignup: React.PropTypes.func.isRequired,
     onLogin: React.PropTypes.func.isRequired,
     navigation: React.PropTypes.object.isRequired
 }
@@ -60,6 +66,7 @@ function mapDispatchToProps(dispatch){
     return {
         onLogin: (email, password) => dispatch(login(email, password)),
         goHome: () => dispatch(NavigationActions.navigate({ routeName: 'Home' })),
+        goToSignup: () => dispatch(NavigationActions.navigate({ routeName: 'Signup' })),
     }
 }
 
