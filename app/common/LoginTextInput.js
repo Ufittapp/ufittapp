@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Item, Input, Text, View, Icon } from 'native-base'
+import { Item, Input, Text, View } from 'native-base'
 
 class MyTextInput extends Component{
     render(){
@@ -7,15 +7,14 @@ class MyTextInput extends Component{
         
         return(
             <View>
-                <Item underline success={dirty && valid ? true : false} error={invalid && dirty ? true : false}>
+                <Item>
                     <Input
                         {...inputProps}
                         value={input.value}
                         onChangeText={input.onChange}
                     />
-                    {dirty && invalid ? <Icon name='close-circle' /> : dirty && valid ? <Icon name='checkmark-circle' /> : undefined}
+                    
                 </Item>
-                {dirty && error && <Text style={ { color: '#e74c3c', fontSize: 15} }>{error}</Text>}
             </View>
         )
     }
