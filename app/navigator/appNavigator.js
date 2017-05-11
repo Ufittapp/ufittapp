@@ -5,10 +5,9 @@ import { BackAndroid } from 'react-native';
 import * as screens from './applicationScreens'
 
 export const AppNavigator = StackNavigator({
+  Login: { screen: screens.LoginScreen },
   Signup: { screen: screens.SignupScreen },
-  Home: { screen: screens.HomeScreen}
-}, {
-  initialRouteName: 'Home',
+  Home: { screen: screens.HomeScreen }
 });
 
 class AppWithNavigationState extends React.Component{
