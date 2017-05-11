@@ -8,7 +8,6 @@ class SignupForm extends Component {
 
     render(){
         const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine } = this.props
-        console.log('form props', this.props)
 
         return(
             <Form>
@@ -63,7 +62,7 @@ class SignupForm extends Component {
                     name="password"
                     component={TextInput}
                     placeholder="PASSWORD"
-                    returnKeyType="next"
+                    returnKeyType="done"
                     secureTextEntry
                     editable={!submitting}                    
                 />
@@ -87,4 +86,4 @@ SignupForm.propTypes = {
 export default reduxForm({ 
     form: 'signupForm',
     validate: validateForm
-})((SignupForm))
+})(SignupForm)

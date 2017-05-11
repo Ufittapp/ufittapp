@@ -43,7 +43,7 @@ class SignupScreen extends Component{
                     <Right />
                 </Header>				
 				<Content>
-                    <View>
+                    <View style={ {paddingLeft: 10, paddingRight: 10} }>
                         {this.state.error && <Text>{this.state.error}</Text>}
                         {this.state.isFetching && <Text>{'Creating account...'}</Text>}
                         <SignUpForm
@@ -80,4 +80,4 @@ SignupScreen.navigationOptions = {
     header: null
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen)
+export default connect(null, mapDispatchToProps)(SignupScreen)
