@@ -34,4 +34,15 @@ export default class AuthenticationManager{
     })
   }
 
+  static login(email, password){
+    return new Promise ( (resolve, reject) => {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+      .then( user => resolve(user.toJSON()))
+        .catch(e => {
+          console.log(e)
+          reject(e)
+        })
+    })
+  }
+
 }
