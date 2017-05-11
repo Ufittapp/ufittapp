@@ -22,6 +22,6 @@ export function login(email, password){
   return dispatch => {
     return AuthManager.login(email, password)
       .then( (user) => dispatch(loginSuccess()) )
-      .catch(e => Promise.reject(e) )
+      .catch(e => Promise.reject(e.message) )
   }
 }

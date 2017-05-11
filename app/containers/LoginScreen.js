@@ -22,7 +22,8 @@ class LoginScreen extends Component{
         const { email, password } = data
 
         this.setState({isFetching: true})
-        this.props.login(email, password).then(() => {
+
+        this.props.onLogin(email, password).then(() => {
                     this.setState({isFetching: false, error: null})
                     //this.props.resetForm()
                     this.props.goHome()
@@ -34,6 +35,10 @@ class LoginScreen extends Component{
         return(
             <Container>
                 <Content>
+                    <View style={ {paddingLeft: 10, paddingRight: 10} }>
+                        {this.state.error && <Text>{this.state.error}</Text>}
+                        {this.state.isFetching && <Text>{'signing in...'}</Text>}
+                    </View>
                     <LoginForm onSubmit={this.onLoginFormSubmit} />
                 </Content>
             </Container>
@@ -43,7 +48,7 @@ class LoginScreen extends Component{
 
 LoginScreen.PropTypes = {
     goHome: React.PropTypes.func.isRequired,
-    login: React.PropTypes.func.isRequired,
+    onLogin: React.PropTypes.func.isRequired,
     navigation: React.PropTypes.object.isRequired
 }
 
@@ -53,7 +58,7 @@ LoginScreen.navigationOptions = {
 
 function mapDispatchToProps(dispatch){
     return {
-        login: (email, password) => dispatch(login(email, password)),
+        onLogin: (email, password) => dispatch(login(email, password)),
         goHome: () => dispatch(NavigationActions.navigate({ routeName: 'Home' })),
     }
 }
