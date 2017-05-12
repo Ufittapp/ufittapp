@@ -7,7 +7,8 @@ import * as screens from './applicationScreens'
 export const AppNavigator = StackNavigator({
   Login: { screen: screens.LoginScreen },
   Signup: { screen: screens.SignupScreen },
-  Home: { screen: screens.HomeScreen }
+  Home: { screen: screens.HomeScreen },
+  Settings: { screen: screens.SettingsScreen }
 });
 
 class AppWithNavigationState extends React.Component{
