@@ -97,6 +97,10 @@ android {
         }
     }
 
+    lintOptions{
+        abortOnError false
+    }
+
     signingConfigs {
         release {
             storeFile file(MYAPP_RELEASE_STORE_FILE)
