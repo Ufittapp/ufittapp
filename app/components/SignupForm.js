@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Button, Text } from 'native-base'
+import { Form, Button, Text, View } from 'native-base'
 import { Field, reduxForm, propTypes } from 'redux-form'
 import TextInput from '../common/MyTextInput'
 import validateForm from '../utils/validate'
+import styles from '@assets/styles/signup'
+import { Image } from 'react-native'
 
 class SignupForm extends Component {
 
@@ -10,11 +12,15 @@ class SignupForm extends Component {
         const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine } = this.props
 
         return(
-            <Form>
+            <View>
+                <Image source={require('@assets/images/profile.png')} style={styles.profileImg}/>
+                <Text style={styles.registerTitle}>REGISTER</Text>
+
+                <Form style={styles.registerForm}>
                 <Field
                     name="fullName"
                     component={TextInput}
-                    placeholder="Full Name"
+                    labelName="FULL NAME"
                     returnKeyType="next"
                     autoCapitalize="words"
                     editable={!submitting}
@@ -23,7 +29,7 @@ class SignupForm extends Component {
                 <Field
                     name="email"
                     component={TextInput}
-                    placeholder="Email"
+                    labelName="EMAIL"
                     returnKeyType="next"
                     keyboardType="email-address"
                     autoCapitalize="none"
@@ -34,7 +40,7 @@ class SignupForm extends Component {
                 <Field
                     name="phoneNumber"
                     component={TextInput}
-                    placeholder="PHONE"
+                    labelName="PHONE"
                     keyboardType="phone-pad"
                     returnKeyType="next"
                     autoCapitalize="words"
@@ -44,7 +50,7 @@ class SignupForm extends Component {
                 <Field
                     name="birthdate"
                     component={TextInput}
-                    placeholder="DATE OF BIRTH"
+                    labelName="DATE OF BIRTH"
                     returnKeyType="next"
                     editable={!submitting}
                 />
@@ -52,7 +58,7 @@ class SignupForm extends Component {
                 <Field
                     name="username"
                     component={TextInput}
-                    placeholder="USERNAME"
+                    labelName="USERNAME"
                     returnKeyType="next"
                     autoCapitalize="none"
                     editable={!submitting}
@@ -61,19 +67,21 @@ class SignupForm extends Component {
                 <Field
                     name="password"
                     component={TextInput}
-                    placeholder="PASSWORD"
+                    labelName="PASSWORD"
                     returnKeyType="done"
                     secureTextEntry
                     editable={!submitting}                    
                 />
                 
                 <Button 
-                    style={{marginTop: 15}}
+                    primary style={styles.buttonRegister}
                     onPress={handleSubmit(onSubmit)}
                     disabled={pristine || submitting}>
-                    <Text>REGISTER</Text>
+                    <Text>Register</Text>
                 </Button>
-            </Form>                         
+                </Form>   
+            </View>
+                                  
         )
     }
 }

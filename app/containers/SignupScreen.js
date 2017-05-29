@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SignUpForm from '../components/SignupForm'
-import { Container, Content, View, Header, Left, Right, Body, Title, Text} from 'native-base'
+import { Container, Content, View, Header, 
+        Left, Right, Body, Title, Text } from 'native-base'
+import { Image } from 'react-native'
 import { createAccount } from '../actions'
 import { NavigationActions } from 'react-navigation';
 import { reset } from 'redux-form';
+import styles from '@assets/styles/signup'
 
 class SignupScreen extends Component{
 	constructor(props){
@@ -35,22 +38,24 @@ class SignupScreen extends Component{
 	render(){
 		return(
 			<Container>
-                <Header>
+                <Header style={styles.headerBg}>
                     <Left />
                     <Body>
-                        <Title>Signup</Title>
+                        <Title style={styles.whiteText}>Create Profile</Title>
                     </Body>
                     <Right />
-                </Header>				
-				<Content>
-                    <View style={ {paddingLeft: 10, paddingRight: 10} }>
-                        {this.state.error && <Text>{this.state.error}</Text>}
-                        {this.state.isFetching && <Text>{'Creating account...'}</Text>}
-                        <SignUpForm
-                            onSubmit={this.onFormSubmit}
-                        />
-                    </View>
-                </Content>
+                </Header>
+                
+                <Image source={require('@assets/images/register_bg.png')} style={styles.backgroundImage}>        
+                     <Content>
+                        <View style={ {paddingLeft: 10, paddingRight: 10} }>
+                            {this.state.error && <Text>{this.state.error}</Text>}
+                            {this.state.isFetching && <Text>{'Creating account...'}</Text>}
+                            <SignUpForm
+                                onSubmit={this.onFormSubmit} />
+                        </View>
+                    </Content>   
+                </Image>
             </Container>
 		) 
 	}

@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
-import { Item, Input, Text, View, Icon } from 'native-base'
+import { Item, Input, Text, View, Icon, Label } from 'native-base'
+import styles from '@assets/styles/signup'
 
 class MyTextInput extends Component{
     render(){
-        const { input, meta: { touched, error, dirty, invalid, valid }, ...inputProps} = this.props
+        const { labelName, input, meta: { touched, error, dirty, invalid, valid }, ...inputProps} = this.props
         
         return(
             <View>
-                <Item underline success={dirty && valid ? true : false} error={invalid && dirty ? true : false}>
+                <Item stackedLabel style={styles.itemContainer} success={dirty && valid ? true : false} error={invalid && dirty ? true : false}>
+                    <Label style={styles.registerLabel}>{labelName}</Label>
                     <Input
                         {...inputProps}
                         value={input.value}
                         onChangeText={input.onChange}
+                        style={styles.registerInput}
                     />
                     {dirty && invalid ? <Icon name='close-circle' /> : dirty && valid ? <Icon name='checkmark-circle' /> : undefined}
                 </Item>
