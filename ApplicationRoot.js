@@ -17,21 +17,28 @@ export default class Root extends React.Component{
     componentDidMount(){
         firebase.auth().onAuthStateChanged(user => {
             if(user){
-                console.log("user is logged in");
+                console.log("user is logged in")
 
-                FCM.requestPermissions();
+                const firstTimeUser = store.getState().global.firstTimeUser
+
+                console.log("firstTimeUser", firstTimeUser)
+
+                FCM.requestPermissions()
                 FCM.getFCMToken().then(token => {
                     console.log("FCM token", token)
 
-                    const id = token.split(':')[0]
+                    //const id = token.split(':')[0]
 
-                    firebase.database().ref('tokens').child(id).set({
-                        issueDate: new Date().toLocaleString(),
-                        token
-                    }).then(() => console.log('token saved to database'))
-                    .catch(e => console.log('token not saved to database. Error: ', e))
+                    firebase.database()
+                        .ref('tokens')
+                        .child(user.uid)
+                        .set({token})
+                        .then(() => console.log('token saved to database'))
+                        .catch(e => console.log('token not saved to database. Error: ', e))
 
                 })
+
+                //FCM.subscribeToTopic('welcome-message');
 
                 this.notificationListener = FCM.on('notification',  notif => {
                     console.log('notification opened', notif);
