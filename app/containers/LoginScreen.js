@@ -42,7 +42,7 @@ class LoginScreen extends Component{
                     </View>
                     <LoginForm onSubmit={this.onLoginFormSubmit} />
                     <TouchableWithoutFeedback onPress={this.props.goToSignup}>
-                        <Text> Create Account </Text>
+                        <Text style={ {marginTop: 30} }> Create Account </Text>
                     </TouchableWithoutFeedback>
 
                 </Content>

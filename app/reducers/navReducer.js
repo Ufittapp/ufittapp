@@ -5,7 +5,7 @@ const initialNavState = AppNavigator
                         .router
                         .getStateForAction(AppNavigator
                                             .router
-                                            .getActionForPathAndParams('Home'))
+                                            .getActionForPathAndParams('Splash'))
 
 export default function navigatorReducer(state = initialNavState, action){
     const nextState = AppNavigator.router.getStateForAction(action, state);
