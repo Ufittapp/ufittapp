@@ -3,7 +3,7 @@ import { Text, Container, Content, Footer } from 'native-base'
 import FooterTabs from '../common/FooterTabs'
 import { connect } from 'react-redux'
 
-class Home extends React.Component{
+class HomeScreen extends React.Component{
     render(){
         const { navigate } = this.props.navigation;
 
@@ -12,23 +12,17 @@ class Home extends React.Component{
                 <Content>
                     <Text>Feeds section</Text>
                 </Content>
-                <Footer>
-                    <FooterTabs
-                        activeTabName='home'
-                        navigate={navigate}
-                    />
-                </Footer>
             </Container>
         )
     }
 }
 
-Home.propTypes = {
+HomeScreen.propTypes = {
     navigation: React.PropTypes.object.isRequired
 }
 
-Home.navigationOptions = {
+HomeScreen.navigationOptions = {
     header: null
 }
 
-export default Home //connect()
+export default HomeScreen //connect()

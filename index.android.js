@@ -7,5 +7,7 @@
 import React, { Component } from 'react'
 import { AppRegistry } from 'react-native'
 import UfittApp from './ApplicationRoot'
+//import UfittApp from './designOnly/LandingPage'
+
 
 AppRegistry.registerComponent('ufittapp', () => UfittApp);

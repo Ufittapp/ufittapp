@@ -24,20 +24,13 @@ class SettingsScreen extends Component{
         </ListItem>
 
         </Content>
-
-        <Footer>
-          <FooterTabs 
-          activeTabName="settings" 
-          navigate={navigate}
-          />
-        </Footer>
       </Container>
     )
   }
 }
 
 SettingsScreen.navigationOptions = {
-  header: null
+    header: null,
 }
 
 function mapDispatchToProps(dispatch){
