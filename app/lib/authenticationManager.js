@@ -24,15 +24,6 @@ export default class AuthenticationManager{
 
   static createUserAccount(newUser){
     return new Promise( (resolve, reject) => {
-      newUser = {
-        email: 'nahum@email.com',
-        fullName: 'Nahum Fabian',
-        birthdate: 'April 13th',
-        username: 'nfabian',
-        password: 'abc+123',
-        phone: 22123423
-      }
-      
       const { email, password } = newUser
 
 

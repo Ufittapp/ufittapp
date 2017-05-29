@@ -1,20 +1,20 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { addNavigationHelpers, StackNavigator, DrawerNavigator } from 'react-navigation'
+import { addNavigationHelpers, StackNavigator, TabNavigator } from 'react-navigation'
 import { BackAndroid } from 'react-native';
 import * as screens from './applicationScreens'
 
-/*
-const MainNavigator = DrawerNavigator({
-  Home: { screen: screens.HomeScreen },
+const MainNavigator = TabNavigator({
+  Main: { screen: screens.HomeScreen },
   Settings: { screen: screens.SettingsScreen }
-}) */
+}, {
+  tabBarPosition: 'bottom'
+})
 
 export const AppNavigator = StackNavigator({
   Login: { screen: screens.LoginScreen },
   Signup: { screen: screens.SignupScreen },
-  //Main: { screen: MainNavigator},
-  Home: { screen: screens.HomeScreen },
+  Home: { screen: MainNavigator },
   Settings: { screen: screens.SettingsScreen },
   Landing: { screen: screens.LandingScreen },
   Splash: { screen: screens.SplashScreen }

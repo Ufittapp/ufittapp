@@ -17,12 +17,14 @@ class SplashScreen extends React.Component{
 
     redirectUser(){
         var user = firebase.auth().currentUser;
-
+        
         if(user){
             this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Home' }))
         }else{
             this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Landing' }))
         }
+
+        //firebase.auth().signOut()
     }
 
     render(){

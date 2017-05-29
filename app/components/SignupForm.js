@@ -76,7 +76,8 @@ class SignupForm extends Component {
                 <Button 
                     primary style={styles.buttonRegister}
                     onPress={handleSubmit(onSubmit)}
-                    disabled={pristine || submitting}>
+                    disabled={pristine || submitting}
+                    >
                     <Text>Register</Text>
                 </Button>
                 </Form>   
@@ -93,5 +94,5 @@ SignupForm.propTypes = {
 
 export default reduxForm({ 
     form: 'signupForm',
-    validate: validateForm
+    //validate: validateForm
 })(SignupForm)
