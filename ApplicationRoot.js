@@ -57,9 +57,13 @@ export default class Root extends React.Component{
     }
 
     componentWillUnmount() {
-        // stop listening for events
-        //this.notificationListener.remove();
-        //this.refreshTokenListener.remove();
+        firebase.auth().onAuthStateChanged(user => {
+            if(user){
+                // stop listening for events
+                //this.notificationListener.remove();
+                //this.refreshTokenListener.remove();
+            }
+        })
     }
     
     render(){

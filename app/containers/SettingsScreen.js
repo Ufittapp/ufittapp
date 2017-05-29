@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import { Container, Content, Footer, Text, 
-    Separator, ListItem, Left, Right, Body, Icon
+    Separator, ListItem, Left, Right, Body, Icon, Button
 } from 'native-base'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation';
 import FooterTabs from '../common/FooterTabs'
+import firebase from 'firebase'
 
 class SettingsScreen extends Component{
+  static navigationOptions = {
+        tabBarLabel: 'Settings'
+  }
+
   render(){
      const { navigate } = this.props.navigation;
 
@@ -18,7 +23,15 @@ class SettingsScreen extends Component{
                 <Icon name="log-out" />
             </Left>
             <Body>
-                <Text>Logout</Text>
+                
+                <Button primary
+                    onPress={() => {
+
+                      firebase.auth().signOut()
+                      this.props.goToLogin()
+                    }}>
+                    <Text>Log out</Text>
+                </Button>
             </Body>
             <Right />
         </ListItem>
@@ -35,7 +48,8 @@ SettingsScreen.navigationOptions = {
 
 function mapDispatchToProps(dispatch){
   return{
-    goToSettings: () => dispatch(NavigationActions.navigate({ routeName: 'Settings' }))
+    goToSettings: () => dispatch(NavigationActions.navigate({ routeName: 'Settings' })),
+    goToLogin: () => dispatch(NavigationActions.navigate({ routeName: 'Login' })),
   }
 }
 
