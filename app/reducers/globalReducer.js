@@ -2,13 +2,15 @@ import * as types from '../actions/actionTypes'
 import initialState from './initialState'
 
 export default function globalReducer(state = initialState.global, action){
-    if(action.SIGNUP_SUCCESS){
-        return Object.assign({}, state, { firstTimeUser: true})
-    }
+    console.log('global reducer executed', action)
 
-    if(action.LOGIN_SUCCESS){
-        return Object.assign({}, state, { firstTimeUser: false})
+    switch(action.type){
+        case types.SIGNUP_SUCCESS:
+        console.log('SIGNUP_SUCCESS on global reducer')
+           //const { fullName, email, phone, userId } = action.payload
+           return Object.assign({}, state, { isFetching: false }) 
+        case types.SIGNUP_FAILURE:
+            return Object.assign({}, state, { isFetching: false, error: action.payload })
+        default: return state
     }
-
-    return state
 }

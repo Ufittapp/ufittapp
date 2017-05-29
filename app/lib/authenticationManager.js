@@ -7,29 +7,44 @@ export default class AuthenticationManager{
       return !!firebase.auth().currentUser
   }
 
-  addNewUser(userId, newUser){
-    const user = Object.assign({}, newUser, { createdAt: firebase.ServerValue.TIMESTAMP})
+  static addNewUser(userId, newUser){
+    const user = Object.assign({}, newUser, { createdAt: firebase.database.ServerValue.TIMESTAMP})
     const publicUser = Object.assign({}, newUser, { userId })
 
-    firebase.database()
+    return firebase.database()
       .ref('users')
       .child(userId)
       .set(user)
       .then(() => Promise.resolve(publicUser))
-      .catch(e => console.log('error creating user', e))  
+      .catch(e => {
+        console.log('error inserting new user record', e)
+        Promise.reject(e.message)
+      })  
   }
 
   static createUserAccount(newUser){
     return new Promise( (resolve, reject) => {
-      const { email, password, uid } = newUser
+      newUser = {
+        email: 'nahum@email.com',
+        fullName: 'Nahum Fabian',
+        birthdate: 'April 13th',
+        username: 'nfabian',
+        password: 'abc+123',
+        phone: 22123423
+      }
+      
+      const { email, password } = newUser
+
+
 
       if(!email || !password) reject('Email and password are required fields')
 
       firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then( user => resolve(user.toJSON()))
+        .then( user => this.addNewUser(user.uid, newUser) ) //.toJSON()
+        .then( addedUser =>  resolve(addedUser))
         .catch(e => {
-          console.log(e)
-          reject(e)
+          console.log(JSON.stringify(e))
+          reject(e.message)
         })
     })
   }
@@ -40,7 +55,7 @@ export default class AuthenticationManager{
       .then( user => resolve(user.toJSON()))
         .catch(e => {
           console.log(e)
-          reject(e)
+          reject(e.message)
         })
     })
   }
