@@ -6,11 +6,54 @@ import firebase from 'firebase'
 import { firebaseConfigs } from './app/config/secrets'
 import AppNavigator from './app/navigator/appNavigator'
 
+import FCM from 'react-native-fcm';
+
+
 firebase.initializeApp(firebaseConfigs)
 
 const store = configureStore()
 
 export default class Root extends React.Component{
+    componentDidMount(){
+        firebase.auth().onAuthStateChanged(user => {
+            if(user){
+                console.log("user is logged in");
+
+                FCM.requestPermissions();
+                FCM.getFCMToken().then(token => {
+                    console.log("FCM token", token)
+
+                    const id = token.split(':')[0]
+
+                    firebase.database().ref('tokens').child(id).set({
+                        issueDate: new Date().toLocaleString(),
+                        token
+                    }).then(() => console.log('token saved to database'))
+                    .catch(e => console.log('token not saved to database. Error: ', e))
+
+                })
+
+                this.notificationListener = FCM.on('notification',  notif => {
+                    console.log('notification opened', notif);
+                    
+                })
+
+                this.refreshTokenListener = FCM.on('refreshToken', (token) => {
+                    console.log("on refresh token", token)
+                    // fcm token may not be available on first load, catch it here
+                })
+
+            }else{
+                console.log("use is logged out")
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        // stop listening for events
+        //this.notificationListener.remove();
+        //this.refreshTokenListener.remove();
+    }
     
     render(){
         return (
