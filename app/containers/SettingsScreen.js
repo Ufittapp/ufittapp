@@ -20,6 +20,22 @@ class SettingsScreen extends Component{
         <Content>
           <ListItem icon>
             <Left>
+                <Icon name="chatboxes" />
+            </Left>
+            <Body>
+                
+                <Button secondary
+                    onPress={() => {
+                      this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'ChatRoom' }))
+                    }}>
+                    <Text>Enter chat room</Text>
+                </Button>
+            </Body>
+            <Right />
+        </ListItem>
+          
+          <ListItem icon>
+            <Left>
                 <Icon name="log-out" />
             </Left>
             <Body>

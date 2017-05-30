@@ -5,12 +5,9 @@ import configureStore from './app/store/configureStore'
 import firebase from 'firebase'
 import { firebaseConfigs } from './app/config/secrets'
 import AppNavigator from './app/navigator/appNavigator'
-
 import FCM from 'react-native-fcm';
 
-
 firebase.initializeApp(firebaseConfigs)
-
 const store = configureStore()
 
 export default class Root extends React.Component{

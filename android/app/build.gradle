@@ -84,8 +84,9 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    lintOptions{
+    lintOptions {
         abortOnError false
+        disable 'InvalidPackage'
     }
     
     compileSdkVersion 23
