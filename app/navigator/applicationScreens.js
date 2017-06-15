@@ -5,8 +5,10 @@ import SettingsScreen from '../containers/SettingsScreen'
 import LandingScreen from '../containers/LandingScreen'
 import SplashScreen from '../containers/SplashScreen'
 import ChatRoomScreen from '../containers/ChatScreen'
+import UserListScreen from '../containers/UsersList'
 
 module.exports = {
+    UserListScreen,
     ChatRoomScreen,
     SplashScreen,
     LandingScreen,

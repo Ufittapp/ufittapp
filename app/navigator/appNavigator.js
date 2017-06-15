@@ -6,6 +6,7 @@ import * as screens from './applicationScreens'
 
 const MainNavigator = TabNavigator({
   Main: { screen: screens.HomeScreen },
+  Users: { screen: screens.UserListScreen },
   Settings: { screen: screens.SettingsScreen }
 }, {
   tabBarPosition: 'bottom'
