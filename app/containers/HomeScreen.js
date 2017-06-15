@@ -18,11 +18,7 @@ class HomeScreen extends React.Component{
         return(
             <Container>
                  <Header style={styles.headerBg}>
-                     <Left>
-                         <Button transparent>
-                             <Icon name='menu' style={styles.whiteText} />
-                         </Button>
-                     </Left>
+                     <Left />
                      <Body>
                          <Title style={styles.whiteText}>Feed</Title>
                      </Body>
