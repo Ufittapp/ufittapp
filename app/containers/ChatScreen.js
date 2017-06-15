@@ -3,20 +3,28 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import firebase from 'firebase'
 
 export default class Example extends React.Component {
-    static navigationOptions ={
-        title: 'Public Chat Room'
-    }
+    static navigationOptions = ({navigation}) => ({
+        title: `Chat with ${navigation.state.params.user.name}`
+    })
 
     getCurrentUser = () => firebase.auth().currentUser
 
     constructor(props) {
         super(props);
         this.state = {messages: []};
-        this.onSend = this.onSend.bind(this);
+        this.onSend = this.onSend.bind(this)
     }
 
-  componentWillMount() {
-      firebase.database().ref('chatsMessages').on('value', snapShot => {
+  componentDidMount() {
+      const params = this.props.navigation.state.params
+      const uniqueRoomKey = this.hash(this.getCurrentUser().uid, params.user.uid)
+
+      firebase.database()
+        .ref('chatMessages')
+        .child(uniqueRoomKey)
+        .child('messages')
+        .on('value', snapShot => {
+
           if(snapShot.exists()){
               
               let messages = []
@@ -29,7 +37,7 @@ export default class Example extends React.Component {
                       user: {
                           _id: message.val().createdBy.userId,
                           name: message.val().createdBy.name,
-                          avatar: 'https://facebook.github.io/react/img/logo_og.png'
+                          avatar: `https://unsplash.it/200/300?image=${Math.floor((Math.random() * 20) + 1)}`
                       }
                 })
             })
@@ -39,19 +47,74 @@ export default class Example extends React.Component {
       })
   }
 
+  componentWillUnmount(){
+      console.log('chat screen unmounted')
+  }
+
+  hash() {
+    var h=0, i=0;
+
+    if(arguments.length == 1) {
+        for(i=0; i < arguments[0].length; i++) {
+            h = (h * 31 + arguments[0].charCodeAt(i)) & 0xffffffff;
+        }
+    }
+    else {
+        for(i in arguments) {
+            h ^= this.hash(arguments[i]);
+        }
+    }
+
+    return h;
+}
+
   saveMessage(newMessage){
       if(!newMessage)
         return
 
-      const newMessageRef = firebase.database().ref('chatsMessages').push()
-      newMessageRef.setWithPriority({
-          text: newMessage.text,
-          createdAt: firebase.database.ServerValue.TIMESTAMP,
-          createdBy: {
-              userId: newMessage.user._id,
-              email: newMessage.user.name
-          }}, 0 - Date.now())
-          .then(() => console.log('new message saved to db', newMessage))
+     const params = this.props.navigation.state.params
+     const uniqueRoomKey = this.hash(this.getCurrentUser().uid, params.user.uid)
+     const messagesRef = firebase.database().ref('chatMessages')
+     const chatRoomMetadataRef= firebase.database().ref('chatRoomMetadata')
+        
+     messagesRef
+        .child(uniqueRoomKey)
+        .once('value')
+        .then(snap => {
+            if(!snap.exists()){
+                messagesRef
+                    .child(uniqueRoomKey)
+                    .set({ user1: this.getCurrentUser().email, user2: params.user.email})
+                    .then( () => this.insertMessage(uniqueRoomKey, newMessage))
+                    .then( () => console.log('complete tree created'))
+                    .catch(e => console.lo('Error creating complete tree', e))
+            }else{
+                this.insertMessage(uniqueRoomKey, newMessage)
+                    .then(() => console.log('new message inserted only'))
+                    .catch(e => console.log('error inserting new message only', e))
+            }
+        })     
+  }
+
+  insertMessage(key, newMessage){
+      const newMessageRef = firebase
+                                .database()
+                                .ref('chatMessages')
+                                .child(key)
+                                .child('messages')
+                                .push()
+
+      return newMessageRef
+        .setWithPriority(
+            {
+                text: newMessage.text,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                createdBy: {
+                    userId: newMessage.user._id,
+                    email: newMessage.user.name
+                }
+            }
+            , 0 - Date.now())
   }
 
   onSend(messages = []) {
@@ -65,7 +128,8 @@ export default class Example extends React.Component {
         onSend={this.onSend}
         user={{
           _id: this.getCurrentUser().uid,
-          name: this.getCurrentUser().email
+          name: this.getCurrentUser().email,
+          avatar: 'https://unsplash.it/100/100?image=0'
         }}
       />
     );
