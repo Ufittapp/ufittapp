@@ -1,5 +1,7 @@
 const authActions  = require('./auth')
+const usersActions = require('./users')
 
 module.exports = { 
-    ...authActions
+    ...authActions,
+    ...usersActions
 }

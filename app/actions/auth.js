@@ -6,7 +6,7 @@ function signupRequest() { return { type: types.SIGNUP_REQUEST } }
 function signupSuccess() { return { type: types.SIGNUP_SUCCESS } }
 function signupFailure(error) { return { type: types.SIGNUP_FAILURE, payload: error } }
 
-export function createAccount(user){
+function createAccount(user){
   return dispatch => {
     //dispatch(signupRequest())
     return AuthManager.createUserAccount(user)
@@ -18,10 +18,12 @@ export function createAccount(user){
   }
 }
 
-export function login(email, password){
+function login(email, password){
   return dispatch => {
     return AuthManager.login(email, password)
       .then( (user) => dispatch(loginSuccess()) )
       .catch(e => Promise.reject(e.message) )
   }
 }
+
+module.exports = { createAccount, login }
