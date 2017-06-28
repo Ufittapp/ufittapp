@@ -24,5 +24,19 @@ function followUser(userId){
     }
 }
 
+function unFollowUser(userId){
+    return dispatch => {
+        return api.unFollowUser(userId)
+    }
+}
 
-module.exports = { getUsers, followUser }
+
+function amIFollowingUser(userId){
+    return dispatch => {
+        return api.amIFollowingUser(userId)
+            .then( amIFollowing => Promise.resolve(amIFollowing))
+            .catch( e => Promise.reject(e))
+    }
+}
+
+module.exports = { getUsers, followUser, amIFollowingUser, unFollowUser }

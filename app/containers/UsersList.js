@@ -1,9 +1,10 @@
 import React from 'react'
-import { Container, Content, List, ListItem, Text, Button, View } from 'native-base'
+import { Container, Content, List, Text, Button, View } from 'native-base'
 import { connect } from 'react-redux'
-import { getUsers, followUser } from '../actions'
+import { getUsers, followUser, amIFollowingUser, unFollowUser } from '../actions'
 import { NavigationActions } from 'react-navigation'
 import firebase from 'firebase'
+import UserRow from '../components/UserRow'
 
 class UserListScreen extends React.Component{
 
@@ -13,6 +14,7 @@ class UserListScreen extends React.Component{
         this.renderRow = this.renderRow.bind(this)
         //this.sendPN = this.sendPN.bind(this)
         this.followUser = this.followUser.bind(this)
+        this.unFollowUser = this.unFollowUser.bind(this)
     }
 
     componentDidMount(){
@@ -41,30 +43,19 @@ class UserListScreen extends React.Component{
         .catch( e => console.log('error following', e))
     }
 
-    renderRow(item){
-        return(
-            <ListItem>
-                <View style={{flexDirection: 'row'}}>
-                    <Button dark transparent style={{width: 180}}
-                        onPress={() => {
-                            //this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'ChatRoom' }))
-                            /*this.props.navigation.navigate('ChatRoom', { user: {
-                                name: item.fullName,
-                                uid: item.userId,
-                                email: item.email
-                            }})*/
-                        }}>
-                        <Text>{item.fullName}</Text>
-                    </Button>
+    unFollowUser(userId){
+        this.props.unFollowUser(userId)
+        .then(() => console.log('user UNfollowed'))
+        .catch( e => console.log('error UNfollowing', e))
+    }
 
-                     <Button 
-                        light
-                        onPress={() => this.followUser(item) }>
-                         <Text> Follow </Text>
-                     </Button>
-                </View>
-            </ListItem>
-        )
+    renderRow(item){
+        return <UserRow 
+                    followUser={this.followUser} 
+                    item={item}
+                    amIFollowingUser={this.props.amIFollowingUser}
+                    unFollowUser={this.unFollowUser}
+                />
     }
 
     render(){
@@ -98,7 +89,9 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return{
         getUsers: () => dispatch(getUsers()),
-        followUser: (userId) => dispatch(followUser(userId))
+        followUser: (userId) => dispatch(followUser(userId)),
+        amIFollowingUser: (userId) => dispatch(amIFollowingUser(userId)),
+        unFollowUser: (userId) => dispatch(unFollowUser(userId))
     }
 }
 

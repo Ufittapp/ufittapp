@@ -12,15 +12,15 @@ export default class Root extends React.Component{
     componentDidMount(){
         firebase.auth().onAuthStateChanged(user => {
             if(user){
-                console.log("user is logged in")
+                //console.log("user is logged in")
 
                 const firstTimeUser = store.getState().global.firstTimeUser
 
-                console.log("firstTimeUser", firstTimeUser)
+                //console.log("firstTimeUser", firstTimeUser)
 
                 FCM.requestPermissions()
                 FCM.getFCMToken().then(token => {
-                    console.log("FCM token", token)
+                    //console.log("FCM token", token)
 
 
                     firebase.database()
@@ -36,7 +36,7 @@ export default class Root extends React.Component{
                                     .then(() => console.log('token saved to database'))
                                     .catch(e => console.log('token not saved to database. Error: ', e))
                             }else{
-                                console.log('user already have the token stored in the db')
+                                //console.log('user already have the token stored in the db')
                             }
                         })
 

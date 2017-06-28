@@ -16,6 +16,22 @@ export default class Api{
         })
     }
 
+    static unFollowUser(userId){
+        if(!userId)
+            return Promise.reject('User id is required param')
+            
+            const currentUser = firebaseAuth.currentUser
+            let updates = {}
+
+            updates[`followers/${userId}/${currentUser.uid}`] = null
+            updates[`followings/${currentUser.uid}/${userId}`] = null
+
+            return db.rootRef
+                .update(updates)
+                .then(() => Promise.resolve())
+                .catch(e => Promise.reject(e))
+    }
+
     static followUser(userId){
         if(!userId)
             return Promise.reject('User id is required param')
@@ -30,13 +46,13 @@ export default class Api{
 
                     const newFollower = {
                         email: currentUser.email,
-                        userId: currentUser.uid,
+                        //userId: currentUser.uid,
                         username: currentUser.email.split('@')[0]
                     }
 
                     const newFollowing = {
                         email: userSnap.val().email,
-                        userId: userSnap.key,
+                        //userId: userSnap.key,
                         username: userSnap.val().username
                     }
 
@@ -50,12 +66,12 @@ export default class Api{
                     }
 
                     // TODO: increase followers count
-                    const newFollowerRef = db.followersRef.child(`followers/${userId}/list`).push()
-                    const newFollowingRef = db.followingsRef.child(`followings/${currentUser.uid}`).push()
+                    //const newFollowerRef = db.followersRef.child(`followers/${userId}/list`).push()
+                    //const newFollowingRef = db.followingsRef.child(`followings/${currentUser.uid}`).push()
                     const newNotificationRef = db.notificationsRef.child(`notifications/${userId}`).push()
 
-                    updates[`followers/${userId}/${newFollowerRef.key}`] = newFollower
-                    updates[`followings/${currentUser.uid}/${newFollowingRef.key}`] = newFollowing
+                    updates[`followers/${userId}/${currentUser.uid}`] = newFollower
+                    updates[`followings/${currentUser.uid}/${userId}`] = newFollowing
                     updates[`notifications/${userId}/${newNotificationRef.key}`] = newNotification
 
                     return db.rootRef
@@ -67,7 +83,22 @@ export default class Api{
                     return Promise.reject('user id not found')
                 }
             })
+    }
+
+    static amIFollowingUser(userId){
+        
+         if(!userId)
+            return Promise.reject('User id is required param')
+
+        const currentUser = firebaseAuth.currentUser
 
         
+
+        return db.followingsRef
+        .child(currentUser.uid)
+        .child(userId)
+        .once('value')
+        .then( snap => Promise.resolve(snap.exists()) )
+        .catch(e => Promise.reject(e))
     }
 }

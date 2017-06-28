@@ -8,7 +8,7 @@ export default class AuthenticationManager{
   }
 
   static addNewUser(userId, newUser){
-    const user = Object.assign({}, newUser, { createdAt: firebase.database.ServerValue.TIMESTAMP})
+    const user = Object.assign({}, newUser, { createdAt: firebase.database.ServerValue.TIMESTAMP, userId})
     const publicUser = Object.assign({}, newUser, { userId })
 
     return firebase.database()
