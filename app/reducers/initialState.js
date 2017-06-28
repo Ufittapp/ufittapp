@@ -3,5 +3,6 @@ export default {
     global: {
         firstTimeUser: null
     },
-    users: {}
+    users: {},
+    notifications: {}
 }
