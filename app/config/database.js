@@ -6,8 +6,15 @@ const database = firebase.database()
 
 export const firebaseAuth = firebase.auth()
 
+export const notificationTypes = {
+    NEW_FOLLOWER: 'NEW_FOLLOWER'
+}
+
 export default db = {
    rootRef: database.ref(),
    usersRef: database.ref('users'),
-   chatMessages: database.ref('chatMessages')
+   chatMessagesRef: database.ref('chatMessages'),
+   followersRef: database.ref('followers'),
+   followingsRef: database.ref('followings'),
+   notificationsRef: database.ref('notifications')
 }
