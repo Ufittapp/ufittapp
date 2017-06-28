@@ -86,19 +86,27 @@ export default class Api{
     }
 
     static amIFollowingUser(userId){
-        
-         if(!userId)
+        if(!userId)
             return Promise.reject('User id is required param')
 
         const currentUser = firebaseAuth.currentUser
-
-        
 
         return db.followingsRef
         .child(currentUser.uid)
         .child(userId)
         .once('value')
         .then( snap => Promise.resolve(snap.exists()) )
+        .catch(e => Promise.reject(e))
+    }
+
+    static getNotifications(){
+        const currentUser = firebaseAuth.currentUser
+
+        return db
+        .notificationsRef
+        .child(currentUser.uid)
+        .once('value')
+        .then(snap => snap.exists() ? Promise.resolve(snap.val()) : Promise.resolve({}))
         .catch(e => Promise.reject(e))
     }
 }
