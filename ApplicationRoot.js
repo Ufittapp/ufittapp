@@ -3,11 +3,9 @@ import { Provider } from 'react-redux'
 //import { fromJS } from 'immutable'
 import configureStore from './app/store/configureStore'
 import firebase from 'firebase'
-import { firebaseConfigs } from './app/config/secrets'
 import AppNavigator from './app/navigator/appNavigator'
 import FCM from 'react-native-fcm';
 
-firebase.initializeApp(firebaseConfigs)
 const store = configureStore()
 
 export default class Root extends React.Component{
@@ -24,18 +22,26 @@ export default class Root extends React.Component{
                 FCM.getFCMToken().then(token => {
                     console.log("FCM token", token)
 
-                    //const id = token.split(':')[0]
 
                     firebase.database()
                         .ref('tokens')
                         .child(user.uid)
-                        .set({token})
-                        .then(() => console.log('token saved to database'))
-                        .catch(e => console.log('token not saved to database. Error: ', e))
+                        .once('value')
+                        .then((snap) => {
+                            if(!snap.exists()){
+                                firebase.database()
+                                    .ref('tokens')
+                                    .child(user.uid)
+                                    .set({token})
+                                    .then(() => console.log('token saved to database'))
+                                    .catch(e => console.log('token not saved to database. Error: ', e))
+                            }else{
+                                console.log('user already have the token stored in the db')
+                            }
+                        })
 
                 })
 
-                //FCM.subscribeToTopic('welcome-message');
 
                 this.notificationListener = FCM.on('notification',  notif => {
                     console.log('notification opened', notif);
@@ -51,16 +57,17 @@ export default class Root extends React.Component{
                 console.log("use is logged out")
             }
         })
+        
     }
 
     componentWillUnmount() {
-        firebase.auth().onAuthStateChanged(user => {
-            if(user){
+       // firebase.auth().onAuthStateChanged(user => {
+         //   if(user){
                 // stop listening for events
                 //this.notificationListener.remove();
                 //this.refreshTokenListener.remove();
-            }
-        })
+           // }
+       // })
     }
     
     render(){
