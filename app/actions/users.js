@@ -18,4 +18,11 @@ function getUsers(){
     }
 }
 
-module.exports = { getUsers }
+function followUser(userId){
+    return dispatch => {
+        return api.followUser(userId)
+    }
+}
+
+
+module.exports = { getUsers, followUser }
