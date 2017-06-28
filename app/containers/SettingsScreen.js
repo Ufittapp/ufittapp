@@ -44,6 +44,9 @@ class SettingsScreen extends Component{
 
 SettingsScreen.navigationOptions = {
     header: null,
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name='settings' />
+    ),
 }
 
 function mapDispatchToProps(dispatch){

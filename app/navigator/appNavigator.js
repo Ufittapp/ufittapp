@@ -7,9 +7,14 @@ import * as screens from './applicationScreens'
 const MainNavigator = TabNavigator({
   Main: { screen: screens.HomeScreen },
   Users: { screen: screens.UserListScreen },
+  Notif: { screen: screens.NotificationsScreen },
   Settings: { screen: screens.SettingsScreen }
 }, {
-  tabBarPosition: 'bottom'
+  tabBarPosition: 'bottom',
+  tabBarOptions:{
+    showLabel: false,
+    showIcon: true
+  }
 })
 
 export const AppNavigator = StackNavigator({

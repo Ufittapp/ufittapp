@@ -88,7 +88,10 @@ HomeScreen.propTypes = {
 }
 
 HomeScreen.navigationOptions = {
-    header: null
+    header: null,
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name='home' />
+    ),
 }
 
 export default HomeScreen //connect()

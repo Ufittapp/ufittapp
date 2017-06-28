@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Content, List, Text, Button, View } from 'native-base'
+import { Container, Content, List, Text, Button, View, Icon } from 'native-base'
 import { connect } from 'react-redux'
 import { getUsers, followUser, amIFollowingUser, unFollowUser } from '../actions'
 import { NavigationActions } from 'react-navigation'
@@ -74,12 +74,18 @@ class UserListScreen extends React.Component{
 
 UserListScreen.navigationOptions = {
     header: null,
-    tabBarLabel: 'Users'
+    //tabBarLabel: 'Users'
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name='contacts' />
+    ),
 }
 
 function mapStateToProps(state){
     const currentUser = firebase.auth().currentUser
-    delete state.users[currentUser.uid]
+    
+    if(currentUser){
+        delete state.users[currentUser.uid]
+    }
 
     return {
         users: state.users

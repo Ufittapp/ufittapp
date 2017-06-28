@@ -6,8 +6,10 @@ import LandingScreen from '../containers/LandingScreen'
 import SplashScreen from '../containers/SplashScreen'
 import ChatRoomScreen from '../containers/ChatScreen'
 import UserListScreen from '../containers/UsersList'
+import NotificationsScreen from '../containers/NotificationsScreen'
 
 module.exports = {
+    NotificationsScreen,
     UserListScreen,
     ChatRoomScreen,
     SplashScreen,
