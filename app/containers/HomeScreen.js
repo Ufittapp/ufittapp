@@ -25,13 +25,20 @@ class HomeScreen extends React.Component{
   }
     componentWillMount(){
 
+         
+
           var that = this;
-          db.usersRef.on('value', function(snap){
+          db.videosRef.on('value', function(snap){
 
             var users = [];
             snap.forEach(function(childsnaphot){
               var user = {
-                fullname: childsnaphot.val().fullName,
+                username: childsnaphot.val().username,
+                likes: childsnaphot.val().likes_count,
+                shares: childsnaphot.val().shares_count,
+                thumbnailUrl: childsnaphot.val().thumbnail,
+                time: childsnaphot.val().uploaded_date,
+                comments: childsnaphot.val().comments_count
               }
 
               users.push(user);
@@ -60,7 +67,7 @@ class HomeScreen extends React.Component{
 
                               <View><Thumbnail size={40} source={require('@assets/images/feed_img.png')} /></View>
                                 <View style={styles.userName}>
-                                    <Text style={styles.boldName}>{data.fullname}</Text>
+                                    <Text style={styles.boldName}>{data.username}</Text>
                                     <Text style={styles.status}>posted</Text>
                                 </View>
 
@@ -68,30 +75,30 @@ class HomeScreen extends React.Component{
 
                             <View style={styles.timeFeed}>
                               <Icon name='clock' style={styles.clockText} />
-                              <Text style={styles.status}>2h</Text>
+                              <Text style={styles.status}>{data.time}h</Text>
                             </View>
 
                         </View>
 
                         <View style={styles.feedSlide}>
-                          <Image source={require('@assets/images/feed_img.png')} style={styles.feedImg}/>
+                          <Image source={{uri: data.thumbnailUrl }} style={styles.feedImg}/>
                         </View>
                     </View>
 
                     <View style={styles.footerFeed}>
                         <View style={styles.iconContainer}>
                           <Icon name='heart' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>2K</Text>
+                          <Text style={styles.footerFeedText}>{data.likes}K</Text>
                         </View>
 
                         <View style={styles.iconContainer}>
                           <Icon name='chatboxes' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>98</Text>
+                          <Text style={styles.footerFeedText}>{data.comments}</Text>
                         </View>
 
                         <View style={styles.iconContainer}>
                           <Icon name='md-share' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>69</Text>
+                          <Text style={styles.footerFeedText}>{data.shares}</Text>
                         </View>
 
                         <View style={styles.iconContainer}>
