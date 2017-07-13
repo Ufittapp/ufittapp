@@ -10,7 +10,17 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+//#import "RCTBundleURLProvider.h"
+
 #import <React/RCTRootView.h>
+
+@import UIKit;
+@import Firebase;
+
+@implementation AppDelegate
+
+
+}
 
 @implementation AppDelegate
 
@@ -31,7 +41,12 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [FIRApp configure];
+
   return YES;
+  
+  
+
 }
 
 @end

@@ -10,7 +10,7 @@
     "firebase": "3.8.0",
     "immutable": "3.8.1",
     "moment": "2.18.1",
-    "native-base": "2.1.0",
+    "native-base": "^2.1.0",
     "react": "15.4.2",
     "react-native": "0.41.2",
     "react-native-fcm": "2.5.6",
