@@ -3,6 +3,17 @@ import { Label } from 'native-base'
 import { connect } from 'react-redux'
 import firebase from 'firebase'
 import { NavigationActions } from 'react-navigation';
+import styles from '@assets/styles/landing'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Alert,
+  Button,
+  TouchableHighlight,
+  Navigator
+} from 'react-native';
 
 class SplashScreen extends React.Component{
     constructor(props){
@@ -29,7 +40,14 @@ class SplashScreen extends React.Component{
 
     render(){
         return(
-            <Label> Splash Screen goes here</Label>
+            <Image source={require('@assets/images/splash_bg.png')} style={styles.backgroundImage}>
+
+            <View style={styles.welcome}>
+              <Image source={require('@assets/images/logo.png')} style={styles.logo} />
+              
+            </View>
+           </Image>
+
         )
     }
 }
