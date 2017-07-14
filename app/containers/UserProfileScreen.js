@@ -26,6 +26,14 @@ class UserProfileScreen extends React.Component{
         }
     }
 
+    componentWillMount(){
+        FirebaseImageManager
+        .getUserProfileImage()
+        .then(url => this.setState({imageUri: url}))
+        .catch(error => console.log(error))
+        
+    }
+
     pickImageFromDevice(){
         ImagePicker.showImagePicker(options, (response) => {
             console.log('Response = ', response);

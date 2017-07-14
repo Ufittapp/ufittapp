@@ -8,18 +8,30 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
+const baseImagesFolder = 'https://firebasestorage.googleapis.com/v0/b/ufitt-b51d8.appspot.com/o/profileImages/'
+const imageFolderRef = firebase.storage().ref().child('profileImages')
+
+
 class FirebaseImageManager{
+    static getUserProfileImage(){
+        const imageName = firebase.auth().currentUser.uid
+        
+        let url = `gs://ufitt-b51d8.appspot.com/profileImages/${imageName}.jpeg`
+        const ref = firebase.storage().refFromURL(url)
+
+        console.log('full path', ref.fullPath)
+
+        return ref.getDownloadURL()
+    }
+
     static uploadImageToStorage(uri, mime = 'application/octet-stream'){
         return new Promise((resolve, reject) => {
             
             const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
             let uploadBlob = null
-            const imageName = firebase.auth().currentUser.uid
 
-            const imageRef = firebase.storage()
-                .ref()
-                .child('profileImages')
-                .child(imageName)
+            const imageName = firebase.auth().currentUser.uid
+            const imageRef = imageFolderRef.child(imageName)
 
             fs.readFile(uploadUri, 'base64')
                 .then((data) => {
