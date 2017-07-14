@@ -36,7 +36,7 @@ class UserProfileScreen extends React.Component{
 
     pickImageFromDevice(){
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+            //console.log('Response = ', response);
 
             if (response.didCancel) {
                 console.log('User cancelled image picker');
