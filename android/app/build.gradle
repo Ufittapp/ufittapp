@@ -143,6 +143,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fetch-blob')
     compile project(':react-native-image-picker')
     compile project(':react-native-fcm')
     compile 'com.google.firebase:firebase-core:10.0.1'
