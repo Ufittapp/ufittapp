@@ -21,7 +21,7 @@ class UserListScreen extends React.Component{
         this.props.getUsers()
     }
 
-    sendPN(toUser){
+    sendPN(toUser){ 
         const currentUser = firebase.auth().currentUser
         firebase
             .database()

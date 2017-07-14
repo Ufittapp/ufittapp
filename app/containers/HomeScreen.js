@@ -1,125 +1,71 @@
 import React from 'react'
-import FooterTabs from '../common/FooterTabs'
+import { Container, Content, List, Text, Button, View, Icon, Header, Left, Body, Title, Right } from 'native-base'
 import { connect } from 'react-redux'
+import { getUsers, followUser, amIFollowingUser, unFollowUser } from '../actions'
+import { NavigationActions } from 'react-navigation'
+import firebase from 'firebase'
+import UserList from '../components/UserList'
 import styles from '@assets/styles/home'
-  import { Container, Content, ListItem, Text, CheckBox, Header, Left, Button, Icon, Body, Title, Right,
-    InputGroup, Input, Form, Label, Item, Picker, Footer, FooterTab, Thumbnail, List} from 'native-base';
-import { View, Image } from 'react-native'
-import db from '../config/database'
 
 
 
 
 
 class HomeScreen extends React.Component{
-    static navigationOptions = {
-        tabBarLabel: 'Feeds'
+      constructor(props){
+        super(props)
+
+        this.renderRow = this.renderRow.bind(this)
+        //this.sendPN = this.sendPN.bind(this)
+        this.followUser = this.followUser.bind(this)
+        this.unFollowUser = this.unFollowUser.bind(this)
     }
 
-    constructor(props) {
-      super(props);
-      this.state = { 
-
-          usersArray: []
-       };
-  }
-    componentWillMount(){
-
-         
-
-          var that = this;
-          db.videosRef.on('value', function(snap){
-
-            var users = [];
-            snap.forEach(function(childsnaphot){
-              var user = {
-                username: childsnaphot.val().username,
-                likes: childsnaphot.val().likes_count,
-                shares: childsnaphot.val().shares_count,
-                thumbnailUrl: childsnaphot.val().thumbnail,
-                time: childsnaphot.val().uploaded_date,
-                comments: childsnaphot.val().comments_count
-              }
-
-              users.push(user);
-
-            }.bind(this));
-
-              
-              that.setState({
-                  usersArray: users
-              });
-
-
-
-        }.bind(this));
- 
+    componentDidMount(){
+        this.props.getUsers()
     }
 
-    userList() {
-      return this.state.usersArray.map((data, index) => {
-        return (
-                <View key={index}>
-                   <View style={styles.feedContainer}>
-                        <View style={styles.feedHeader}>
-
-                            <View style={styles.userFeed}>
-
-                              <View><Thumbnail size={40} source={require('@assets/images/feed_img.png')} /></View>
-                                <View style={styles.userName}>
-                                    <Text style={styles.boldName}>{data.username}</Text>
-                                    <Text style={styles.status}>posted</Text>
-                                </View>
-
-                            </View>
-
-                            <View style={styles.timeFeed}>
-                              <Icon name='clock' style={styles.clockText} />
-                              <Text style={styles.status}>{data.time}h</Text>
-                            </View>
-
-                        </View>
-
-                        <View style={styles.feedSlide}>
-                          <Image source={{uri: data.thumbnailUrl }} style={styles.feedImg}/>
-                        </View>
-                    </View>
-
-                    <View style={styles.footerFeed}>
-                        <View style={styles.iconContainer}>
-                          <Icon name='heart' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>{data.likes}K</Text>
-                        </View>
-
-                        <View style={styles.iconContainer}>
-                          <Icon name='chatboxes' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>{data.comments}</Text>
-                        </View>
-
-                        <View style={styles.iconContainer}>
-                          <Icon name='md-share' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>{data.shares}</Text>
-                        </View>
-
-                        <View style={styles.iconContainer}>
-                          <Icon name='person' style={styles.footerFeedIcons} />
-                          <Text style={styles.footerFeedText}>profile</Text>
-                        </View>
-                    </View>
-                </View>
-            )
-       
-      })
+    sendPN(toUser){ 
+        const currentUser = firebase.auth().currentUser
+        firebase
+            .database()
+            .ref('notifications')
+            .child(toUser.userId)
+            .push({
+                text: `${currentUser.email} wants to chat with you!`,
+                from: currentUser.email,
+                to: toUser.fullName,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            })
+            .then(() => console.log('notification saved to db'))
+            .catch(e => console.log('error saving notification', e))
     }
 
+    followUser(user){
+        this.props.followUser(user.userId)
+        .then(() => console.log('user followed'))
+        .catch( e => console.log('error following', e))
+    }
 
-    
+    unFollowUser(userId){
+        this.props.unFollowUser(userId)
+        .then(() => console.log('user UNfollowed'))
+        .catch( e => console.log('error UNfollowing', e))
+    }
+
+    renderRow(item){
+        return <UserList 
+                    followUser={this.followUser} 
+                    item={item}
+                    amIFollowingUser={this.props.amIFollowingUser}
+                    unFollowUser={this.unFollowUser}
+                />
+    }
+
     render(){
-        const { navigate } = this.props.navigation;
-
         return(
             <Container>
-                 <Header style={styles.headerBg}>
+             <Header style={styles.headerBg}>
                      <Left />
                      <Body>
                          <Title style={styles.whiteText}>Feed</Title>
@@ -130,16 +76,13 @@ class HomeScreen extends React.Component{
                          </Button>
                      </Right>
                  </Header>
-
-                 <Content>
-
-                    {this.userList()}
-                 
-                  
-                   
-                 </Content>
-
-                 </Container>
+                <Content>
+                    <List 
+                        dataArray={this.props.users}
+                        renderRow={this.renderRow}>
+                    </List>
+                </Content>
+            </Container>
         )
     }
 }
@@ -155,5 +98,25 @@ HomeScreen.navigationOptions = {
     ),
 }
 
+function mapStateToProps(state){
+    const currentUser = firebase.auth().currentUser
+    
+    if(currentUser){
+        delete state.users[currentUser.uid]
+    }
 
-export default HomeScreen //connect()( )
+    return {
+        users: state.users
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return{
+        getUsers: () => dispatch(getUsers()),
+        followUser: (userId) => dispatch(followUser(userId)),
+        amIFollowingUser: (userId) => dispatch(amIFollowingUser(userId)),
+        unFollowUser: (userId) => dispatch(unFollowUser(userId))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
