@@ -8,6 +8,12 @@ function onUserListSuccess(payload){
     }
 }
 
+function fetchUserProfile(userId){
+    return dispatch => {
+        return api.findUserById(userId)
+    }
+}
+
 function getUsers(){
     return dispatch => {
         return api.getUsers()
@@ -39,4 +45,4 @@ function amIFollowingUser(userId){
     }
 }
 
-module.exports = { getUsers, followUser, amIFollowingUser, unFollowUser }
+module.exports = { getUsers, followUser, amIFollowingUser, unFollowUser, fetchUserProfile }

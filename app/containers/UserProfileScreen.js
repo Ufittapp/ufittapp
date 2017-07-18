@@ -1,8 +1,12 @@
 import React from 'react'
-import { Text, Icon, Container, Content } from 'native-base'
+import { Text, Icon, Container, Content, Form, Label, Item, Input } from 'native-base'
 import { TouchableWithoutFeedback, Image } from 'react-native'
 var ImagePicker = require('react-native-image-picker');
 import FirebaseImageManager from '../utils/FirebaseImageManager'
+import { connect } from 'react-redux'
+import { fetchUserProfile } from '../actions/'
+import firebase from 'firebase'
+import UserProfileForm from '../components/UserProfileForm'
 
 var options = {
   title: 'Select Avatar',
@@ -22,8 +26,32 @@ class UserProfileScreen extends React.Component{
         this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
 
         this.state = {
-            imageUri: 'http://via.placeholder.com/350x150'
+            imageUri: 'http://via.placeholder.com/350x150',
+            initialValues:{
+                fullName: '',
+                phoneNumber: '',
+                birthdate: ''
+            }
         }
+    }
+
+    componentDidMount(){
+        const currentUserId = firebase.auth().currentUser.uid
+
+        this.props
+        .dispatch(fetchUserProfile(currentUserId))
+        .then(userSnap => {
+            const user = userSnap.val()
+
+            console.log('user snap', user)
+            this.setState({
+                initialValues:{
+                    fullName: user.fullName,
+                    phoneNumber: user.phoneNumber,
+                    birthdate: user.birthdate
+                }
+            })
+        })
     }
 
     componentWillMount(){
@@ -67,13 +95,19 @@ class UserProfileScreen extends React.Component{
 
     render(){
         return (
-            <Container style={{alignItems: 'center'}}>
+            <Container >
                 <Content >
-                    <TouchableWithoutFeedback onPress={this.pickImageFromDevice}>
+                    <TouchableWithoutFeedback style={{alignItems: 'center'}}
+                         onPress={this.pickImageFromDevice}>
                         <Image
                             style={{width: 100, height: 100, borderRadius: 50}}
                             source={{uri: this.state.imageUri}} />
                     </TouchableWithoutFeedback>
+
+                    <UserProfileForm 
+                        initialValues={this.state.initialValues}
+                        onSubmit={() => {}} />
+
                 </Content>
             </Container>
         )
@@ -87,4 +121,4 @@ UserProfileScreen.navigationOptions = {
     ),
 }
 
-export default UserProfileScreen
+export default connect()(UserProfileScreen)

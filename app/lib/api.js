@@ -16,6 +16,10 @@ export default class Api{
         })
     }
 
+    static findUserById(userId){
+        return db.usersRef.child(userId).once('value')
+    }
+
     static unFollowUser(userId){
         if(!userId)
             return Promise.reject('User id is required param')
