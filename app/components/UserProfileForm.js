@@ -43,7 +43,7 @@ class UserProfileForm extends React.Component{
                 <Button 
                     primary style={styles.buttonRegister}
                     onPress={handleSubmit(onSubmit)}
-                    disabled={pristine || submitting}
+                    disabled={submitting}
                     >
                     <Text>UPDATE</Text>
                 </Button>

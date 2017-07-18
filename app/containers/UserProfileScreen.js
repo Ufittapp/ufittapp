@@ -1,10 +1,10 @@
 import React from 'react'
-import { Text, Icon, Container, Content, Form, Label, Item, Input } from 'native-base'
+import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast } from 'native-base'
 import { TouchableWithoutFeedback, Image } from 'react-native'
 var ImagePicker = require('react-native-image-picker');
 import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
-import { fetchUserProfile } from '../actions/'
+import { fetchUserProfile, updateUserProfile } from '../actions/'
 import firebase from 'firebase'
 import UserProfileForm from '../components/UserProfileForm'
 
@@ -24,6 +24,7 @@ class UserProfileScreen extends React.Component{
         super(props)
 
         this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
+        this.onUpdatePressed = this.onUpdatePressed.bind(this)
 
         this.state = {
             imageUri: 'http://via.placeholder.com/350x150',
@@ -42,8 +43,6 @@ class UserProfileScreen extends React.Component{
         .dispatch(fetchUserProfile(currentUserId))
         .then(userSnap => {
             const user = userSnap.val()
-
-            console.log('user snap', user)
             this.setState({
                 initialValues:{
                     fullName: user.fullName,
@@ -92,6 +91,19 @@ class UserProfileScreen extends React.Component{
         })
     }
 
+    onUpdatePressed(data){
+        const { fullName, phoneNumber, birthdate } = data
+        const currentUserId = firebase.auth().currentUser.uid        
+
+        this.props.dispatch(updateUserProfile(currentUserId, fullName, phoneNumber, birthdate))
+        .then(() =>{
+            Toast.show({
+              text: 'Profile updated!',
+              position: 'bottom',
+              buttonText: 'Okay'
+            })
+        })
+    }
 
     render(){
         return (
@@ -106,7 +118,7 @@ class UserProfileScreen extends React.Component{
 
                     <UserProfileForm 
                         initialValues={this.state.initialValues}
-                        onSubmit={() => {}} />
+                        onSubmit={this.onUpdatePressed} />
 
                 </Content>
             </Container>
