@@ -8,6 +8,7 @@ const MainNavigator = TabNavigator({
   Main: { screen: screens.HomeScreen },
   Users: { screen: screens.UserListScreen },
   Notif: { screen: screens.NotificationsScreen },
+  UserProfile: { screen: screens.UserProfileScreen },
   Settings: { screen: screens.SettingsScreen }
 }, {
   tabBarPosition: 'bottom',

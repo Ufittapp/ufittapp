@@ -16,6 +16,18 @@ export default class Api{
         })
     }
 
+    static updateUserProfile(userId, fullName, phoneNumber, birthdate){
+        return db.usersRef.child(userId).update({
+            fullName,
+            phoneNumber,
+            birthdate
+        })
+    }
+
+    static findUserById(userId){
+        return db.usersRef.child(userId).once('value')
+    }
+
     static unFollowUser(userId){
         if(!userId)
             return Promise.reject('User id is required param')

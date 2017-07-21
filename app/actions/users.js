@@ -8,6 +8,19 @@ function onUserListSuccess(payload){
     }
 }
 
+
+function updateUserProfile(userId, fullName, phoneNumber, birthdate){
+    return dispacth => {
+        return api.updateUserProfile(userId, fullName, phoneNumber, birthdate)
+    }
+}
+
+function fetchUserProfile(userId){
+    return dispatch => {
+        return api.findUserById(userId)
+    }
+}
+
 function getUsers(){
     return dispatch => {
         return api.getUsers()
@@ -39,4 +52,11 @@ function amIFollowingUser(userId){
     }
 }
 
-module.exports = { getUsers, followUser, amIFollowingUser, unFollowUser }
+module.exports = { 
+    getUsers, 
+    followUser, 
+    amIFollowingUser, 
+    unFollowUser, 
+    fetchUserProfile, 
+    updateUserProfile 
+}
