@@ -49,7 +49,7 @@ NotificationsScreen.navigationOptions = {
     header: null,
     //tabBarLabel: 'Notif'
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='notifications' />
+      <Icon name='notifications' style={{ color: '#ffffff', opacity: 1}} />
     ),
 }
 

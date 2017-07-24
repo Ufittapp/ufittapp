@@ -20,7 +20,7 @@ class SettingsScreen extends Component{
         <Content>
           <ListItem icon>
             <Left>
-                <Icon name="log-out" />
+                <Icon name="log-out"  />
             </Left>
             <Body>
                 
@@ -45,7 +45,7 @@ class SettingsScreen extends Component{
 SettingsScreen.navigationOptions = {
     header: null,
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='settings' />
+      <Icon name='settings' style={{ color: '#ffffff', opacity: 1}} />
     ),
 }
 

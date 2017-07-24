@@ -76,7 +76,7 @@ UserListScreen.navigationOptions = {
     header: null,
     //tabBarLabel: 'Users'
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='contacts' />
+      <Icon name='contacts' style={{ color: '#ffffff', opacity: 1}} />
     ),
 }
 

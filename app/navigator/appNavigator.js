@@ -14,7 +14,13 @@ const MainNavigator = TabNavigator({
   tabBarPosition: 'bottom',
   tabBarOptions:{
     showLabel: false,
-    showIcon: true
+    showIcon: true,
+    style: {
+      backgroundColor: '#7a1405',
+    },
+    indicatorStyle: {
+      backgroundColor: '#fff'
+    }
   }
 })
 

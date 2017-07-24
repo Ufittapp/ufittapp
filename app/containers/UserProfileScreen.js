@@ -1,12 +1,14 @@
 import React from 'react'
-import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast } from 'native-base'
-import { TouchableWithoutFeedback, Image, StyleSheet } from 'react-native'
+import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button } from 'native-base'
+import { TouchableWithoutFeedback, Image, StyleSheet, View } from 'react-native'
 var ImagePicker = require('react-native-image-picker');
 import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
 import { fetchUserProfile, updateUserProfile } from '../actions/'
 import firebase from 'firebase'
 import UserProfileForm from '../components/UserProfileForm'
+import styles from '@assets/styles/profile'
+
 
 var options = {
   title: 'Select Avatar',
@@ -107,9 +109,13 @@ class UserProfileScreen extends React.Component{
 
     render(){
         return (
-
+        <Image source={require('@assets/images/create_profile_bg.png')} style={styles.backgroundImage}>
             <Container >
                 <Content >
+                     <Text style={styles.registerTitle}>PROFILE</Text>
+                      <View style={styles.genreSelector}>
+                          <View style={styles.uploadView}>
+                            
                     <TouchableWithoutFeedback style={{alignItems: 'center'}}
                          onPress={this.pickImageFromDevice}>
                         <Image
@@ -117,12 +123,32 @@ class UserProfileScreen extends React.Component{
                             source={{uri: this.state.imageUri}} />
                     </TouchableWithoutFeedback>
 
+                            <Text style={styles.uploadText}>Upload</Text>
+                          </View>
+                          <View style={styles.userInfo}>
+                            <Text style={styles.userFullName}>{this.state.initialValues.fullName}</Text>
+                            <Text style={styles.ageText}>Age: 37</Text>
+                          </View>
+                      </View>
+
+                         <View style={styles.genreSelector}>
+                            <Button full info style={styles.maleButton}>
+                            <Text style={styles.genreText}> Male </Text>
+                            </Button>
+                            <Button full info style={styles.femaleButton}>
+                            <Text style={styles.genreText}> Female </Text>
+                            </Button>
+                      </View>
+
+
+
                     <UserProfileForm 
                         initialValues={this.state.initialValues}
                         onSubmit={this.onUpdatePressed} />
 
                 </Content>
             </Container>
+        </Image>
         )
     }
 }
@@ -130,7 +156,7 @@ class UserProfileScreen extends React.Component{
 UserProfileScreen.navigationOptions = {
     header: null,
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='person' />
+      <Icon name='person' style={{ color: '#ffffff', opacity: 1}} />
     ),
 }
 

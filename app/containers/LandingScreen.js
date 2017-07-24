@@ -8,7 +8,7 @@ import {
   Button,
   TouchableHighlight,
   Navigator
-} from 'react-native';
+} from 'react-native'; 
 
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation';

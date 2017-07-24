@@ -66,13 +66,17 @@ class HomeScreen extends React.Component{
         return(
             <Container>
              <Header style={styles.headerBg}>
-                     <Left />
+                     <Left>
+                         <Button transparent>
+                             <Icon name='menu' style={styles.whiteText} />
+                         </Button>
+                     </Left>
                      <Body>
                          <Title style={styles.whiteText}>Feed</Title>
                      </Body>
                      <Right>
                          <Button transparent>
-                             <Icon name='more' style={styles.whiteText} />
+                             <Icon name='ios-more-outline' style={styles.whiteText} />
                          </Button>
                      </Right>
                  </Header>
@@ -94,7 +98,7 @@ HomeScreen.propTypes = {
 HomeScreen.navigationOptions = {
     header: null,
     tabBarIcon: ({ tintColor }) => (
-      <Icon name='home' />
+      <Icon name='home' style={{ color: '#ffffff', opacity: 1}} />
     ),
 }
 

@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
-import { Text, Form, Button } from 'native-base'
+import { Text, Form, Button, View } from 'native-base'
 import { Field, reduxForm, propTypes } from 'redux-form'
 import TextInput from '../common/MyTextInput'
 import { emailValidationResult, validateFieldIsNotEmpty } from '../utils/validate'
+import styles from '@assets/styles/signup'
+import { Image } from 'react-native'
 
 class LoginForm extends Component{
     render(){
         const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine } = this.props
         return(
-            <Form>
+            <View>
+             <Image source={require('@assets/images/profile.png')} style={styles.profileImg}/>
+                <Text style={styles.registerTitle}>SIGN IN</Text>
+            <Form tyle={styles.registerForm}>
                 <Field
                     name="email"
                     component={TextInput}
-                    placeholder="Email"
+                    labelName="EMAIL"
                     returnKeyType="next"
                     keyboardType="email-address"
                     autoCapitalize="none"
@@ -23,19 +28,20 @@ class LoginForm extends Component{
                 <Field
                     name="password"
                     component={TextInput}
-                    placeholder="PASSWORD"
+                    labelName="PASSWORD"
                     returnKeyType="done"
                     secureTextEntry
                     editable={!submitting}                    
                 />
 
                 <Button 
-                    style={{marginTop: 15}}
+                    primary style={styles.buttonRegister}
                     onPress={handleSubmit(onSubmit)}
                     disabled={pristine || submitting}>
                     <Text>LOGIN</Text>
                 </Button>
             </Form>
+            </View>
         )
     }
 }

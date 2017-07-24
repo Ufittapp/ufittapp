@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { TouchableWithoutFeedback } from 'react-native'
+import { TouchableWithoutFeedback, Image } from 'react-native'
 import { connect } from 'react-redux'
-import { Container, Content, View, Text} from 'native-base'
+import { Container, Content, View, Header, 
+        Left, Right, Body, Title, Text, Button, Icon } from 'native-base'
 import LoginForm from '../components/LoginForm'
 import { login } from '../actions'
 import { NavigationActions } from 'react-navigation';
+import styles from '@assets/styles/signup'
+
 
 class LoginScreen extends Component{
     constructor(props){
@@ -35,17 +38,36 @@ class LoginScreen extends Component{
     render(){
         return(
             <Container>
+             <Header style={styles.headerBg}>
+                    <Left>
+                      <Button transparent>
+                          <Icon name='menu' style={styles.whiteText} />
+                      </Button>
+                  </Left>
+                    <Body>
+                        <Title style={styles.whiteText}>Sign In</Title>
+                    </Body>
+                    <Right>
+                      <Button transparent>
+                          <Icon name='ios-more-outline' style={styles.whiteText} />
+                      </Button>
+                  </Right>
+                </Header>
+               <Image source={require('@assets/images/register_bg.png')} style={styles.backgroundImage}>        
+
                 <Content>
                     <View style={ {paddingLeft: 10, paddingRight: 10} }>
                         {this.state.error && <Text>{this.state.error}</Text>}
                         {this.state.isFetching && <Text>{'signing in...'}</Text>}
-                    </View>
-                    <LoginForm onSubmit={this.onLoginFormSubmit} />
+                         <LoginForm onSubmit={this.onLoginFormSubmit} />
                     <TouchableWithoutFeedback onPress={this.props.goToSignup}>
-                        <Text style={ {marginTop: 30} }> Create Account </Text>
+                        <Text style={ {marginTop: 30, color: '#fff', alignSelf: 'center'} }> Create Account </Text>
                     </TouchableWithoutFeedback>
+                    </View>
+                   
 
                 </Content>
+            </Image>
             </Container>
         )
     }

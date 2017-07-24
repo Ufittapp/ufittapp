@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SignUpForm from '../components/SignupForm'
 import { Container, Content, View, Header, 
-        Left, Right, Body, Title, Text } from 'native-base'
+        Left, Right, Body, Title, Text, Button, Icon } from 'native-base'
 import { Image } from 'react-native'
 import { createAccount } from '../actions'
 import { NavigationActions } from 'react-navigation';
@@ -39,11 +39,19 @@ class SignupScreen extends Component{
 		return(
 			<Container>
                 <Header style={styles.headerBg}>
-                    <Left />
+                    <Left>
+                      <Button transparent>
+                          <Icon name='menu' style={styles.whiteText} />
+                      </Button>
+                  </Left>
                     <Body>
                         <Title style={styles.whiteText}>Create Profile</Title>
                     </Body>
-                    <Right />
+                    <Right>
+                      <Button transparent>
+                          <Icon name='ios-more-outline' style={styles.whiteText} />
+                      </Button>
+                  </Right>
                 </Header>
                 
                 <Image source={require('@assets/images/register_bg.png')} style={styles.backgroundImage}>        
