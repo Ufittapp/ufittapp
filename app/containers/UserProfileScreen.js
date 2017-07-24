@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast } from 'native-base'
-import { TouchableWithoutFeedback, Image } from 'react-native'
+import { TouchableWithoutFeedback, Image, StyleSheet } from 'react-native'
 var ImagePicker = require('react-native-image-picker');
 import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
@@ -107,6 +107,7 @@ class UserProfileScreen extends React.Component{
 
     render(){
         return (
+
             <Container >
                 <Content >
                     <TouchableWithoutFeedback style={{alignItems: 'center'}}
