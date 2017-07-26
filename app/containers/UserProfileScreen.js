@@ -22,6 +22,9 @@ var options = {
 };
 
 class UserProfileScreen extends React.Component{
+     static navigationOptions = {
+        tabBarLabel: 'UserProfile'
+  }
     constructor(props){
         super(props)
 

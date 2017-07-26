@@ -5,7 +5,7 @@ import TextInput from '../common/MyTextInput'
 import validateForm from '../utils/validate'
 import styles from '@assets/styles/signup'
 import { Image } from 'react-native'
-
+ 
 class SignupForm extends Component {
 
     render(){

@@ -31,7 +31,8 @@ export const AppNavigator = StackNavigator({
   Settings: { screen: screens.SettingsScreen },
   Landing: { screen: screens.LandingScreen },
   Splash: { screen: screens.SplashScreen },
-  ChatRoom: { screen: screens.ChatRoomScreen }
+  ChatRoom: { screen: screens.ChatRoomScreen },
+  PublicProfile: {screen: screens.PublicProfileScreen}
 });
 
 class AppWithNavigationState extends React.Component{

@@ -19,6 +19,7 @@ class HomeScreen extends React.Component{
         //this.sendPN = this.sendPN.bind(this)
         this.followUser = this.followUser.bind(this)
         this.unFollowUser = this.unFollowUser.bind(this)
+        this.goToProfile = this.goToProfile.bind(this)
     }
 
     componentDidMount(){
@@ -53,16 +54,28 @@ class HomeScreen extends React.Component{
         .catch( e => console.log('error UNfollowing', e))
     }
 
+    goToProfile(userId){
+        this.props.goToProfile(userId)
+        .then(() => console.log('Clicked'))
+        .catch( e => console.log('error UNfollowing', e))
+    }
+
+   
+
     renderRow(item){
         return <UserList 
                     followUser={this.followUser} 
                     item={item}
                     amIFollowingUser={this.props.amIFollowingUser}
                     unFollowUser={this.unFollowUser}
+                    goToProfile={this.props.goToProfile}
                 />
     }
 
     render(){
+             const { navigate } = this.props.navigation;
+
+            //In this Render, we are getting the List of users from components/UserList.js file
         return(
             <Container>
              <Header style={styles.headerBg}>
@@ -81,10 +94,12 @@ class HomeScreen extends React.Component{
                      </Right>
                  </Header>
                 <Content>
+              
                     <List 
                         dataArray={this.props.users}
                         renderRow={this.renderRow}>
                     </List>
+
                 </Content>
             </Container>
         )
@@ -92,7 +107,8 @@ class HomeScreen extends React.Component{
 }
 
 HomeScreen.propTypes = {
-    navigation: React.PropTypes.object.isRequired
+    navigation: React.PropTypes.object.isRequired,
+
 }
 
 HomeScreen.navigationOptions = {
@@ -112,14 +128,18 @@ function mapStateToProps(state){
     return {
         users: state.users
     }
-}
+} 
 
 function mapDispatchToProps(dispatch){
     return{
         getUsers: () => dispatch(getUsers()),
         followUser: (userId) => dispatch(followUser(userId)),
         amIFollowingUser: (userId) => dispatch(amIFollowingUser(userId)),
-        unFollowUser: (userId) => dispatch(unFollowUser(userId))
+        unFollowUser: (userId) => dispatch(unFollowUser(userId)),
+        goToProfile: (userId) => dispatch(NavigationActions.navigate({ routeName: 'PublicProfile',  params: { usuario: userId } })),
+
+
+
     }
 }
 

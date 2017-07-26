@@ -8,8 +8,10 @@ import ChatRoomScreen from '../containers/ChatScreen'
 import UserListScreen from '../containers/UsersList'
 import NotificationsScreen from '../containers/NotificationsScreen'
 import UserProfileScreen from '../containers/UserProfileScreen'
+import PublicProfileScreen from '../containers/PublicProfileScreen'
 
 module.exports = {
+    PublicProfileScreen,
     UserProfileScreen,
     NotificationsScreen,
     UserListScreen,

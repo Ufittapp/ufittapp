@@ -104,6 +104,9 @@ export default {
         pickerText: {
           color: '#ffffff',
           textAlign: 'left',
-        }
+        },
+        headerBg: {
+           backgroundColor: '#212121',
+         }
 
 }

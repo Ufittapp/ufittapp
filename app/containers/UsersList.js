@@ -97,7 +97,8 @@ function mapDispatchToProps(dispatch){
         getUsers: () => dispatch(getUsers()),
         followUser: (userId) => dispatch(followUser(userId)),
         amIFollowingUser: (userId) => dispatch(amIFollowingUser(userId)),
-        unFollowUser: (userId) => dispatch(unFollowUser(userId))
+        unFollowUser: (userId) => dispatch(unFollowUser(userId)),
+
     }
 }
 

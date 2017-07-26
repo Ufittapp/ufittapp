@@ -1,13 +1,19 @@
 import React from 'react'
 import { ListItem,  Button, Icon, Thumbnail,  Container, Content, Card, CardItem,  Text,   Left, Body, Right} from 'native-base'
-import { View, Image } from 'react-native'
+import { View, Image, TouchableWithoutFeedback } from 'react-native'
 import styles from '@assets/styles/home'
 import db from '../config/database'
 import firebase from 'firebase'
+import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
+
 
 
 
 class UserRow extends React.Component{
+
+
+
     constructor(props){
         super(props)
 
@@ -38,15 +44,13 @@ class UserRow extends React.Component{
 
         });
 
-       
-       
-
-
     }
 
   
 
     videoList(){
+
+
         return (
 
               
@@ -54,9 +58,18 @@ class UserRow extends React.Component{
                  <Card>
             <CardItem>
               <Left>
+                <TouchableWithoutFeedback onPress={() => {  
+                      this.props.goToProfile(this.props.item.userId)
+                    }}>
                 <Thumbnail source={require('@assets/images/feed_img.png')} />
+                </TouchableWithoutFeedback>
                 <Body>
+                    <TouchableWithoutFeedback onPress={() => {  
+                      this.props.goToProfile(this.props.item.userId)
+                    }}>
+
                   <Text>{this.props.item.fullName}</Text>
+                  </TouchableWithoutFeedback>
                   <Text note style={styles.status} onPress={() => {
                             if(!this.state.isFollowing){
                                 this.props.followUser(this.props.item)
@@ -102,18 +115,20 @@ class UserRow extends React.Component{
                 </Button>
               </Right>
             </CardItem>
+
+
           </Card>
 
             )
     }
 
     render(){
-
         return(
 
              
             <View>
                 {this.videoList()}
+
             </View>
        
         )
@@ -121,7 +136,10 @@ class UserRow extends React.Component{
 }
 
 UserRow.propTypes = {
-    amIFollowingUser: React.PropTypes.func.isRequired
+    amIFollowingUser: React.PropTypes.func.isRequired,
+    goToProfile: React.PropTypes.func.isRequired,
 }
+
+
 
 export default UserRow
