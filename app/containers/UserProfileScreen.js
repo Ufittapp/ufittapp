@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button } from 'native-base'
+import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, ListItem, Thumbnail, Card, CardItem, Left, Body, Right} from 'native-base'
 import { TouchableWithoutFeedback, Image, StyleSheet, View } from 'react-native'
 var ImagePicker = require('react-native-image-picker');
 import FirebaseImageManager from '../utils/FirebaseImageManager'
@@ -37,7 +37,9 @@ class UserProfileScreen extends React.Component{
                 fullName: '',
                 phoneNumber: '',
                 birthdate: ''
-            }
+            },
+          userInfo: []
+
         }
     }
 
@@ -55,6 +57,24 @@ class UserProfileScreen extends React.Component{
                     birthdate: user.birthdate
                 }
             })
+        })
+
+        var that = this;
+        db.videosRef.orderByChild('userId').equalTo(currentUserId).on('child_added', function(snapshot){
+            var user = {
+                    likes_count:  snapshot.val().likes_count,
+                    shares: snapshot.val().shares_count,
+                    thumbnailUrl: snapshot.val().thumbnail,
+                    time: snapshot.val().uploaded_date,
+                    comments: snapshot.val().comments_count,
+                    userId: snapshot.val().userId,
+                    username: snapshot.val().username,
+                }
+
+            that.setState({
+                userInfo: user
+            })
+
         })
     }
 
@@ -110,7 +130,65 @@ class UserProfileScreen extends React.Component{
         })
     }
 
+    userCard(){
+
+         Object.size = function(obj) {
+          var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+             }
+            return size;
+        };
+        return  <Card >
+            <CardItem>
+              <Left>
+             
+                <Thumbnail source={require('@assets/images/feed_img.png')} />
+                <Body>        
+                  <Text>{this.state.initialValues.fullName}</Text>
+                  <Text note style={styles.status}>posted</Text>
+                </Body>
+              </Left>
+              <Right>
+               <Button transparent>
+
+                    <Icon name='clock' style={styles.clockText} />
+                    <Text style={styles.status}>{this.state.userInfo.time}h</Text>
+                </Button>
+              </Right>
+            </CardItem>
+            <CardItem cardBody>
+              <Image source={{uri: this.state.userInfo.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
+            </CardItem>
+            <CardItem>
+              <Left>
+                 <Button transparent >
+                  <Icon  name="thumbs-up" style={styles.clockText} />
+                  <Text style={styles.status}> {Object.size(this.state.userInfo.likes_count)} Likes</Text>
+                </Button>
+              </Left>
+              <Body>
+                <Button transparent>
+                  <Icon  name="chatbubbles" style={styles.clockText} />
+                  <Text style={styles.status}>{this.state.userInfo.comments} Comments</Text>
+                </Button>
+              </Body>
+              <Right>
+                <Button transparent>
+
+                    <Icon  name="md-share" style={styles.clockText} />
+                    <Text style={styles.status}>{this.state.userInfo.shares}</Text>
+                </Button>
+              </Right>
+            </CardItem>
+
+
+          </Card>
+            
+    }
+
     render(){
+        console.log(this.state.userInfo);
         return (
         <Image source={require('@assets/images/create_profile_bg.png')} style={styles.backgroundImage}>
             <Container >
@@ -148,6 +226,8 @@ class UserProfileScreen extends React.Component{
                     <UserProfileForm 
                         initialValues={this.state.initialValues}
                         onSubmit={this.onUpdatePressed} />
+
+                        {this.userCard()}
 
                 </Content>
             </Container>

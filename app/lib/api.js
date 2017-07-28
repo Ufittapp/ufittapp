@@ -16,6 +16,8 @@ export default class Api{
         })
     }
 
+   
+
     static updateUserProfile(userId, fullName, phoneNumber, birthdate){
         return db.usersRef.child(userId).update({
             fullName,

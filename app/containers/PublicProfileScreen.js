@@ -2,10 +2,13 @@ import React from 'react'
 import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, Header, Left, Body, Title, Right } from 'native-base'
 import { TouchableWithoutFeedback, Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
-import { fetchUserProfile, updateUserProfile } from '../actions/'
+import { fetchUserProfile } from '../actions/'
 import firebase from 'firebase'
-import UserProfileForm from '../components/UserProfileForm'
 import styles from '@assets/styles/profile'
+import { followUser, amIFollowingUser, unFollowUser } from '../actions'
+import db, { firebaseAuth } from '../config/database'
+
+
 
 
 
@@ -18,6 +21,7 @@ class PublicProfileScreen extends React.Component{
 
 
         this.state = {
+            isFollowing: false,
             imageUri: 'http://via.placeholder.com/350x150',
             initialValues:{
                 fullName: '',
@@ -29,11 +33,14 @@ class PublicProfileScreen extends React.Component{
 
     componentDidMount(){
 
+
         const {state} = this.props.navigation;
-        console.log(state.params.usuario);
+        console.log(state);
         //const currentUserId = this.props.item.userId
         const currentUserId = state.params.usuario;
-
+        
+        this.props.dispatch(amIFollowingUser(currentUserId)).then( isFollowing => this.setState({isFollowing}))
+        .catch(e => console.log('error getting following status for user', e))
 
         this.props
         .dispatch(fetchUserProfile(currentUserId))
@@ -43,18 +50,19 @@ class PublicProfileScreen extends React.Component{
                 initialValues:{
                     fullName: user.fullName,
                     phoneNumber: user.phoneNumber,
-                    birthdate: user.birthdate
+                    birthdate: user.birthdate,
+                    userId: currentUserId
                 }
             })
         })
     }
 
+
   
 
     render(){
         const {goBack} = this.props.navigation;
-
-
+        console.log(this.state.isFollowing);
         return (
             <Container >
                 <Header style={styles.headerBg}>
@@ -83,7 +91,17 @@ class PublicProfileScreen extends React.Component{
                           </View>
                           <View style={styles.userInfo}>
                             <Text style={styles.userFullName}>{this.state.initialValues.fullName}</Text>
-                            <Text style={styles.ageText}>Age: 37</Text>
+                             <Text style={styles.ageText} onPress={() => {
+                            if(!this.state.isFollowing){
+                                this.props.dispatch(followUser(this.state.initialValues.userId))
+                                this.setState({isFollowing: true})
+                            }else{
+                                this.props.dispatch(unFollowUser(this.state.initialValues.userId))
+                                this.setState({isFollowing: false})
+                            }
+
+
+                            }}>{this.state.isFollowing ? 'Unfollow' : ' Follow'} </Text>
                           </View>
                       </View>
 
@@ -127,5 +145,8 @@ class PublicProfileScreen extends React.Component{
 PublicProfileScreen.navigationOptions = {
     header: null,
 }
+
+
+
 
 export default connect()(PublicProfileScreen)

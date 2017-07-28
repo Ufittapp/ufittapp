@@ -8,7 +8,7 @@ export default {
 
 	registerLabel: {
         fontSize: 12,
-        color: '#b5afaf',
+        color: '#b5afaf', 
       },
       itemContainer: {
         marginBottom: 5
@@ -107,6 +107,41 @@ export default {
         },
         headerBg: {
            backgroundColor: '#212121',
+         },
+
+         userFeed: {
+           flex: 1,
+           flexDirection: 'row',
+           alignItems: 'flex-start',
+         },
+
+         timeFeed: {
+           width: 50,
+           flexDirection: 'row',
+           justifyContent: 'flex-end',
+           alignItems: 'flex-start'
+         },
+
+         userName: {
+           marginLeft: 10
+         },
+
+         boldName: {
+           color: '#7d7885',
+           fontWeight: 'bold',
+           fontSize: 15
+         },
+
+         status: {
+           color: '#beb9c1',
+           fontSize: 13,
+           fontWeight: 'bold'
+         },
+         clockText: {
+           color: '#beb9c1',
+           fontSize: 18,
+           fontWeight: 'bold',
+           marginRight: 5
          }
 
 }

@@ -1,5 +1,7 @@
 import api from '../lib/api'
 import * as types from './actionTypes'
+import db from '../config/database'
+import firebase from 'firebase'
 
 function onUserListSuccess(payload){
     return {
@@ -30,6 +32,9 @@ function getUsers(){
             .catch(e => console.log('error', e))
     }
 }
+
+
+
 
 function followUser(userId){
     return dispatch => {
