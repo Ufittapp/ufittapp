@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, ListItem, Thumbnail, Card, CardItem, Left, Body, Right} from 'native-base'
-import { TouchableWithoutFeedback, Image, StyleSheet, View } from 'react-native'
+import { TouchableWithoutFeedback, Image, StyleSheet, View, Platform } from 'react-native'
 import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
 import { fetchUserProfile, updateUserProfile } from '../actions/'
@@ -45,14 +45,21 @@ class UserProfileScreen extends React.Component{
         }
     }
 
-     startUpload = (path) => {
-    const optionsUpload = {
+  startUpload = (path) => {
+    const options = {
       path,
       url: 'https://sjdsdirectoryapp.senorcoders.com/ufittapp',
       method: 'POST'
+      // headers: {
+      //   'my-custom-header': 's3headervalueorwhateveryouneed'
+      // },
+      // Below are options only supported on Android
+      // notification: {
+      //   enabled: true
+      // }
     }
 
-    Upload.startUpload(optionsUpload).then((uploadId) => {
+    Upload.startUpload(options).then((uploadId) => {
       console.log('Upload started')
       Upload.addListener('progress', uploadId, (data) => {
         console.log(`Progress: ${data.progress}%`)
@@ -75,15 +82,15 @@ class UserProfileScreen extends React.Component{
 
     this.setState({ isImagePickerShowing: true })
 
-    const optionsPicker = {
-      mediaType: 'photo',
+    const options = {
+      mediaType: 'video',
       takePhotoButtonTitle: null,
       videoQuality: 'high',
       title: 'Title TODO',
       chooseFromLibraryButtonTitle: 'Choose From Library TODO'
     }
 
-    ImagePicker.showImagePicker(optionsPicker, (response) => {
+    ImagePicker.showImagePicker(options, (response) => {
       let didChooseVideo = true
 
       console.log('ImagePicker response: ', response)
@@ -105,11 +112,10 @@ class UserProfileScreen extends React.Component{
       }
 
       if (Platform.OS === 'android') {
-        if (path) { // Video is stored locally on the device
-          // TODO: What here?
+        if (path) { 
+          console.log(path);
           this.startUpload(path)
-        } else { // Video is stored in google cloud
-          // TODO: What here?
+        } else { 
           this.props.onVideoNotFound()
         }
       } else {
