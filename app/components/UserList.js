@@ -117,10 +117,7 @@ class UserRow extends React.Component{
     videoList(){
 
         return (
-
-              
-
-                 <Card>
+         <Card>
             <CardItem>
               <Left>
                 <TouchableWithoutFeedback onPress={() => {  

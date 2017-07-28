@@ -1,13 +1,15 @@
 import React from 'react'
 import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, ListItem, Thumbnail, Card, CardItem, Left, Body, Right} from 'native-base'
 import { TouchableWithoutFeedback, Image, StyleSheet, View } from 'react-native'
-var ImagePicker = require('react-native-image-picker');
 import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
 import { fetchUserProfile, updateUserProfile } from '../actions/'
 import firebase from 'firebase'
 import UserProfileForm from '../components/UserProfileForm'
 import styles from '@assets/styles/profile'
+import Upload from 'react-native-background-upload'
+import ImagePicker from 'react-native-image-picker'
+
 
 
 var options = {
@@ -38,10 +40,83 @@ class UserProfileScreen extends React.Component{
                 phoneNumber: '',
                 birthdate: ''
             },
-          userInfo: []
-
+          userInfo: [],
+          isImagePickerShowing: false
         }
     }
+
+     startUpload = (path) => {
+    const optionsUpload = {
+      path,
+      url: 'https://sjdsdirectoryapp.senorcoders.com/ufittapp',
+      method: 'POST'
+    }
+
+    Upload.startUpload(optionsUpload).then((uploadId) => {
+      console.log('Upload started')
+      Upload.addListener('progress', uploadId, (data) => {
+        console.log(`Progress: ${data.progress}%`)
+      })
+      Upload.addListener('error', uploadId, (data) => {
+        console.log(`Error: ${data.error}%`)
+      })
+      Upload.addListener('completed', uploadId, (data) => {
+        console.log('Completed!')
+      })
+    }).catch(function(err) {
+      console.log('Upload error!', err)
+    })
+  }
+
+    onPressUpload = () => {
+    if (this.state.isImagePickerShowing) {
+      return
+    }
+
+    this.setState({ isImagePickerShowing: true })
+
+    const optionsPicker = {
+      mediaType: 'photo',
+      takePhotoButtonTitle: null,
+      videoQuality: 'high',
+      title: 'Title TODO',
+      chooseFromLibraryButtonTitle: 'Choose From Library TODO'
+    }
+
+    ImagePicker.showImagePicker(optionsPicker, (response) => {
+      let didChooseVideo = true
+
+      console.log('ImagePicker response: ', response)
+      const { customButton, didCancel, error, path, uri } = response
+
+      if (didCancel) {
+        didChooseVideo = false
+      }
+
+      if (error) {
+        console.warn('ImagePicker error:', response)
+        didChooseVideo = false
+      }
+
+      this.setState({ isImagePickerShowing: false })
+
+      if (!didChooseVideo) {
+        return
+      }
+
+      if (Platform.OS === 'android') {
+        if (path) { // Video is stored locally on the device
+          // TODO: What here?
+          this.startUpload(path)
+        } else { // Video is stored in google cloud
+          // TODO: What here?
+          this.props.onVideoNotFound()
+        }
+      } else {
+        this.startUpload(uri)
+      }
+    })
+  }
 
     componentDidMount(){
         const currentUserId = firebase.auth().currentUser.uid
@@ -228,6 +303,10 @@ class UserProfileScreen extends React.Component{
                         onSubmit={this.onUpdatePressed} />
 
                         {this.userCard()}
+
+                         <Button primary onPress={this.onPressUpload} > 
+                           <Text>Upload</Text> 
+                        </Button>
 
                 </Content>
             </Container>
