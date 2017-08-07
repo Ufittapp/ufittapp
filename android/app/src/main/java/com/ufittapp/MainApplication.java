@@ -14,7 +14,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.vydia.RNUploader.UploaderReactPackage;  
 
 
 import java.util.Arrays;
@@ -36,8 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFetchBlobPackage(),
             new ImagePickerPackage(),
             new FIRMessagingPackage(),
-            new VectorIconsPackage(),
-            new UploaderReactPackage()
+            new VectorIconsPackage()
       );
     }
   };

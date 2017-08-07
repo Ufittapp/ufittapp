@@ -23,6 +23,8 @@ var options = {
   }
 };
 
+
+
 class UserProfileScreen extends React.Component{
      static navigationOptions = {
         tabBarLabel: 'UserProfile'
@@ -45,18 +47,23 @@ class UserProfileScreen extends React.Component{
         }
     }
 
+   
+
   startUpload = (path) => {
+  const senderID = firebase.auth().currentUser.uid
+
     const options = {
       path,
-      url: 'https://sjdsdirectoryapp.senorcoders.com/ufittapp',
-      method: 'POST'
-      // headers: {
-      //   'my-custom-header': 's3headervalueorwhateveryouneed'
-      // },
-      // Below are options only supported on Android
-      // notification: {
-      //   enabled: true
-      // }
+      url: 'http://senorcoders.com/ufittapp/?senderID=' + senderID + '&path=' + path,
+      method: 'POST',
+      headers: {
+      'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      },
+      //Below are options only supported on Android
+      notification: {
+        enabled: true
+      }
     }
 
     Upload.startUpload(options).then((uploadId) => {
@@ -83,11 +90,11 @@ class UserProfileScreen extends React.Component{
     this.setState({ isImagePickerShowing: true })
 
     const options = {
-      mediaType: 'video',
+      mediaType: 'photo',
       takePhotoButtonTitle: null,
       videoQuality: 'high',
       title: 'Title TODO',
-      chooseFromLibraryButtonTitle: 'Choose From Library TODO'
+      chooseFromLibraryButtonTitle: 'Choose From Library'
     }
 
     ImagePicker.showImagePicker(options, (response) => {
@@ -115,7 +122,7 @@ class UserProfileScreen extends React.Component{
         if (path) { 
           console.log(path);
           this.startUpload(path)
-        } else { 
+        } else {  
           this.props.onVideoNotFound()
         }
       } else {
@@ -220,6 +227,9 @@ class UserProfileScreen extends React.Component{
              }
             return size;
         };
+
+        var date = new Date(+this.state.userInfo.time);
+        console.log(date.toString());
         return  <Card >
             <CardItem>
               <Left>
@@ -234,7 +244,7 @@ class UserProfileScreen extends React.Component{
                <Button transparent>
 
                     <Icon name='clock' style={styles.clockText} />
-                    <Text style={styles.status}>{this.state.userInfo.time}h</Text>
+                    <Text style={styles.status}>{date.toString()}</Text>
                 </Button>
               </Right>
             </CardItem>
