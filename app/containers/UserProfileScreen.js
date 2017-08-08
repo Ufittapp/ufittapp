@@ -218,6 +218,28 @@ class UserProfileScreen extends React.Component{
         })
     }
 
+    returnTime(previousTime){
+      timeNeeded = Date.now() - previousTime;
+      console.log(timeNeeded);
+      inMinutes = (timeNeeded/1000) / 60;
+      if (inMinutes < 20) {
+        return parseInt(inMinutes) + " minutes ago";
+      } else if (inMinutes < 40) {
+        return "about 30 minutes ago";
+      } else if (inMinutes < 80) {
+        return "about an hour ago";
+      } else if (inMinutes > 1380 && inMinutes < 2760) {
+        return "a day ago";
+      } else if (inMinutes < 1380) {
+        hours = parseInt(inMinutes/60);
+        return "about " + hours + " hours ago";
+      } else {
+        var date = new Date(previousTime);
+        return date.toString("MMM dd");
+      }
+
+    }
+
     userCard(){
 
          Object.size = function(obj) {
@@ -228,8 +250,6 @@ class UserProfileScreen extends React.Component{
             return size;
         };
 
-        var date = new Date(+this.state.userInfo.time);
-        console.log(date.toString());
         return  <Card >
             <CardItem>
               <Left>
@@ -244,7 +264,7 @@ class UserProfileScreen extends React.Component{
                <Button transparent>
 
                     <Icon name='clock' style={styles.clockText} />
-                    <Text style={styles.status}>{date.toString()}</Text>
+                    <Text style={styles.status}>{this.returnTime(this.state.userInfo.time)}</Text>
                 </Button>
               </Right>
             </CardItem>
@@ -279,7 +299,6 @@ class UserProfileScreen extends React.Component{
     }
 
     render(){
-        console.log(this.state.userInfo);
         return (
         <Image source={require('@assets/images/create_profile_bg.png')} style={styles.backgroundImage}>
             <Container >

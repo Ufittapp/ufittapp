@@ -42,6 +42,7 @@ class HomeScreen extends React.Component{
                     comments: snapshot.val().comments_count,
                     userId: snapshot.val().userId,
                     username: snapshot.val().username,
+                    videoId: snapshot.val().videoID
                 }
 
                 users.push(user);
@@ -83,28 +84,35 @@ class HomeScreen extends React.Component{
 
 
 
-        db.videosRef.orderByChild('userId').equalTo(videoID).on('child_added', function(snapshot){
+        db.videosRef.orderByChild('videoID').equalTo(videoID).on('child_added', function(snapshot){
               var newLikeKey = snapshot.key;
               var username = snapshot.val().username;
               const currentUserId = firebase.auth().currentUser.uid
 
-              if (snapshot.val().likes_count != null) {
-                  db.videosRef.child(newLikeKey).child('likes_count').orderByChild('userID').equalTo(currentUserId).on('child_added', function(childSnaphot){
+            db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).once("value", function(snap){ 
+                  console.log(snap.exists());
+                  if (snap.exists() !== true) {
 
-                      var removeKey = childSnaphot.key;
-                      console.log(removeKey);
-                      db.videosRef.child(newLikeKey).child('likes_count').child(removeKey).remove();
-                  }.bind(this))
-
-                  console.log('Dislike');
-              }else{
-                db.videosRef.child(newLikeKey).child('likes_count').push({
-                  userID: currentUserId
-                })
+                    console.log('You have not liked this', snapshot.val() );
+                    db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).set({
+                       userID: currentUserId,
+                      videoID: videoID
+                  })
 
                 console.log('Like');
-              }
 
+
+                  }else{
+                      console.log('Already Liked');
+                     db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).remove();
+                     console.log('Dislike');
+
+                  }
+
+
+             });
+
+            
 
               
 
@@ -112,7 +120,27 @@ class HomeScreen extends React.Component{
     }
   
     
-   
+    returnTime(previousTime){
+      timeNeeded = Date.now() - previousTime;
+      console.log(timeNeeded);
+      inMinutes = (timeNeeded/1000) / 60;
+      if (inMinutes < 20) {
+        return parseInt(inMinutes) + " minutes ago";
+      } else if (inMinutes < 40) {
+        return "about 30 minutes ago";
+      } else if (inMinutes < 80) {
+        return "about an hour ago";
+      } else if (inMinutes > 1380 && inMinutes < 2760) {
+        return "a day ago";
+      } else if (inMinutes < 1380) {
+        hours = parseInt(inMinutes/60);
+        return "about " + hours + " hours ago";
+      } else {
+        var date = new Date(previousTime);
+        return date.toString("MMM dd");
+      }
+
+    }
 
 
     userList(){
@@ -153,7 +181,7 @@ class HomeScreen extends React.Component{
                <Button transparent>
 
                     <Icon name='clock' style={styles.clockText} />
-                    <Text style={styles.status}>{data.time}h</Text>
+                    <Text style={styles.status}>{this.returnTime(data.time)}</Text>
                 </Button>
               </Right>
             </CardItem>
@@ -163,7 +191,7 @@ class HomeScreen extends React.Component{
             <CardItem>
               <Left>
                  <Button transparent onPress={() => {  
-                      this.createLike(data.userId)
+                      this.createLike(data.videoId)
                     }}>
                   <Icon  name="thumbs-up" style={styles.clockText} />
                   <Text style={styles.status}> {Object.size(data.likes_count)} Likes</Text>
@@ -179,7 +207,7 @@ class HomeScreen extends React.Component{
                 <Button transparent>
 
                     <Icon  name="md-share" style={styles.clockText} />
-                    <Text style={styles.status}>{data.shares}</Text>
+                    <Text style={styles.status}>Share</Text>
                 </Button>
               </Right>
             </CardItem>
@@ -192,6 +220,7 @@ class HomeScreen extends React.Component{
 
     render(){
              const { navigate } = this.props.navigation;
+             console.log(this.state.users);
 
             //In this Render, we are getting the List of users from components/UserList.js file
         return(
