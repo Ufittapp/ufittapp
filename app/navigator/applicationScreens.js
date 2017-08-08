@@ -9,8 +9,11 @@ import UserListScreen from '../containers/UsersList'
 import NotificationsScreen from '../containers/NotificationsScreen'
 import UserProfileScreen from '../containers/UserProfileScreen'
 import PublicProfileScreen from '../containers/PublicProfileScreen'
+import CommentScreen from '../containers/CommentScreen'
+
 
 module.exports = {
+    CommentScreen,
     PublicProfileScreen,
     UserProfileScreen,
     NotificationsScreen,

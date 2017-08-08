@@ -16,6 +16,7 @@ class HomeScreen extends React.Component{
 
         
         this.goToProfile = this.goToProfile.bind(this),
+        this.gotoComment = this.gotoComment.bind(this),
         this.followUser = this.followUser.bind(this),
         this.unFollowUser = this.unFollowUser.bind(this),
         this.state = {
@@ -39,7 +40,7 @@ class HomeScreen extends React.Component{
                     shares: snapshot.val().shares_count,
                     thumbnailUrl: snapshot.val().thumbnail,
                     time: snapshot.val().uploaded_date,
-                    comments: snapshot.val().comments_count,
+                    comments: snapshot.val().comments,
                     userId: snapshot.val().userId,
                     username: snapshot.val().username,
                     videoId: snapshot.val().videoID
@@ -74,12 +75,13 @@ class HomeScreen extends React.Component{
         .then(() => console.log('Clicked'))
         .catch( e => console.log('error UNfollowing', e))
     }
-
-
+     gotoComment(userId, username){
+        this.props.goToProfile(userId, username)
+        .then(() => console.log('Clicked'))
+        .catch( e => console.log('error UNfollowing', e))
+    }
    
-
    
-
       createLike(videoID){
 
 
@@ -90,7 +92,6 @@ class HomeScreen extends React.Component{
               const currentUserId = firebase.auth().currentUser.uid
 
             db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).once("value", function(snap){ 
-                  console.log(snap.exists());
                   if (snap.exists() !== true) {
 
                     console.log('You have not liked this', snapshot.val() );
@@ -99,22 +100,17 @@ class HomeScreen extends React.Component{
                       videoID: videoID
                   })
 
-                console.log('Like');
 
 
                   }else{
-                      console.log('Already Liked');
                      db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).remove();
-                     console.log('Dislike');
 
                   }
 
 
              });
 
-            
-
-              
+                      
 
         }.bind(this))
     }
@@ -122,7 +118,6 @@ class HomeScreen extends React.Component{
     
     returnTime(previousTime){
       timeNeeded = Date.now() - previousTime;
-      console.log(timeNeeded);
       inMinutes = (timeNeeded/1000) / 60;
       if (inMinutes < 20) {
         return parseInt(inMinutes) + " minutes ago";
@@ -198,9 +193,11 @@ class HomeScreen extends React.Component{
                 </Button>
               </Left>
               <Body>
-                <Button transparent>
+                <Button transparent onPress={() => {  
+                      this.props.gotoComment(data.videoId, data.username)
+                    }}>
                   <Icon  name="chatbubbles" style={styles.clockText} />
-                  <Text style={styles.status}>{data.comments} Comments</Text>
+                  <Text style={styles.status}> {Object.size(data.comments)} Comments</Text>
                 </Button>
               </Body>
               <Right>
@@ -220,7 +217,6 @@ class HomeScreen extends React.Component{
 
     render(){
              const { navigate } = this.props.navigation;
-             console.log(this.state.users);
 
             //In this Render, we are getting the List of users from components/UserList.js file
         return(
@@ -281,6 +277,8 @@ function mapDispatchToProps(dispatch){
         amIFollowingUser: (userId) => dispatch(amIFollowingUser(userId)),
         unFollowUser: (userId) => dispatch(unFollowUser(userId)),
         goToProfile: (userId) => dispatch(NavigationActions.navigate({ routeName: 'PublicProfile',  params: { usuario: userId } })),
+        gotoComment: (userId, username) => dispatch(NavigationActions.navigate({ routeName: 'Comments',  params: { video: userId, usuario: username } })),
+
 
     }
 }

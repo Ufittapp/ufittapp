@@ -142,6 +142,13 @@ export default {
            fontSize: 18,
            fontWeight: 'bold',
            marginRight: 5
+         },
+         sendBox: {
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          alignSelf: 'flex-end',
+          borderColor: '#000',
+          borderTopWidth: 1
          }
 
 }

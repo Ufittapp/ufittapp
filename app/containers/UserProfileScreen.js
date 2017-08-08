@@ -220,7 +220,6 @@ class UserProfileScreen extends React.Component{
 
     returnTime(previousTime){
       timeNeeded = Date.now() - previousTime;
-      console.log(timeNeeded);
       inMinutes = (timeNeeded/1000) / 60;
       if (inMinutes < 20) {
         return parseInt(inMinutes) + " minutes ago";
@@ -271,27 +270,7 @@ class UserProfileScreen extends React.Component{
             <CardItem cardBody>
               <Image source={{uri: this.state.userInfo.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
             </CardItem>
-            <CardItem>
-              <Left>
-                 <Button transparent >
-                  <Icon  name="thumbs-up" style={styles.clockText} />
-                  <Text style={styles.status}> {Object.size(this.state.userInfo.likes_count)} Likes</Text>
-                </Button>
-              </Left>
-              <Body>
-                <Button transparent>
-                  <Icon  name="chatbubbles" style={styles.clockText} />
-                  <Text style={styles.status}>{this.state.userInfo.comments} Comments</Text>
-                </Button>
-              </Body>
-              <Right>
-                <Button transparent>
-
-                    <Icon  name="md-share" style={styles.clockText} />
-                    <Text style={styles.status}>{this.state.userInfo.shares}</Text>
-                </Button>
-              </Right>
-            </CardItem>
+           
 
 
           </Card>
