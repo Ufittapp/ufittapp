@@ -4,14 +4,13 @@ import { connect } from 'react-redux'
 import { View, Image, TouchableWithoutFeedback, Clipboard,
   ToastAndroid,
   AlertIOS,
-  Platform } from 'react-native'
+  Platform, Share } from 'react-native'
 import { followUser, amIFollowingUser, unFollowUser } from '../actions'
 import { NavigationActions } from 'react-navigation'
 import firebase from 'firebase'
 import UserList from '../components/UserList'
 import styles from '@assets/styles/home'
 import db, { firebaseAuth } from '../config/database'
-import Share, {ShareSheet} from 'react-native-share';
 
 
 
@@ -158,16 +157,22 @@ class HomeScreen extends React.Component{
 
     }
 
-       onCancel() {
-        console.log("CANCEL")
-        this.setState({visible:false});
-      }
-      
-      onOpen() {
-        console.log("OPEN")
-        this.setState({visible:true});
-      }
-
+       _shareTextWithTitle (mediaUrl) {
+    Share.share({
+      message: mediaUrl,
+      title: 'Ufitt Share',
+      url: mediaUrl
+    }, {
+      dialogTitle: 'This is share dialog title',
+      excludedActivityTypes: [
+        'com.apple.UIKit.activity.PostToTwitter',
+        'com.apple.uikit.activity.mail'
+      ],
+      tintColor: 'green'
+    })
+    .then(this._showResult)
+    .catch(err => console.log(err))
+  }
 
 
     userList(){
@@ -181,22 +186,12 @@ class HomeScreen extends React.Component{
         };
 
 
-          let shareOptions = {
-      title: "React Native",
-      message: "Hola mundo",
-      url: "http://facebook.github.io/react-native/",
-      subject: "Share Link" //  for email
-    };
+       
 
-    let shareImageBase64 = {
-      title: "React Native",
-      message: "Hola mundo",
-      url: REACT_ICON,
-      subject: "Share Link" //  for email
-    };
 
 
         return this.state.users.map((data, index) =>{
+
       
             return (
                 
@@ -248,9 +243,9 @@ class HomeScreen extends React.Component{
                 </Button>
               </Body>
               <Right>
-                <Button transparent onPress={()=>{
-          Share.open(shareOptions);
-        }}>
+                <Button transparent onPress={() => {  
+                      this._shareTextWithTitle(data.thumbnailUrl)
+                    }}>
 
                     <Icon  name="md-share" style={styles.clockText} />
                     <Text style={styles.status}>Share</Text>
@@ -289,6 +284,9 @@ class HomeScreen extends React.Component{
                 <Content>
               
                   {this.userList()}
+
+                  
+
 
                 </Content>
                

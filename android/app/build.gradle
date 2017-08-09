@@ -145,6 +145,8 @@ android {
 configurations.all { resolutionStrategy.force 'com.squareup.okhttp3:okhttp:3.4.1' } // required by react-native-background-upload until React Native supports okhttp >= okhttp 3.5
 
 dependencies {
+    compile project(':react-native-share-actions')
+    compile project(':react-native-video')
     compile project(':react-native-share')
     compile project(':react-native-background-upload')
     compile project(':react-native-fetch-blob')

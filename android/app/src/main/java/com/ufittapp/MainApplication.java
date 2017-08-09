@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import io.moori.rnshareactions.RNShareActionsPackage;
+import com.brentvatne.react.ReactVideoPackage;
 import cl.json.RNSharePackage;
 import com.vydia.RNUploader.UploaderReactPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -32,6 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNShareActionsPackage(),
+            new ReactVideoPackage(),
             new RNSharePackage(),
             new UploaderReactPackage(),
             new RNFetchBlobPackage(),
