@@ -67,10 +67,7 @@ class CommentScreen extends React.Component{
                 });
 
              }.bind(this))
-       
-
-        })
-        
+        })     
   }
 
   createNewComment(username, message){
@@ -93,10 +90,6 @@ class CommentScreen extends React.Component{
                 })    
           })
           }
-         
-          
-
-
   }
 
   ListComment(){

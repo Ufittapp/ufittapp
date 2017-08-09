@@ -21,7 +21,8 @@ class HomeScreen extends React.Component{
         this.unFollowUser = this.unFollowUser.bind(this),
         this.state = {
             isFollowing: false,
-            users: []
+            users: [],
+            buttonBg: '',
         }
     }
 
@@ -83,9 +84,6 @@ class HomeScreen extends React.Component{
    
    
       createLike(videoID){
-
-
-
         db.videosRef.orderByChild('videoID').equalTo(videoID).on('child_added', function(snapshot){
               var newLikeKey = snapshot.key;
               var username = snapshot.val().username;
@@ -97,21 +95,13 @@ class HomeScreen extends React.Component{
                     console.log('You have not liked this', snapshot.val() );
                     db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).set({
                        userID: currentUserId,
-                      videoID: videoID
-                  })
-
-
-
+                      videoID: videoID,
+                      color: 'red'
+                    })
                   }else{
                      db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).remove();
-
                   }
-
-
              });
-
-                      
-
         }.bind(this))
     }
   
@@ -137,6 +127,35 @@ class HomeScreen extends React.Component{
 
     }
 
+    getKey(id){
+        var key = null;
+        db.videosRef.orderByChild('videoID').equalTo(id).on('child_added', function(snapshot){
+            key = snapshot.key;
+        })
+        return key;
+    }
+
+    buttonColor(videoid){
+         var that = this;
+          const currentUserId = firebase.auth().currentUser.uid;
+          var videokey = this.getKey(videoid);
+          var color = null;
+    
+
+          db.videosRef.child(videokey).child('likes_count').orderByChild('userID').equalTo(currentUserId).on('value', function(snapchild){
+            if (snapchild.exists() == true) {
+               console.log(currentUserId, 'red');  
+               color = '#7a1405';            
+            }else{
+              console.log('gray');
+              color = 'gray';
+            }
+          })
+
+          return color;
+
+    }
+
 
     userList(){
 
@@ -154,7 +173,7 @@ class HomeScreen extends React.Component{
       
             return (
                 
-                 <Card key={index}>
+            <Card key={index}>
             <CardItem>
               <Left>
                 <TouchableWithoutFeedback onPress={() => {  
@@ -185,10 +204,11 @@ class HomeScreen extends React.Component{
             </CardItem>
             <CardItem>
               <Left>
+
                  <Button transparent onPress={() => {  
                       this.createLike(data.videoId)
                     }}>
-                  <Icon  name="thumbs-up" style={styles.clockText} />
+                  <Icon  name="thumbs-up" style={{color: this.buttonColor(data.videoId)}} />
                   <Text style={styles.status}> {Object.size(data.likes_count)} Likes</Text>
                 </Button>
               </Left>
