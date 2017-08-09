@@ -93,7 +93,7 @@ class UserProfileScreen extends React.Component{
       mediaType: 'photo',
       takePhotoButtonTitle: null,
       videoQuality: 'high',
-      title: 'Title TODO',
+      title: 'Choose an image...',
       chooseFromLibraryButtonTitle: 'Choose From Library'
     }
 
@@ -148,20 +148,22 @@ class UserProfileScreen extends React.Component{
         })
 
         var that = this;
-        db.videosRef.orderByChild('userId').equalTo(currentUserId).on('child_added', function(snapshot){
-            var user = {
-                    likes_count:  snapshot.val().likes_count,
-                    shares: snapshot.val().shares_count,
-                    thumbnailUrl: snapshot.val().thumbnail,
-                    time: snapshot.val().uploaded_date,
-                    comments: snapshot.val().comments_count,
-                    userId: snapshot.val().userId,
-                    username: snapshot.val().username,
+        db.videosRef.orderByChild('userId').equalTo(currentUserId).once('value', function(snapshot){
+          var items = [];
+          snapshot.forEach(function(snap){
+                var user = {
+                    
+                    thumbnailUrl: snap.val().thumbnail,
+                    time: snap.val().uploaded_date,
+                    
                 }
+                items.push(user);
+          });
+          
 
             that.setState({
-                userInfo: user
-            })
+                userInfo: items
+            });
 
         })
     }
@@ -241,39 +243,29 @@ class UserProfileScreen extends React.Component{
 
     userCard(){
 
-         Object.size = function(obj) {
-          var size = 0, key;
-            for (key in obj) {
-                if (obj.hasOwnProperty(key)) size++;
-             }
-            return size;
-        };
+          return this.state.userInfo.map((data, index) => {
+            return (
 
-        return  <Card >
+               <Card key={index}>
             <CardItem>
-              <Left>
              
-                <Thumbnail source={require('@assets/images/feed_img.png')} />
-                <Body>        
-                  <Text>{this.state.initialValues.fullName}</Text>
-                  <Text note style={styles.status}>posted</Text>
-                </Body>
-              </Left>
               <Right>
                <Button transparent>
 
                     <Icon name='clock' style={styles.clockText} />
-                    <Text style={styles.status}>{this.returnTime(this.state.userInfo.time)}</Text>
+                    <Text style={styles.status}>{this.returnTime(data.time)}</Text>
                 </Button>
               </Right>
             </CardItem>
             <CardItem cardBody>
-              <Image source={{uri: this.state.userInfo.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
+              <Image source={{uri: data.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
             </CardItem>
            
 
 
           </Card>
+              )
+          })
             
     }
 
@@ -302,11 +294,13 @@ class UserProfileScreen extends React.Component{
                       </View>
 
                          <View style={styles.genreSelector}>
-                            <Button full info style={styles.maleButton}>
-                            <Text style={styles.genreText}> Male </Text>
+                         
+
+                            <Button full info style={styles.maleButton} onPress={this.onPressUpload}>
+                            <Text style={styles.genreText}> Photo </Text>
                             </Button>
                             <Button full info style={styles.femaleButton}>
-                            <Text style={styles.genreText}> Female </Text>
+                            <Text style={styles.genreText}> Video </Text>
                             </Button>
                       </View>
 
@@ -316,11 +310,8 @@ class UserProfileScreen extends React.Component{
                         initialValues={this.state.initialValues}
                         onSubmit={this.onUpdatePressed} />
 
-                        {this.userCard()}
-
-                         <Button primary onPress={this.onPressUpload} > 
-                           <Text>Upload</Text> 
-                        </Button>
+                    {this.userCard()}
+                     
 
                 </Content>
             </Container>

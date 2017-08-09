@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, Header, Left, Body, Title, Right } from 'native-base'
+import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, Header, Left, Body, Title, Right, Card, CardItem } from 'native-base'
 import { TouchableWithoutFeedback, Image, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { fetchUserProfile } from '../actions/'
@@ -27,7 +27,9 @@ class PublicProfileScreen extends React.Component{
                 fullName: '',
                 phoneNumber: '',
                 birthdate: ''
-            }
+            },
+            userInfo: [],
+
         }
     }
 
@@ -55,10 +57,77 @@ class PublicProfileScreen extends React.Component{
                 }
             })
         })
+
+         var that = this;
+        db.videosRef.orderByChild('userId').equalTo(currentUserId).once('value', function(snapshot){
+          var items = [];
+          snapshot.forEach(function(snap){
+                var user = {
+                    
+                    thumbnailUrl: snap.val().thumbnail,
+                    time: snap.val().uploaded_date,
+                    
+                }
+                items.push(user);
+          });
+          
+
+            that.setState({
+                userInfo: items
+            });
+
+        })
     }
 
 
-  
+  returnTime(previousTime){
+      timeNeeded = Date.now() - previousTime;
+      inMinutes = (timeNeeded/1000) / 60;
+      if (inMinutes < 20) {
+        return parseInt(inMinutes) + " minutes ago";
+      } else if (inMinutes < 40) {
+        return "about 30 minutes ago";
+      } else if (inMinutes < 80) {
+        return "about an hour ago";
+      } else if (inMinutes > 1380 && inMinutes < 2760) {
+        return "a day ago";
+      } else if (inMinutes < 1380) {
+        hours = parseInt(inMinutes/60);
+        return "about " + hours + " hours ago";
+      } else {
+        var date = new Date(previousTime);
+        return date.toString("MMM dd");
+      }
+
+    }
+
+    userCard(){
+
+          return this.state.userInfo.map((data, index) => {
+            return (
+
+               <Card key={index}>
+            <CardItem>
+             
+              <Right>
+               <Button transparent>
+
+                    <Icon name='clock' style={styles.clockText} />
+                    <Text style={styles.status}>{this.returnTime(data.time)}</Text>
+                </Button>
+              </Right>
+            </CardItem>
+            <CardItem cardBody>
+              <Image source={{uri: data.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
+            </CardItem>
+           
+
+
+          </Card>
+              )
+          })
+            
+    }
 
     render(){
         const {goBack} = this.props.navigation;
@@ -133,6 +202,7 @@ class PublicProfileScreen extends React.Component{
             
                            
                         </Form>
+                         {this.userCard()}
 
                 </Content>
                         </Image>

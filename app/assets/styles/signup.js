@@ -45,7 +45,7 @@ export default {
       marginTop: 15,
       fontWeight: '500',
       letterSpacing: 3
-    },
+    }, 
 
     registerWrap: {
       flexDirection: 'row',
