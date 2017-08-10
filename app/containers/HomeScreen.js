@@ -126,7 +126,7 @@ class HomeScreen extends React.Component{
         return "about " + hours + " hours ago";
       } else {
         var date = new Date(previousTime);
-        return date.toString("MMM dd");
+        return date.toDateString();
       }
 
     }

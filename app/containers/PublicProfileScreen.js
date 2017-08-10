@@ -59,7 +59,7 @@ class PublicProfileScreen extends React.Component{
         })
 
          var that = this;
-        db.videosRef.orderByChild('userId').equalTo(currentUserId).once('value', function(snapshot){
+        db.videosRef.orderByChild('userId').equalTo(currentUserId).on('value', function(snapshot){
           var items = [];
           snapshot.forEach(function(snap){
                 var user = {
@@ -96,7 +96,7 @@ class PublicProfileScreen extends React.Component{
         return "about " + hours + " hours ago";
       } else {
         var date = new Date(previousTime);
-        return date.toString("MMM dd");
+        return date.toDateString();
       }
 
     }
