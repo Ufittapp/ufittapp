@@ -14,6 +14,7 @@ import db, { firebaseAuth } from '../config/database'
 
 
 
+
 class HomeScreen extends React.Component{
       constructor(props){
         super(props)
@@ -32,7 +33,7 @@ class HomeScreen extends React.Component{
 
    
 
-    componentDidMount(){
+    componentWillMount(){
 
 
         var that = this;
@@ -132,7 +133,7 @@ class HomeScreen extends React.Component{
     }
 
     getKey(id){
-        var key = null;
+        var key;
         db.videosRef.orderByChild('videoID').equalTo(id).on('child_added', function(snapshot){
             key = snapshot.key;
         })
@@ -142,7 +143,7 @@ class HomeScreen extends React.Component{
     buttonColor(videoid){
           const currentUserId = firebase.auth().currentUser.uid;
           var videokey = this.getKey(videoid);
-          var color = null;
+          var color;
     
 
           db.videosRef.child(videokey).child('likes_count').orderByChild('userID').equalTo(currentUserId).on('value', function(snapchild){
@@ -284,8 +285,6 @@ class HomeScreen extends React.Component{
                 <Content>
               
                   {this.userList()}
-
-                  
 
 
                 </Content>

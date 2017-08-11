@@ -17,6 +17,7 @@ export default db = {
    followersRef: database.ref('followers'),
    followingsRef: database.ref('followings'),
    notificationsRef: database.ref('notifications'),
-   videosRef: database.ref('videos')
+   videosRef: database.ref('videos'),
+   chatsRef: database.ref('chats')
 
 }

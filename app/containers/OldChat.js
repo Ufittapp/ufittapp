@@ -5,26 +5,27 @@ import { connect } from 'react-redux'
 import firebase from 'firebase'
 import db, { firebaseAuth } from '../config/database'
 import styles from '@assets/styles/profile'
-import AutoScroll from 'react-native-auto-scroll'
 
 
 
-
-class CommentScreen extends React.Component{
+class ChatRoom extends React.Component{
      static navigationOptions = {
-        tabBarLabel: 'Comments'
+        tabBarLabel: 'ChatRoomNew'
   }
 
   constructor(props){
         super(props)
-          
+
              this.state = {
             comments: [],
+            comments2: [],
             message: "",
-            videoId: "",
+            senderName: "",
+            senderID: "",
             currentUserId: ""
         }
         }
+    
 
     getActualUsername(id){
         var username;
@@ -36,40 +37,27 @@ class CommentScreen extends React.Component{
 
     }
 
-    getKey(id){
-        var key;
-        db.videosRef.orderByChild('videoID').equalTo(id).once('child_added', function(snap){
-            key = snap.key;
-         })     
-        return key;
-    }
-
-  
-
-
- 
-
 
   componentWillMount(){
         const {state} = this.props.navigation;
-        const videoId = state.params.video;
+        const senderName = state.params.username;
+        const senderID = state.params.userId;
         const currentUser = firebase.auth().currentUser.uid;
         var that = this;
 
+
         this.setState({
-          videoId: videoId,
-          currentUserId: currentUser
+            senderName: senderName,
+            senderID: senderID,
+            currentUserId: currentUser
         })
 
+          db.chatsRef.child(currentUser).child('messages').child(senderID).child('room').on("value", function(snapshot){
 
-
-            var key = this.getKey(videoId);
-             db.videosRef.child(key).child('comments').on("value", function(snapshot){
-
-                 var comments = [];
+              var comments = [];
             snapshot.forEach(function(childsnap){
                  var comment = {
-                    username: childsnap.val().usuario,
+                    senderName: childsnap.val().senderName,
                     message:  childsnap.val().message
                  }
 
@@ -82,30 +70,47 @@ class CommentScreen extends React.Component{
                 });
 
              }.bind(this))
-  }
 
 
-  createNewComment(username, message, id){
+
+          db.chatsRef.child(senderID).child('messages').child(currentUser).child('room').on("value", function(snapshot){
+
+              var comments2 = [];
+            snapshot.forEach(function(childsnap){
+                 var comment = {
+                    senderName: childsnap.val().senderName,
+                    message:  childsnap.val().message
+                 }
+
+                 comments2.push(comment);
+
+            }.bind(this));
+
+                that.setState({
+                    comments: this.state.comments.concat(comments2)
+                });
+
+             }.bind(this))
+
+   }
 
 
+     sendNewMessage(usernameId, message, id){
           if (message != "") {
-                var key = this.getKey(id);
-                db.videosRef.child(key).child('comments').push({
+                db.chatsRef.child(usernameId).child('messages').child(id).child('room').push({
                  message: message,
-                 usuario: username
+                 senderName: this.getActualUsername(id)
                 })    
           }
   }
 
-  ListComment(){
+   ListMessages(){
     return this.state.comments.map((data, index) => {
         return (
               <ListItem avatar key={index}>
-              <Left>
-                <Thumbnail source={{ uri: 'http://via.placeholder.com/350x150' }} />
-              </Left>
+             
               <Body>
-                <Text>{data.username}</Text>
+                <Text>{data.senderName}</Text>
                 <Text note>{data.message}</Text>
               </Body>
               <Right>
@@ -117,11 +122,12 @@ class CommentScreen extends React.Component{
             )
     })
   }
-   
 
   
+      
 
     render(){
+        console.log(this.state.comments);
         const {goBack} = this.props.navigation;
         return (
             <Container >
@@ -132,23 +138,19 @@ class CommentScreen extends React.Component{
                     </Button>
                   </Left>
                   <Body>
-                    <Title>Comments</Title>
+                    <Title>{this.state.senderName}</Title>
                   </Body>
                   <Right />
                 </Header>
-                  <ScrollView ref="scrollView"
-             onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})} >        
-
+                <Content>
                     <List>
-                        {this.ListComment()}
+                      {this.ListMessages()}
                     </List>
-                    </ScrollView>
+                    </Content>
                     <View style={styles.sendBox}>
                         <Item>
-                            <Input id="comment-text" name="comment-text" placeholder='Write a comment' onChangeText={(message) => this.setState({message})} />
-                            <Icon name='md-send' onPress={() => {  
-                      this.createNewComment(this.getActualUsername(this.state.currentUserId), this.state.message, this.state.videoId)
-                    }} />
+                            <Input  name="message-text" placeholder='Write a message' onChangeText={(message) => this.setState({message})} />
+                            <Icon name='md-send' onPress={() => this.sendNewMessage(this.state.senderID, this.state.message, this.state.currentUserId)} />
                         </Item>
                     </View>
 
@@ -157,11 +159,11 @@ class CommentScreen extends React.Component{
     }
 }
 
-CommentScreen.navigationOptions = {
+ChatRoom.navigationOptions = {
     header: null,
 }
 
 
 
 
-export default connect()(CommentScreen)
+export default connect()(ChatRoom)

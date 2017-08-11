@@ -10,9 +10,13 @@ import NotificationsScreen from '../containers/NotificationsScreen'
 import UserProfileScreen from '../containers/UserProfileScreen'
 import PublicProfileScreen from '../containers/PublicProfileScreen'
 import CommentScreen from '../containers/CommentScreen'
+import ChatList from '../containers/ChatList'
+import ChatRoomNew from '../containers/ChatRoom'
 
 
 module.exports = {
+    ChatRoomNew,
+    ChatList,
     CommentScreen,
     PublicProfileScreen,
     UserProfileScreen,

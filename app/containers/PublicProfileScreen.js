@@ -58,7 +58,15 @@ class PublicProfileScreen extends React.Component{
             })
         })
 
-         var that = this;
+ 
+    }
+
+    componentWillMount(){
+       const {state} = this.props.navigation;
+        console.log(state);
+        //const currentUserId = this.props.item.userId
+        const currentUserId = state.params.usuario;
+        var that = this;
         db.videosRef.orderByChild('userId').equalTo(currentUserId).on('value', function(snapshot){
           var items = [];
           snapshot.forEach(function(snap){

@@ -6,7 +6,7 @@ import * as screens from './applicationScreens'
 
 const MainNavigator = TabNavigator({
   Main: { screen: screens.HomeScreen },
-  Users: { screen: screens.UserListScreen },
+  Users: { screen: screens.ChatList },
   Notif: { screen: screens.NotificationsScreen },
   UserProfile: { screen: screens.UserProfileScreen },
   Settings: { screen: screens.SettingsScreen }
@@ -33,7 +33,8 @@ export const AppNavigator = StackNavigator({
   Splash: { screen: screens.SplashScreen },
   ChatRoom: { screen: screens.ChatRoomScreen },
   PublicProfile: {screen: screens.PublicProfileScreen},
-  Comments: {screen: screens.CommentScreen}
+  Comments: {screen: screens.CommentScreen},
+  ChatRoomNew: {screen: screens.ChatRoomNew}
 
 });
 

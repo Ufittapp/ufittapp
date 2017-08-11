@@ -147,7 +147,18 @@ class UserProfileScreen extends React.Component{
             })
         })
 
-        var that = this;
+     
+    }
+
+    componentWillMount(){
+        FirebaseImageManager
+        .getUserProfileImage()
+        .then(url => this.setState({imageUri: url}))
+        .catch(error => console.log(error))
+
+         const currentUserId = firebase.auth().currentUser.uid
+
+           var that = this;
         db.videosRef.orderByChild('userId').equalTo(currentUserId).on('value', function(snapshot){
           var items = [];
           snapshot.forEach(function(snap){
@@ -166,13 +177,6 @@ class UserProfileScreen extends React.Component{
             });
 
         })
-    }
-
-    componentWillMount(){
-        FirebaseImageManager
-        .getUserProfileImage()
-        .then(url => this.setState({imageUri: url}))
-        .catch(error => console.log(error))
         
     }
 
