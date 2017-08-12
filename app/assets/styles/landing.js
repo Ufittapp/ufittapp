@@ -13,8 +13,15 @@ export default {
     height: null,
 
   },
+  welcomenew:{
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20
+  },
 
-  welcome: {
+  welcome: { 
     top: deviceHeight - 300,
     position: 'absolute',
     justifyContent: 'center',
@@ -26,18 +33,20 @@ export default {
     height: 170,
     justifyContent: "center",
     resizeMode: "contain",
-    width: deviceWidth - 40,
+    width: deviceWidth - 20,
 
 
   },
 
   buttonsContainer: {
     flexDirection: 'row',
+    marginRight: 10,
+    marginLeft: 10
 
   },
 
   registerButton: {
-    width: 150,
+    width: (deviceWidth / 2 ) - 20,
     backgroundColor: '#55160d',
     marginRight: 10,
     paddingTop:12,
@@ -46,7 +55,7 @@ export default {
   },
 
   loginButton:  {
-    width: 150,
+    width: (deviceWidth / 2 ) - 20,
     backgroundColor: '#a15d1d',
     marginLeft: 10,
     paddingTop:12,
@@ -63,7 +72,7 @@ export default {
     backgroundColor: '#242e4d',
     paddingTop:12,
     paddingBottom: 12,
-    width: 320,
+    width: deviceWidth - 20,
     marginTop: 10
   }
 }

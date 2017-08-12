@@ -1,5 +1,5 @@
 import React from 'react'
-import { Label } from 'native-base'
+import { Label, Container } from 'native-base'
 import { connect } from 'react-redux'
 import firebase from 'firebase'
 import { NavigationActions } from 'react-navigation';
@@ -42,10 +42,10 @@ class SplashScreen extends React.Component{
         return(
             <Image source={require('@assets/images/splash_bg.png')} style={styles.backgroundImage}>
 
-            <View style={styles.welcome}>
+            <Container style={styles.welcomenew}>
               <Image source={require('@assets/images/logo.png')} style={styles.logo} />
               
-            </View>
+            </Container>
            </Image>
 
         )

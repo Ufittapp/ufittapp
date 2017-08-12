@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Navigator
 } from 'react-native'; 
+import { Container } from 'native-base';
 
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation';
@@ -18,8 +19,7 @@ class LandingScreen extends React.Component{
     render(){
         return (
           <Image source={require('@assets/images/splash_bg.png')} style={styles.backgroundImage}>
-
-            <View style={styles.welcome}>
+            <Container style={styles.welcomenew} >
               <Image source={require('@assets/images/logo.png')} style={styles.logo} />
               <View style={styles.buttonsContainer}>
                   <TouchableHighlight 
@@ -48,7 +48,7 @@ class LandingScreen extends React.Component{
               <View>
 
               </View>
-            </View>
+            </Container>
            </Image>
 
         )
