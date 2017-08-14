@@ -1,16 +1,17 @@
 import React from 'react'
-import { ListItem,  Button, Icon, Thumbnail,  Container, Content, Card, CardItem,  Text,   Left, Body, Right, Header, Title} from 'native-base'
+import { ListItem, Spinner,  Button, Icon, Thumbnail, Drawer, Container, Content, Card, CardItem,  Text,   Left, Body, Right, Header, Title} from 'native-base'
 import { connect } from 'react-redux'
 import { View, Image, TouchableWithoutFeedback, Clipboard,
   ToastAndroid,
   AlertIOS,
-  Platform, Share } from 'react-native'
+  Platform, Share, ActivityIndicator } from 'react-native'
 import { followUser, amIFollowingUser, unFollowUser } from '../actions'
 import { NavigationActions } from 'react-navigation'
 import firebase from 'firebase'
 import UserList from '../components/UserList'
 import styles from '@assets/styles/home'
 import db, { firebaseAuth } from '../config/database'
+import SideBar from '../components/Sidebar';
 
 
 
@@ -27,7 +28,8 @@ class HomeScreen extends React.Component{
         this.state = {
             isFollowing: false,
             users: [],
-            visible: false
+            visible: false,
+            isLoading: true
         }
     }
 
@@ -56,12 +58,15 @@ class HomeScreen extends React.Component{
             }.bind(this));
 
                 that.setState({
-                    users: users
+                    users: users,
+                    isLoading: false
                 });
 
         }.bind(this))
 
     }
+
+  
     
 
     followUser(user){
@@ -151,7 +156,7 @@ class HomeScreen extends React.Component{
                color = '#7a1405';            
             }else{
               color = 'gray';
-            }
+            } 
           })
 
           return color;
@@ -185,17 +190,8 @@ class HomeScreen extends React.Component{
              }
             return size;
         };
-
-
-       
-
-
-
         return this.state.users.map((data, index) =>{
-
-      
-            return (
-                
+            return (                
             <Card key={index}>
             <CardItem>
               <Left>
@@ -260,16 +256,23 @@ class HomeScreen extends React.Component{
         })
     }
 
+   
+
     render(){
     const { navigate } = this.props.navigation;
-    
+   
 
             //In this Render, we are getting the List of users from components/UserList.js file
         return(
+          <Drawer
+        ref={(ref) => { this.drawer = ref; }}
+        content={<SideBar navigator={this.navigator} />}
+        onClose={() => this.drawer._root.close()} >
+      
             <Container>
              <Header style={styles.headerBg}>
                      <Left>
-                         <Button transparent>
+                         <Button transparent onPress={() => {this.drawer._root.open()}}>
                              <Icon name='menu' style={styles.whiteText} />
                          </Button>
                      </Left>
@@ -282,14 +285,20 @@ class HomeScreen extends React.Component{
                          </Button>
                      </Right>
                  </Header>
-                <Content>
-              
+                <Content>            
                   {this.userList()}
-
+                  
+                   <ActivityIndicator
+                    animating = {this.state.isLoading}
+                    color = '#550e03'
+                    size = "large"
+                    />
 
                 </Content>
                
             </Container>
+                     </Drawer>
+
         )
     }
 }
