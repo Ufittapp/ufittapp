@@ -36,13 +36,15 @@ class LoginScreen extends Component{
     }
 
     render(){
+        const {goBack} = this.props.navigation;
+
         return(
             <Container>
              <Header style={styles.headerBg}>
                     <Left>
-                      <Button transparent>
-                          <Icon name='menu' style={styles.whiteText} />
-                      </Button>
+                      <Button transparent onPress={() => goBack()}>
+                      <Icon name='md-arrow-round-back' />
+                    </Button>
                   </Left>
                     <Body>
                         <Title style={styles.whiteText}>Sign In</Title>

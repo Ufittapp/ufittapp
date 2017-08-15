@@ -33,7 +33,8 @@ class ChatList extends React.Component{
               fullName: childSnapshot.val().fullName,
               email:    childSnapshot.val().email,
               userId:   childSnapshot.val().userId,
-              username: childSnapshot.val().username
+              username: childSnapshot.val().username,
+              profileMedia: childSnapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
             }
             users.push(user);
         })
@@ -52,7 +53,7 @@ class ChatList extends React.Component{
         return (
           <ListItem avatar key={index} style={{paddingTop: 10, paddingBottom: 10}} onPress={() => navigate('ChatRoomNew', {userId: data.userId, username: data.username})}>
               <Left>
-                <Thumbnail source={{ uri: 'http://via.placeholder.com/350x150' }} />
+                <Thumbnail source={{ uri: data.profileMedia }} />
               </Left>
               <Body>
                 <Text>{data.username}</Text>

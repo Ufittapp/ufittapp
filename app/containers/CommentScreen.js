@@ -44,6 +44,13 @@ class CommentScreen extends React.Component{
         return key;
     }
 
+    getPicture(id){
+       var image;
+        db.videosRef.orderByChild('videoID').equalTo(id).once('child_added', function(snap){
+            image = snap.val().profileMedia || 'http://via.placeholder.com/350x150' ;
+         })     
+        return image;
+    }
   
 
 

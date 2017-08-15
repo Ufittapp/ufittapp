@@ -53,7 +53,8 @@ class PublicProfileScreen extends React.Component{
                     fullName: user.fullName,
                     phoneNumber: user.phoneNumber,
                     birthdate: user.birthdate,
-                    userId: currentUserId
+                    userId: currentUserId,
+                    profileMedia: user.profileMedia
                 }
             })
         })
@@ -163,7 +164,7 @@ class PublicProfileScreen extends React.Component{
                    
                         <Image
                             style={{width: 100, height: 100, borderRadius: 50}}
-                            source={{uri: this.state.imageUri}} />
+                            source={{uri: this.state.initialValues.profileMedia }} />
 
                           </View>
                           <View style={styles.userInfo}>

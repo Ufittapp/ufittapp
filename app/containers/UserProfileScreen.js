@@ -9,6 +9,7 @@ import UserProfileForm from '../components/UserProfileForm'
 import styles from '@assets/styles/profile'
 import Upload from 'react-native-background-upload'
 import ImagePicker from 'react-native-image-picker'
+import ProfileImage from '../components/ProfileImage'
 
 
 
@@ -274,6 +275,7 @@ class UserProfileScreen extends React.Component{
     }
 
     render(){
+      console.log(this.state.userInfo.reverse());
         return (
         <Image source={require('@assets/images/create_profile_bg.png')} style={styles.backgroundImage}>
             <Container >
@@ -282,12 +284,7 @@ class UserProfileScreen extends React.Component{
                       <View style={styles.genreSelector}>
                           <View style={styles.uploadView}>
                             
-                    <TouchableWithoutFeedback style={{alignItems: 'center'}}
-                         onPress={this.pickImageFromDevice}>
-                        <Image
-                            style={{width: 100, height: 100, borderRadius: 50}}
-                            source={{uri: this.state.imageUri}} />
-                    </TouchableWithoutFeedback>
+                    <ProfileImage></ProfileImage> 
 
                             <Text style={styles.uploadText}>Upload</Text>
                           </View>

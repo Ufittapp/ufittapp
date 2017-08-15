@@ -7,6 +7,8 @@ import { fetchUserProfile, updateUserProfile } from '../actions/'
 import firebase from 'firebase'
 import styles from '@assets/styles/profile'
 import ImagePicker from 'react-native-image-picker'
+import ProfileImage from '../components/ProfileImage'
+
 
 var options = {
   title: 'Select Avatar',
@@ -112,12 +114,8 @@ class SideBar extends Component {
                       <View style={styles.genreSelector}>
                           <View style={styles.uploadView}>
                             
-                    <TouchableWithoutFeedback style={{alignItems: 'center'}}
-                         onPress={this.pickImageFromDevice}>
-                        <Image
-                            style={{width: 100, height: 100, borderRadius: 50}}
-                            source={{uri: this.state.imageUri}} />
-                    </TouchableWithoutFeedback>
+                            <ProfileImage></ProfileImage> 
+
 
                             <Text style={styles.uploadText}>update</Text>
                           </View>

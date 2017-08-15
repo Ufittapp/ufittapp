@@ -115,7 +115,7 @@ export default class Api{
 
     static getNotifications(){
         const currentUser = firebaseAuth.currentUser
-
+ 
         return db
         .notificationsRef
         .child(currentUser.uid)

@@ -29,7 +29,8 @@ class HomeScreen extends React.Component{
             isFollowing: false,
             users: [],
             visible: false,
-            isLoading: true
+            isLoading: true,
+            
         }
     }
 
@@ -37,9 +38,8 @@ class HomeScreen extends React.Component{
 
     componentWillMount(){
 
-
         var that = this;
-        db.videosRef.on('value', function(snap){
+        db.videosRef.orderByChild('createdAt').on('value', function(snap){
             var users = [];
             snap.forEach(function(snapshot){
                
@@ -51,7 +51,8 @@ class HomeScreen extends React.Component{
                     comments: snapshot.val().comments,
                     userId: snapshot.val().userId,
                     username: snapshot.val().username,
-                    videoId: snapshot.val().videoID
+                    videoId: snapshot.val().videoID,
+                    profileMedia: snapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
                 }
 
                 users.push(user);
@@ -114,7 +115,8 @@ class HomeScreen extends React.Component{
              });
         }.bind(this))
     }
-  
+    
+    
     
     returnTime(previousTime){
       timeNeeded = Date.now() - previousTime;
@@ -145,10 +147,18 @@ class HomeScreen extends React.Component{
         return key;
     }
 
+    getActualProfileImage(id){
+      return db.usersRef.orderByChild('userId').equalTo(id).once('child_added').then(function(snapshot){
+              return snapshot.val().profileMedia ;            
+       })  
+    }
+
+
+
     buttonColor(videoid){
           const currentUserId = firebase.auth().currentUser.uid;
           var videokey = this.getKey(videoid);
-          var color;
+          var color = null;
     
 
           db.videosRef.child(videokey).child('likes_count').orderByChild('userID').equalTo(currentUserId).on('value', function(snapchild){
@@ -162,6 +172,8 @@ class HomeScreen extends React.Component{
           return color;
 
     }
+
+  
 
        _shareTextWithTitle (mediaUrl) {
     Share.share({
@@ -181,6 +193,13 @@ class HomeScreen extends React.Component{
   }
 
 
+    getPhoto(id){
+      this.getActualProfileImage(id).then(function(result){
+           return result;                   
+        })       
+    }
+
+
     userList(){
 
         Object.size = function(obj) {
@@ -191,6 +210,8 @@ class HomeScreen extends React.Component{
             return size;
         };
         return this.state.users.map((data, index) =>{
+          
+           
             return (                
             <Card key={index}>
             <CardItem>
@@ -198,7 +219,7 @@ class HomeScreen extends React.Component{
                 <TouchableWithoutFeedback onPress={() => {  
                       this.props.goToProfile(data.userId)
                     }}>
-                <Thumbnail source={require('@assets/images/feed_img.png')} />
+                <Thumbnail source={{ uri: data.profileMedia }} />
                 </TouchableWithoutFeedback>
                 <Body>
                     <TouchableWithoutFeedback onPress={() => {  
@@ -260,7 +281,7 @@ class HomeScreen extends React.Component{
 
     render(){
     const { navigate } = this.props.navigation;
-   
+    console.log("Render", this.getPhoto('EqQZRaPUzgcahaL3tQTIUMbjALq2'));
 
             //In this Render, we are getting the List of users from components/UserList.js file
         return(
