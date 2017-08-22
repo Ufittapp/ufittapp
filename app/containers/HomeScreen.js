@@ -30,8 +30,10 @@ class HomeScreen extends React.Component{
             users: [],
             visible: false,
             isLoading: true,
+            profiles: [],
             
-        }
+        },
+        this.refs={}
     }
 
    
@@ -41,6 +43,7 @@ class HomeScreen extends React.Component{
         var that = this;
         db.videosRef.orderByChild('createdAt').on('value', function(snap){
             var users = [];
+            var profiles = [];
             snap.forEach(function(snapshot){
                
                 var user = {
@@ -54,13 +57,18 @@ class HomeScreen extends React.Component{
                     videoId: snapshot.val().videoID,
                     profileMedia: snapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
                 }
+                var photo = {
+                  profileMedia: snapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
+                }
 
                 users.push(user);
+                profiles.push(photo);
             }.bind(this));
 
                 that.setState({
                     users: users,
-                    isLoading: false
+                    isLoading: false,
+                    profiles: profiles
                 });
 
         }.bind(this))
@@ -148,8 +156,10 @@ class HomeScreen extends React.Component{
     }
 
     getActualProfileImage(id){
-      return db.usersRef.orderByChild('userId').equalTo(id).once('child_added').then(function(snapshot){
-              return snapshot.val().profileMedia ;            
+      //this.refs.id.source.uri = 'http://via.placeholder.com/350x150';
+      db.usersRef.orderByChild('userId').equalTo(id).once('child_added').then(function(snapshot){
+              return snapshot.val().profileMedia ;   
+              //this.refs.id.source.uri = snapshot.val().profileMedia;         
        })  
     }
 
@@ -210,8 +220,7 @@ class HomeScreen extends React.Component{
             return size;
         };
         return this.state.users.map((data, index) =>{
-          
-           
+         // console.log("PHOTOS URI", this.getActualProfileImage(data.userId));  
             return (                
             <Card key={index}>
             <CardItem>
@@ -219,8 +228,9 @@ class HomeScreen extends React.Component{
                 <TouchableWithoutFeedback onPress={() => {  
                       this.props.goToProfile(data.userId)
                     }}>
-                <Thumbnail source={{ uri: data.profileMedia }} />
+                <Thumbnail  source={{ uri: data.profileMedia }} />
                 </TouchableWithoutFeedback>
+              
                 <Body>
                     <TouchableWithoutFeedback onPress={() => {  
                       this.props.goToProfile(data.userId)
@@ -281,7 +291,7 @@ class HomeScreen extends React.Component{
 
     render(){
     const { navigate } = this.props.navigation;
-    console.log("Render", this.getPhoto('EqQZRaPUzgcahaL3tQTIUMbjALq2'));
+    console.log("USERS", this.thumbnail);
 
             //In this Render, we are getting the List of users from components/UserList.js file
         return(

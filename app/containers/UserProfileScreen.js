@@ -53,11 +53,11 @@ class UserProfileScreen extends React.Component{
   startUpload = (path) => {
   const senderID = firebase.auth().currentUser.uid
 
-    const options = {
-      path,
-      url: 'http://senorcoders.com/ufittapp/?senderID=' + senderID + '&path=' + path,
-      method: 'POST',
-      headers: {
+        const options = {
+        path,
+        url: 'http://senorcoders.com/ufittapp/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path,
+       method: 'POST',
+        headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       },
@@ -65,7 +65,9 @@ class UserProfileScreen extends React.Component{
       notification: {
         enabled: true
       }
-    }
+      } 
+    
+   
 
     Upload.startUpload(options).then((uploadId) => {
       console.log('Upload started')
@@ -132,6 +134,55 @@ class UserProfileScreen extends React.Component{
     })
   }
 
+
+   onPressVideoUpload = () => {
+    if (this.state.isImagePickerShowing) {
+      return
+    }
+
+    this.setState({ isImagePickerShowing: true })
+
+    const options = {
+      mediaType: 'video',
+      takePhotoButtonTitle: null,
+      videoQuality: 'high',
+      title: 'Choose a video...',
+      chooseFromLibraryButtonTitle: 'Choose From Library'
+    }
+
+    ImagePicker.showImagePicker(options, (response) => {
+      let didChooseVideo = true
+
+      console.log('ImagePicker response: ', response)
+      const { customButton, didCancel, error, path, uri } = response
+
+      if (didCancel) {
+        didChooseVideo = false
+      }
+
+      if (error) {
+        console.warn('ImagePicker error:', response)
+        didChooseVideo = false
+      }
+
+      this.setState({ isImagePickerShowing: false })
+
+      if (!didChooseVideo) {
+        return
+      }
+
+      if (Platform.OS === 'android') {
+        if (path) { 
+          console.log(path);
+          this.startUpload(path)
+        } else {  
+          this.props.onVideoNotFound()
+        }
+      } else {
+        this.startUpload(uri)
+      }
+    })
+  }
     componentDidMount(){
         const currentUserId = firebase.auth().currentUser.uid
 
@@ -300,7 +351,7 @@ class UserProfileScreen extends React.Component{
                             <Button full info style={styles.maleButton} onPress={this.onPressUpload}>
                             <Text style={styles.genreText}> Photo </Text>
                             </Button>
-                            <Button full info style={styles.femaleButton}>
+                            <Button full info style={styles.femaleButton} onPress={this.onPressVideoUpload}>
                             <Text style={styles.genreText}> Video </Text>
                             </Button>
                       </View>
