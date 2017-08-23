@@ -12,6 +12,7 @@ import UserList from '../components/UserList'
 import styles from '@assets/styles/home'
 import db, { firebaseAuth } from '../config/database'
 import SideBar from '../components/Sidebar';
+import Video from 'react-native-video';
 
 
 
@@ -209,6 +210,23 @@ class HomeScreen extends React.Component{
         })       
     }
 
+     displayMedia(url){
+
+        if (url.endsWith(".mp4")) {
+            return <Video
+                    repeat
+                    resizeMode='cover'
+                    source={{uri: url}}
+                    style={styles.videoBg}
+                  />
+
+        } else{
+          return <Image source={{uri: url }} style={{height: 200, width: null, flex: 1}}/>
+
+
+        }
+
+    }
 
     userList(){
 
@@ -250,7 +268,7 @@ class HomeScreen extends React.Component{
               </Right>
             </CardItem>
             <CardItem cardBody>
-              <Image source={{uri: data.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
+              {this.displayMedia(data.thumbnailUrl)}
             </CardItem>
             <CardItem>
               <Left>

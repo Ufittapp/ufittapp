@@ -149,6 +149,10 @@ export default {
           alignSelf: 'flex-end',
           borderColor: '#000',
           borderTopWidth: 1
+         },
+         videoBg: {
+          width: deviceWidth,
+          height: 250
          }
 
 }

@@ -91,6 +91,10 @@ export default {
            flexDirection: 'row',
            width: deviceWidth / 4,
            alignItems: 'center',
+         },
+         videoBg: {
+          width: deviceWidth,
+          height: 250
          }
 
 

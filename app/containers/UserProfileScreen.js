@@ -10,6 +10,7 @@ import styles from '@assets/styles/profile'
 import Upload from 'react-native-background-upload'
 import ImagePicker from 'react-native-image-picker'
 import ProfileImage from '../components/ProfileImage'
+import Video from 'react-native-video';
 
 
 
@@ -134,6 +135,40 @@ class UserProfileScreen extends React.Component{
     })
   }
 
+    videoUpload = (path) => {
+  const senderID = firebase.auth().currentUser.uid
+
+        const options = {
+        path,
+        url: 'http://senorcoders.com/ufittapp/videos/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path,
+       method: 'POST',
+        headers: {
+      'Accept': 'application/json, application/xml, text/play, text/html, *.*',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      },
+      //Below are options only supported on Android
+      notification: {
+        enabled: true
+      }
+      } 
+    
+   
+
+    Upload.startUpload(options).then((uploadId) => {
+      console.log('Upload started')
+      Upload.addListener('progress', uploadId, (data) => {
+        console.log(`Progress: ${data.progress}%`)
+      })
+      Upload.addListener('error', uploadId, (data) => {
+        console.log(`Error: ${data.error}%`)
+      })
+      Upload.addListener('completed', uploadId, (data) => {
+        console.log('Completed!')
+      })
+    }).catch(function(err) {
+      console.log('Upload error!', err)
+    })
+  }
 
    onPressVideoUpload = () => {
     if (this.state.isImagePickerShowing) {
@@ -174,16 +209,18 @@ class UserProfileScreen extends React.Component{
       if (Platform.OS === 'android') {
         if (path) { 
           console.log(path);
-          this.startUpload(path)
+          this.videoUpload(path)
         } else {  
           this.props.onVideoNotFound()
         }
       } else {
-        this.startUpload(uri)
+        this.videoUpload(uri)
       }
     })
   }
     componentDidMount(){
+      console.log(Platform.OS);
+      
         const currentUserId = firebase.auth().currentUser.uid
 
         this.props
@@ -297,10 +334,30 @@ class UserProfileScreen extends React.Component{
 
     }
 
+
+    displayMedia(url){
+
+        if (url.endsWith(".mp4")) {
+            return <Video
+                    repeat
+                    resizeMode='cover'
+                    source={{uri: url}}
+                    style={styles.videoBg}
+                  />
+
+        } else{
+          return <Image source={{uri: url }} style={{height: 200, width: null, flex: 1}}/>
+
+
+        }
+
+    }
+
     userCard(){
 
           return this.state.userInfo.map((data, index) => {
-            return (
+           
+                    return (
 
                <Card key={index}>
             <CardItem>
@@ -314,13 +371,15 @@ class UserProfileScreen extends React.Component{
               </Right>
             </CardItem>
             <CardItem cardBody>
-              <Image source={{uri: data.thumbnailUrl }} style={{height: 200, width: null, flex: 1}}/>
+              {this.displayMedia(data.thumbnailUrl)}
             </CardItem>
            
 
 
           </Card>
               )
+                
+            
           })
             
     }
@@ -363,7 +422,8 @@ class UserProfileScreen extends React.Component{
                         onSubmit={this.onUpdatePressed} />
 
                     {this.userCard()}
-                     
+                      
+                   
 
                 </Content>
             </Container>
