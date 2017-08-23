@@ -11,6 +11,8 @@ import Upload from 'react-native-background-upload'
 import ImagePicker from 'react-native-image-picker'
 import ProfileImage from '../components/ProfileImage'
 import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-controls';
+
 
 
 
@@ -338,11 +340,12 @@ class UserProfileScreen extends React.Component{
     displayMedia(url){
 
         if (url.endsWith(".mp4")) {
-            return <Video
-                    repeat
-                    resizeMode='cover'
+            return <VideoPlayer
+                  
                     source={{uri: url}}
                     style={styles.videoBg}
+                        navigator={ this.props.navigator }
+
                   />
 
         } else{

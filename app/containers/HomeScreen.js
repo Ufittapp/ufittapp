@@ -13,7 +13,7 @@ import styles from '@assets/styles/home'
 import db, { firebaseAuth } from '../config/database'
 import SideBar from '../components/Sidebar';
 import Video from 'react-native-video';
-
+import VideoPlayer from 'react-native-video-controls';
 
 
 
@@ -213,11 +213,12 @@ class HomeScreen extends React.Component{
      displayMedia(url){
 
         if (url.endsWith(".mp4")) {
-            return <Video
-                    repeat
-                    resizeMode='cover'
+            return <VideoPlayer
+                  
                     source={{uri: url}}
                     style={styles.videoBg}
+                        navigator={ this.props.navigator }
+
                   />
 
         } else{
