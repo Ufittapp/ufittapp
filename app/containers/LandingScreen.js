@@ -7,15 +7,21 @@ import {
   Alert,
   Button,
   TouchableHighlight,
-  Navigator
+  Navigator,
+  Platform
 } from 'react-native'; 
 import { Container } from 'native-base';
-
+import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation';
 import styles from '@assets/styles/landing'
+import FBLoginView  from '../components/FBLoginView.js'
+
 
 class LandingScreen extends React.Component{
+    loginFacebook(){
+      console.log('clicked!!');
+    }
     render(){
         return (
           <Image source={require('@assets/images/splash_bg.png')} style={styles.backgroundImage}>
@@ -40,14 +46,27 @@ class LandingScreen extends React.Component{
               </View>
 
                 <View>
-                <TouchableHighlight  style={styles.fbButton}>
-                  <Text style={styles.buttonText}>Join with Facebook</Text>
-                </TouchableHighlight>
+                      <FBLogin
+            buttonView={<FBLoginView />}
+            ref={(fbLogin) => { this.fbLogin = fbLogin }}
+            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            permissions={["email","user_friends"]}
+            onLogin={function(e){console.log(e)}}
+            onLoginFound={function(e){console.log(e)}}
+            onLoginNotFound={function(e){console.log(e)}}
+            onLogout={function(e){console.log(e)}}
+            onCancel={function(e){console.log(e)}}
+            onPermissionsMissing={function(e){console.log(e)}}
+          />
                 </View>
+           
 
               <View>
 
               </View>
+
+
+                   
             </Container>
            </Image>
 

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.magus.fblogin.FacebookLoginPackage;
 import io.moori.rnshareactions.RNShareActionsPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import cl.json.RNSharePackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FacebookLoginPackage(),
             new RNShareActionsPackage(),
             new ReactVideoPackage(),
             new RNSharePackage(),

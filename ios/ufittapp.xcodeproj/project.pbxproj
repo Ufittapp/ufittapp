@@ -90,6 +90,7 @@
 		ECAF8067BB42499FAB065AA2 /* SF-UI-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0BD25CF8D94A42E9AB273E04 /* SF-UI-Text-Regular.otf */; };
 		F4D79431B62E409C90AF0482 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEBD18CAA35D469FA5FE9274 /* Entypo.ttf */; };
 		FB0AC24F91FE4596B8B94E04 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22B8148EAEA6430FB6CE6516 /* Rubik-Bold.ttf */; };
+		BD5E9B1182D346B188D5BA75 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF593AD1CF584D019B7380EC /* libRCTFBLogin.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -433,6 +434,8 @@
 		EF33159F416D4E59BEE30FC9 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F64B73DAD0EB409C90D9DC94 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		F6A2157F22334ABFAA1630DC /* Rubik-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Black.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Black.ttf"; sourceTree = "<group>"; };
+		E02EA000E6804019A1086461 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; name = "RCTFBLogin.xcodeproj"; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		DF593AD1CF584D019B7380EC /* libRCTFBLogin.a */ = {isa = PBXFileReference; name = "libRCTFBLogin.a"; path = "libRCTFBLogin.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -467,6 +470,7 @@
 				131C21EE56804C8EA9CD072A /* libVydiaRNFileUploader.a in Frameworks */,
 				87B30FAD1A22408EB0731027 /* libRNShare.a in Frameworks */,
 				6A8D140182DF48AA93D3B491 /* libRCTVideo.a in Frameworks */,
+				BD5E9B1182D346B188D5BA75 /* libRCTFBLogin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +720,7 @@
 				EB5B984B1AAD4A5A920F0F5D /* VydiaRNFileUploader.xcodeproj */,
 				8B394B16573F4CC29BDFDFC9 /* RNShare.xcodeproj */,
 				B4C28E309C614024B73C115F /* RCTVideo.xcodeproj */,
+				E02EA000E6804019A1086461 /* RCTFBLogin.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1578,6 +1583,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1599,6 +1605,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1682,6 +1689,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1712,6 +1720,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1755,6 +1764,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.ufittapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1780,6 +1790,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
