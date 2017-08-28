@@ -11,16 +11,65 @@ import {
   Platform
 } from 'react-native'; 
 import { Container } from 'native-base';
-import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation';
 import styles from '@assets/styles/landing'
-import FBLoginView  from '../components/FBLoginView.js'
+import FBSDK, { LoginManager, AccessToken } from 'react-native-fbsdk'
+import firebase from 'firebase'
+import db from '../config/database'
+
 
 
 class LandingScreen extends React.Component{
-    loginFacebook(){
-      console.log('clicked!!');
+
+    getData(fullName, profileMedia, email, id){
+        db.usersRef.child(id).set({
+            birthdate: 'null',
+            createdAt: Date.now(),
+            email: email,
+            fullName: fullName,
+            phoneNumber: 'null',
+            userId: id,
+            username: fullName,
+            profileMedia: profileMedia
+        })
+    }
+    
+    _fbAuth(){
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Home'})
+        ]
+      })
+
+      var that = this;
+
+      LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(function(result){
+        if(result.isCancelled){
+          console.log('Login was cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then((accessTokenData) => {
+            const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData.accessToken)
+            firebase.auth().signInWithCredential(credential).then((result) => {
+                console.log("Credential", result);
+                that.getData(result.displayName, result.photoURL, result.email, result.uid);
+
+                 that.props.dispatch(NavigationActions.navigate({ routeName: 'Home' }))
+
+            }, (error) => {
+              console.log(error);
+            })
+
+
+          }, (error => {
+            console.log('Some error occured: ' + error);
+          }))
+
+        }
+      }, function(error){
+        console.log('An error occured:' + error);
+      })
     }
     render(){
         return (
@@ -46,18 +95,9 @@ class LandingScreen extends React.Component{
               </View>
 
                 <View>
-                      <FBLogin
-            buttonView={<FBLoginView />}
-            ref={(fbLogin) => { this.fbLogin = fbLogin }}
-            loginBehavior={FBLoginManager.LoginBehaviors.Native}
-            permissions={["email","user_friends"]}
-            onLogin={function(e){console.log(e)}}
-            onLoginFound={function(e){console.log(e)}}
-            onLoginNotFound={function(e){console.log(e)}}
-            onLogout={function(e){console.log(e)}}
-            onCancel={function(e){console.log(e)}}
-            onPermissionsMissing={function(e){console.log(e)}}
-          />
+                  <TouchableHighlight  style={styles.fbButton} onPress={() => this._fbAuth()}>
+                    <Text style={styles.buttonText}>Join with Facebook</Text>
+                  </TouchableHighlight>
                 </View>
            
 
@@ -73,6 +113,8 @@ class LandingScreen extends React.Component{
         )
     }
 }
+
+
 
 LandingScreen.propTypes = {
     navigation: React.PropTypes.object.isRequired

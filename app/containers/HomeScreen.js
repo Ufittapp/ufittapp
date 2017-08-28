@@ -18,6 +18,10 @@ import VideoPlayer from 'react-native-video-controls';
 
 
 class HomeScreen extends React.Component{
+
+   static navigationOptions = {
+        tabBarLabel: 'Home'
+  }
       constructor(props){
         super(props)
 
