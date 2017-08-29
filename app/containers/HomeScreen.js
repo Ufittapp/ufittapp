@@ -45,6 +45,8 @@ class HomeScreen extends React.Component{
 
     componentWillMount(){
 
+       
+
         var that = this;
         db.videosRef.orderByChild('createdAt').on('value', function(snap){
             var users = [];
