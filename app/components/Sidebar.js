@@ -9,6 +9,8 @@ import styles from '@assets/styles/profile'
 import ImagePicker from 'react-native-image-picker'
 import ProfileImage from '../components/ProfileImage'
 import HideableView from 'react-native-hideable-view';
+import db, { firebaseAuth } from '../config/database'
+
 
 
 
@@ -41,7 +43,8 @@ class SideBar extends Component {
             },
           isImagePickerShowing: false,
           selected2: undefined,
-           visible: false
+           visible: false,
+           activities: []
 
         };
         this.toggle = this.toggle.bind(this);
@@ -80,6 +83,22 @@ class SideBar extends Component {
     }
 
     componentWillMount(){
+       var that = this;
+        db.rootRef.child('activities').on('value', function(snapshot){
+          var activities = [];
+            snapshot.forEach(function(datasnapshot){
+                var activity = {
+                    activity: datasnapshot.val().activity
+                }
+                activities.push(activity);
+            }.bind(this));
+
+            that.setState({
+              activities: activities
+            })
+
+        }.bind(this))
+
         FirebaseImageManager
         .getUserProfileImage()
         .then(url => this.setState({imageUri: url}))
@@ -117,8 +136,22 @@ class SideBar extends Component {
         })
     }
 
+    getItems(){
+      return this.state.activities.map((data, index) => {
+          console.log("Activity", data.activity);
+        return (
+                 <ListItem key={index}>
+                    <Text style={styles.ageText}>{data.activity}</Text>
+                     <Right>
+                      <Radio selected={false}  />
+                     </Right>
+                 </ListItem>
+          )
+      })
+    }
+
   render() {
-   
+
     return (
       <Container style={{ backgroundColor: '#550e03' }}>
                 <Content >
@@ -155,60 +188,7 @@ class SideBar extends Component {
                           </ListItem>
                            <HideableView visible={this.state.visible} removeWhenHidden={true}>
                             <List>
-                               <ListItem>
-                                  <Text style={styles.ageText}>Crossfit</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Strength & Conditioning</Text>
-                                  <Right>
-                                    <Radio selected={true} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Olimpic Lifting</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Triathlons</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>OCR</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Running</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Cycling</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Swimming</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
-                                <ListItem>
-                                  <Text style={styles.ageText}>Other</Text>
-                                  <Right>
-                                    <Radio selected={false} />
-                                  </Right>
-                                </ListItem>
+                               {this.getItems()}
                               </List>
                           </HideableView>
 
