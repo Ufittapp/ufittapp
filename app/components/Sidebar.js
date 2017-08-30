@@ -44,16 +44,34 @@ class SideBar extends Component {
           isImagePickerShowing: false,
           selected2: undefined,
            visible: false,
-           activities: []
+           visibleSecond: false,
+           activities: [],
+           visibleGoals: false,
+           selected: false
 
         };
         this.toggle = this.toggle.bind(this);
+        this.toggleSecond = this.toggleSecond.bind(this);
+        this.toggleGoals = this.toggleGoals.bind(this);
+        this.selectActivity = this.selectActivity.bind(this);
 
     }
 
     toggle() {
         this.setState({
             visible: !this.state.visible
+        });
+    }
+
+    toggleSecond() {
+        this.setState({
+            visibleSecond: !this.state.visibleSecond
+        });
+    }
+
+    toggleGoals() {
+        this.setState({
+            visibleGoals: !this.state.visibleGoals
         });
     }
 
@@ -136,18 +154,56 @@ class SideBar extends Component {
         })
     }
 
-    getItems(){
+    selectActivity(activity, kind){
+       const currentUserId = firebase.auth().currentUser.uid
+       if (kind == 'primary') {
+          db.rootRef.child('users-activities').child(currentUserId).update({
+            primary: activity
+        })
+
+        {this.toggle()}
+       } else{
+        db.rootRef.child('users-activities').child(currentUserId).update({
+            secondary: activity
+        })
+
+        {this.toggleSecond()}
+       }
+
+        
+
+    }
+
+    getItems(kind){
       return this.state.activities.map((data, index) => {
-          console.log("Activity", data.activity);
         return (
                  <ListItem key={index}>
                     <Text style={styles.ageText}>{data.activity}</Text>
                      <Right>
-                      <Radio selected={false}  />
+                      <Radio selected={this.state.selected} onPress={()=> {this.selectActivity(data.activity, kind)}}  />
                      </Right>
                  </ListItem>
           )
       })
+    }
+
+    showActivity(kind){
+       const currentUserId = firebase.auth().currentUser.uid
+        var primaryActivity;
+        if (kind == 'primary') {
+             db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
+            primaryActivity = snap.val().primary || 'Choose One';
+          })
+        } else{
+              db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
+             primaryActivity = snap.val().secondary || 'Choose One';
+            })
+        }
+       
+
+        return primaryActivity;
+
+
     }
 
   render() {
@@ -172,12 +228,13 @@ class SideBar extends Component {
                       </View> 
 
                         <List style={{ margin: 10, paddingTop: 30 }}>
-                          <ListItem icon>
+                          <ListItem>
                            
                             <Body>
                               <Button transparent onPress={() => { this.toggle()}} style={{ paddingLeft: 0}}>
                                 <Text style= {styles.userFullName}>PRIMARY ACTIVITY</Text>
                               </Button>
+                              <Text style={styles.ageText}>{this.showActivity('primary')}</Text>
 
                             </Body>
                             <Right>
@@ -188,31 +245,59 @@ class SideBar extends Component {
                           </ListItem>
                            <HideableView visible={this.state.visible} removeWhenHidden={true}>
                             <List>
-                               {this.getItems()}
+                               {this.getItems('primary')}
+                              </List>
+                          </HideableView>
+
+
+                          <ListItem>
+                           
+                            <Body>
+                                <Button transparent onPress={() => { this.toggleSecond()}} style={{ paddingLeft: 0}}>
+                                <Text style= {styles.userFullName}>SECONDARY ACTIVITY</Text>
+                              </Button>
+                               <Text style={styles.ageText}>{this.showActivity('secondary')}</Text>
+
+                              </Body>
+                            <Right>
+                               <Icon name="ios-arrow-forward" />
+
+                            </Right>
+                          </ListItem>
+                          <HideableView visible={this.state.visibleSecond} removeWhenHidden={true}>
+                            <List>
+                               {this.getItems('secondary')}
                               </List>
                           </HideableView>
 
                           <ListItem icon>
                            
                             <Body>
-                              <Text style= {styles.userFullName}>SECONDARY ACTIVITY</Text>
-                            </Body>
+                                <Button transparent onPress={() => { this.toggleGoals()}} style={{ paddingLeft: 0}}>
+                                <Text style= {styles.userFullName}>GOALS</Text>
+                                </Button>
+                                </Body>
                             <Right>
                                <Icon name="ios-arrow-forward" />
 
                             </Right>
                           </ListItem>
 
-                          <ListItem icon>
-                           
-                            <Body>
-                              <Text style= {styles.userFullName}>GOALS</Text>
-                            </Body>
-                            <Right>
-                               <Icon name="ios-arrow-forward" />
-
-                            </Right>
-                          </ListItem>
+                           <HideableView visible={this.state.visibleGoals} removeWhenHidden={true}>
+                              <Form>
+                                <Item floatingLabel>
+                                  <Label style={styles.ageText}>Primary Goals</Label>
+                                  <Input keyboardType="numeric" />
+                                </Item>
+                                <Item floatingLabel last>
+                                  <Label style={styles.ageText}>Secondary Goals</Label>
+                                  <Input keyboardType="numeric" />
+                                </Item>
+                                <Button full bordered info>
+                                  <Text>Set Goals</Text>
+                                </Button>
+                              </Form>
+                          </HideableView>
 
                           <ListItem icon>
                            
