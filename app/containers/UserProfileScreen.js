@@ -12,6 +12,8 @@ import ImagePicker from 'react-native-image-picker'
 import ProfileImage from '../components/ProfileImage'
 import Video from 'react-native-video';
 import VideoPlayer from 'react-native-video-controls';
+import { NavigationActions } from 'react-navigation';
+
 
 
 
@@ -53,40 +55,7 @@ class UserProfileScreen extends React.Component{
 
    
 
-  startUpload = (path) => {
-  const senderID = firebase.auth().currentUser.uid
-
-        const options = {
-        path,
-        url: 'http://senorcoders.com/ufittapp/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path,
-       method: 'POST',
-        headers: {
-      'Accept': 'application/json, application/xml, text/play, text/html, *.*',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-      },
-      //Below are options only supported on Android
-      notification: {
-        enabled: true
-      }
-      } 
-    
-   
-
-    Upload.startUpload(options).then((uploadId) => {
-      console.log('Upload started')
-      Upload.addListener('progress', uploadId, (data) => {
-        console.log(`Progress: ${data.progress}%`)
-      })
-      Upload.addListener('error', uploadId, (data) => {
-        console.log(`Error: ${data.error}%`)
-      })
-      Upload.addListener('completed', uploadId, (data) => {
-        console.log('Completed!')
-      })
-    }).catch(function(err) {
-      console.log('Upload error!', err)
-    })
-  }
+ 
 
     onPressUpload = () => {
     if (this.state.isImagePickerShowing) {
@@ -127,50 +96,20 @@ class UserProfileScreen extends React.Component{
       if (Platform.OS === 'android') {
         if (path) { 
           console.log(path);
-          this.startUpload(path)
+          //this.startUpload(path)
+         this.props.navigation.navigate('Publish', {path: path})
         } else {  
           this.props.onVideoNotFound()
         }
       } else {
-        this.startUpload(uri)
+        //this.startUpload(uri)
+        this.props.navigation.navigate('Publish', {path: uri})
+
       }
     })
   }
 
-    videoUpload = (path) => {
-  const senderID = firebase.auth().currentUser.uid
-
-        const options = {
-        path,
-        url: 'http://senorcoders.com/ufittapp/videos/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path,
-       method: 'POST',
-        headers: {
-      'Accept': 'application/json, application/xml, text/play, text/html, *.*',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-      },
-      //Below are options only supported on Android
-      notification: {
-        enabled: true
-      }
-      } 
-    
    
-
-    Upload.startUpload(options).then((uploadId) => {
-      console.log('Upload started')
-      Upload.addListener('progress', uploadId, (data) => {
-        console.log(`Progress: ${data.progress}%`)
-      })
-      Upload.addListener('error', uploadId, (data) => {
-        console.log(`Error: ${data.error}%`)
-      })
-      Upload.addListener('completed', uploadId, (data) => {
-        console.log('Completed!')
-      })
-    }).catch(function(err) {
-      console.log('Upload error!', err)
-    })
-  }
 
    onPressVideoUpload = () => {
     if (this.state.isImagePickerShowing) {
@@ -211,12 +150,16 @@ class UserProfileScreen extends React.Component{
       if (Platform.OS === 'android') {
         if (path) { 
           console.log(path);
-          this.videoUpload(path)
+          //this.videoUpload(path)
+         this.props.navigation.navigate('PublishVideo', {path: path})
+
         } else {  
           this.props.onVideoNotFound()
-        }
+        } 
       } else {
-        this.videoUpload(uri)
+        //this.videoUpload(uri)
+        this.props.navigation.navigate('PublishVideo', {path: path})
+
       }
     })
   }
@@ -410,7 +353,7 @@ class UserProfileScreen extends React.Component{
                          <View style={styles.genreSelector}>
                          
 
-                            <Button full info style={styles.maleButton} onPress={this.onPressUpload}>
+                            <Button full info style={styles.maleButton}  onPress={this.onPressUpload}>
                             <Text style={styles.genreText}> Photo </Text>
                             </Button>
                             <Button full info style={styles.femaleButton} onPress={this.onPressVideoUpload}>

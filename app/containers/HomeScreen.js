@@ -62,7 +62,9 @@ class HomeScreen extends React.Component{
                     userId: snapshot.val().userId,
                     username: snapshot.val().username,
                     videoId: snapshot.val().videoID,
-                    profileMedia: snapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
+                    profileMedia: snapshot.val().profileMedia || 'http://via.placeholder.com/350x150',
+                    description: snapshot.val().description || "",
+                    challenge: snapshot.val().challenge || "false"
                 }
                 var photo = {
                   profileMedia: snapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
@@ -274,7 +276,16 @@ class HomeScreen extends React.Component{
                 </Button>
               </Right>
             </CardItem>
+            <CardItem>
+              <Body>
+                <Text>{data.description}</Text>
+              </Body>
+              <Right>
+                <Text>Challenge? {data.challenge}</Text>
+              </Right>
+              </CardItem>
             <CardItem cardBody>
+
               {this.displayMedia(data.thumbnailUrl)}
             </CardItem>
             <CardItem>

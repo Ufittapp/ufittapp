@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, Icon, Container, List, Switch, Item as FormItem, Content, Form, Label, Item, Input, Toast, Button, ListItem, Thumbnail, Card, CardItem, Left, Body, Right, Radio} from 'native-base'
-import { TouchableWithoutFeedback, Image, StyleSheet, View, Platform } from 'react-native'
+import { TouchableWithoutFeedback, Image, StyleSheet, View, Platform, Alert } from 'react-native'
 import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
 import { fetchUserProfile, updateUserProfile } from '../actions/'
@@ -47,7 +47,13 @@ class SideBar extends Component {
            visibleSecond: false,
            activities: [],
            visibleGoals: false,
-           selected: false
+           selected: false,
+           primaryGoal: "",
+           secondaryGoal: "",
+           primaryText: "",
+           secondaryText: "",
+           primaryActivity: "",
+           secondaryActivity: ""
 
         };
         this.toggle = this.toggle.bind(this);
@@ -101,6 +107,8 @@ class SideBar extends Component {
     }
 
     componentWillMount(){
+      const currentUserId = firebase.auth().currentUser.uid
+
        var that = this;
         db.rootRef.child('activities').on('value', function(snapshot){
           var activities = [];
@@ -121,6 +129,21 @@ class SideBar extends Component {
         .getUserProfileImage()
         .then(url => this.setState({imageUri: url}))
         .catch(error => console.log(error))
+
+        db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
+            console.log("Exis", snap.exists());
+            if (snap.exists() == true) {
+                   db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
+                         that.setState({
+                            primaryActivity: snap.val().primary || 'Choose one',
+                            secondaryActivity: snap.val().secondary || 'Choose one',
+                            primaryText: snap.val().primaryGoal,
+                            secondaryText: snap.val().secondaryGoal
+                         })           
+                })
+              
+            } 
+        })
         
     }
 
@@ -158,13 +181,15 @@ class SideBar extends Component {
        const currentUserId = firebase.auth().currentUser.uid
        if (kind == 'primary') {
           db.rootRef.child('users-activities').child(currentUserId).update({
-            primary: activity
+            primary: activity,
+            userId: currentUserId
         })
 
         {this.toggle()}
        } else{
         db.rootRef.child('users-activities').child(currentUserId).update({
-            secondary: activity
+            secondary: activity,
+            userId: currentUserId
         })
 
         {this.toggleSecond()}
@@ -187,27 +212,43 @@ class SideBar extends Component {
       })
     }
 
-    showActivity(kind){
-       const currentUserId = firebase.auth().currentUser.uid
-        var primaryActivity;
-        if (kind == 'primary') {
-             db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
-            primaryActivity = snap.val().primary || 'Choose One';
-          })
-        } else{
-              db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
-             primaryActivity = snap.val().secondary || 'Choose One';
-            })
+
+    saveGoals(primaryGoal, secondaryGoal){
+        const currentUserId = firebase.auth().currentUser.uid;
+        var that = this;
+        if (primaryGoal != "") {
+        db.rootRef.child('users-activities').child(currentUserId).on('value', function(snapshot){
+            if (snapshot.exists() != true) {
+                 Alert.alert(
+                          'Activities not defined',
+                          'You need to choose your activities above',
+                          [
+                            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                          ],
+                          { cancelable: false }
+                        )
+            } else{
+                if (secondaryGoal != "") {
+                      db.rootRef.child('users-activities').child(currentUserId).update({
+                      primaryGoal: that.state.primaryGoal,
+                      secondaryGoal: that.state.secondaryGoal
+                    })
+                  } else {
+                    db.rootRef.child('users-activities').child(currentUserId).update({
+                      primaryGoal: that.state.primaryGoal
+                    })
+
+                  }
+            }
+        })
+          
         }
-       
-
-        return primaryActivity;
-
 
     }
 
   render() {
-
+    console.log("Hola", this.state.secondaryActivity);
     return (
       <Container style={{ backgroundColor: '#550e03' }}>
                 <Content >
@@ -234,7 +275,7 @@ class SideBar extends Component {
                               <Button transparent onPress={() => { this.toggle()}} style={{ paddingLeft: 0}}>
                                 <Text style= {styles.userFullName}>PRIMARY ACTIVITY</Text>
                               </Button>
-                              <Text style={styles.ageText}>{this.showActivity('primary')}</Text>
+                              <Text style={styles.ageText}>{this.state.primaryActivity}</Text>
 
                             </Body>
                             <Right>
@@ -256,7 +297,7 @@ class SideBar extends Component {
                                 <Button transparent onPress={() => { this.toggleSecond()}} style={{ paddingLeft: 0}}>
                                 <Text style= {styles.userFullName}>SECONDARY ACTIVITY</Text>
                               </Button>
-                               <Text style={styles.ageText}>{this.showActivity('secondary')}</Text>
+                               <Text style={styles.ageText}>{this.state.secondaryActivity}</Text>
 
                               </Body>
                             <Right>
@@ -286,14 +327,14 @@ class SideBar extends Component {
                            <HideableView visible={this.state.visibleGoals} removeWhenHidden={true}>
                               <Form>
                                 <Item floatingLabel>
-                                  <Label style={styles.ageText}>Primary Goals</Label>
-                                  <Input keyboardType="numeric" />
+                                  <Label style={styles.ageText}>Primary Goals:  {this.state.primaryText}</Label>
+                                  <Input keyboardType="numeric" onChangeText={(primaryGoal) => this.setState({primaryGoal})}  />
                                 </Item>
                                 <Item floatingLabel last>
-                                  <Label style={styles.ageText}>Secondary Goals</Label>
-                                  <Input keyboardType="numeric" />
+                                  <Label style={styles.ageText}>Secondary Goals: {this.state.secondaryText}</Label>
+                                  <Input keyboardType="numeric" onChangeText={(secondaryGoal) => this.setState({secondaryGoal})} />
                                 </Item>
-                                <Button full bordered info>
+                                <Button full bordered info onPress={() => {this.saveGoals(this.state.primaryGoal, this.state.secondaryGoal)}}>
                                   <Text>Set Goals</Text>
                                 </Button>
                               </Form>

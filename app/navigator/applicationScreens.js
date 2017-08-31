@@ -12,9 +12,13 @@ import PublicProfileScreen from '../containers/PublicProfileScreen'
 import CommentScreen from '../containers/CommentScreen'
 import ChatList from '../containers/ChatList'
 import ChatRoomNew from '../containers/ChatRoom'
+import PublishView from '../components/PublishView'
+import PublishVideoView from '../components/PublishVideoView'
 
 
 module.exports = {
+    PublishVideoView,
+    PublishView,
     ChatRoomNew,
     ChatList,
     CommentScreen,
@@ -29,4 +33,5 @@ module.exports = {
     LoginScreen,
     SignupScreen,
     HomeScreen
+
 }

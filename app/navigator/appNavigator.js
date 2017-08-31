@@ -34,7 +34,10 @@ export const AppNavigator = StackNavigator({
   ChatRoom: { screen: screens.ChatRoomScreen },
   PublicProfile: {screen: screens.PublicProfileScreen},
   Comments: {screen: screens.CommentScreen},
-  ChatRoomNew: {screen: screens.ChatRoomNew}
+  ChatRoomNew: {screen: screens.ChatRoomNew},
+  Publish : {screen: screens.PublishView},
+  PublishVideo : {screen: screens.PublishVideoView}
+
 
 });
 
