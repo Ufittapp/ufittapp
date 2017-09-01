@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, Icon, Container, List, Switch, Item as FormItem, Content, Form, Label, Item, Input, Toast, Button, ListItem, Thumbnail, Card, CardItem, Left, Body, Right, Radio} from 'native-base'
 import { TouchableWithoutFeedback, Image, StyleSheet, View, Platform, Alert } from 'react-native'
-import FirebaseImageManager from '../utils/FirebaseImageManager'
+//import FirebaseImageManager from '../utils/FirebaseImageManager'
 import { connect } from 'react-redux'
 import { fetchUserProfile, updateUserProfile } from '../actions/'
 import firebase from 'firebase'
@@ -125,10 +125,10 @@ class SideBar extends Component {
 
         }.bind(this))
 
-        FirebaseImageManager
-        .getUserProfileImage()
-        .then(url => this.setState({imageUri: url}))
-        .catch(error => console.log(error))
+        // FirebaseImageManager
+        // .getUserProfileImage()
+        // .then(url => this.setState({imageUri: url}))
+        // .catch(error => console.log(error))
 
         db.rootRef.child('users-activities').child(currentUserId).on('value', function(snap){
             console.log("Exis", snap.exists());
@@ -147,35 +147,35 @@ class SideBar extends Component {
         
     }
 
-     pickImageFromDevice(){
-        ImagePicker.showImagePicker(options, (response) => {
-            //console.log('Response = ', response);
+    //  pickImageFromDevice(){
+    //     ImagePicker.showImagePicker(options, (response) => {
+    //         //console.log('Response = ', response);
 
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
-            else {
-                // let source = { uri: response.uri };
-                // this.setState({image_uri: response.uri})
+    //         if (response.didCancel) {
+    //             console.log('User cancelled image picker');
+    //         }
+    //         else if (response.error) {
+    //             console.log('ImagePicker Error: ', response.error);
+    //         }
+    //         else if (response.customButton) {
+    //             console.log('User tapped custom button: ', response.customButton);
+    //         }
+    //         else {
+    //             // let source = { uri: response.uri };
+    //             // this.setState({image_uri: response.uri})
 
-                // You can also display the image using data:
-                // let image_uri = { uri: 'data:image/jpeg;base64,' + response.data };
+    //             // You can also display the image using data:
+    //             // let image_uri = { uri: 'data:image/jpeg;base64,' + response.data };
 
-            FirebaseImageManager
-                .uploadImageToStorage(response.uri)
-                .then(url => { 
-                    console.log('uploaded', url); 
-                    this.setState({imageUri: url}) })
-                .catch(error => console.log(error))
-            }
-        })
-    }
+    //         FirebaseImageManager
+    //             .uploadImageToStorage(response.uri)
+    //             .then(url => { 
+    //                 console.log('uploaded', url); 
+    //                 this.setState({imageUri: url}) })
+    //             .catch(error => console.log(error))
+    //         }
+    //     })
+    // }
 
     selectActivity(activity, kind){
        const currentUserId = firebase.auth().currentUser.uid

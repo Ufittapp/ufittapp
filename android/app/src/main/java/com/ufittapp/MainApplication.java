@@ -9,7 +9,7 @@ import io.moori.rnshareactions.RNShareActionsPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import cl.json.RNSharePackage;
 import com.vydia.RNUploader.UploaderReactPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
+//import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -51,7 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactVideoPackage(),
             new RNSharePackage(),
             new UploaderReactPackage(),
-            new RNFetchBlobPackage(),
+            //new RNFetchBlobPackage(),
             new ImagePickerPackage(),
             new FIRMessagingPackage(),
             new VectorIconsPackage()
