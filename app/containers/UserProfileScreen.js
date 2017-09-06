@@ -38,7 +38,7 @@ class UserProfileScreen extends React.Component{
     constructor(props){
         super(props)
 
-        this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
+        //this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
         this.onUpdatePressed = this.onUpdatePressed.bind(this)
 
         this.state = {

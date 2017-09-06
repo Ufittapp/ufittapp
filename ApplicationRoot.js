@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import configureStore from './app/store/configureStore'
 import firebase from 'firebase'
 import AppNavigator from './app/navigator/appNavigator'
-import FCM from 'react-native-fcm';
+import FCM, { FCMEvent} from 'react-native-fcm';
 
 const store = configureStore()
 
@@ -43,12 +43,12 @@ export default class Root extends React.Component{
                 })
 
 
-                this.notificationListener = FCM.on('notification',  notif => {
+                this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
                     console.log('notification opened', notif);
                     
                 })
 
-                this.refreshTokenListener = FCM.on('refreshToken', (token) => {
+                this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token)  => {
                     console.log("on refresh token", token)
                     // fcm token may not be available on first load, catch it here
                 })

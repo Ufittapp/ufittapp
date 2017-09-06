@@ -32,7 +32,7 @@ class SideBar extends Component {
     constructor(props){
         super(props)
 
-        this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
+        //this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
 
         this.state = {
             imageUri: 'http://via.placeholder.com/350x150',
