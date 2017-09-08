@@ -36,8 +36,8 @@ export const AppNavigator = StackNavigator({
   Comments: {screen: screens.CommentScreen},
   ChatRoomNew: {screen: screens.ChatRoomNew},
   Publish : {screen: screens.PublishView},
-  PublishVideo : {screen: screens.PublishVideoView}
-
+  PublishVideo : {screen: screens.PublishVideoView},
+  CardMedia : {screen: screens.CardMedia}
 
 });
 

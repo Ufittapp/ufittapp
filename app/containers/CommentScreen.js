@@ -1,11 +1,12 @@
 import React from 'react'
-import { TouchableWithoutFeedback, Image, StyleSheet, View,  ScrollView } from 'react-native'
-import { Text, Icon, Container, Content, Form, Label, Item, Input, Toast, Button, Header, Left, Body, Title, Right, Footer, List, ListItem, Thumbnail } from 'native-base'
+import { TouchableWithoutFeedback, Image, StyleSheet, View,  ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
+import { Icon, Container, Content, Form, Label, Item, Input, Toast, Button, Header, Left, Body, Title, Right, Footer, List, ListItem, Thumbnail } from 'native-base'
 import { connect } from 'react-redux'
 import firebase from 'firebase'
 import db, { firebaseAuth } from '../config/database'
-import styles from '@assets/styles/profile'
 import AutoScroll from 'react-native-auto-scroll'
+import CommentList from '../components/CommentList'
+
 
 
 
@@ -22,117 +23,64 @@ class CommentScreen extends React.Component{
             comments: [],
             message: "",
             videoId: "",
-            currentUserId: ""
+            currentUserId: "",
+            key: ""
         }
         }
-
-    getActualUsername(id){
-        var username;
-        db.usersRef.orderByChild('userId').equalTo(id).once('child_added', function(snapshot){
-            username = snapshot.val().username;
-        })
-
-        return username;
-
-    }
-
-    getKey(id){
-        var key;
-        db.videosRef.orderByChild('videoID').equalTo(id).once('child_added', function(snap){
-            key = snap.key;
-         })     
-        return key;
-    }
-
-    getPicture(id){
-       var image;
-        db.videosRef.orderByChild('videoID').equalTo(id).once('child_added', function(snap){
-            image = snap.val().profileMedia || 'http://via.placeholder.com/350x150' ;
-         })     
-        return image;
-    }
-  
-
-
- 
-
-
-  componentWillMount(){
-        const {state} = this.props.navigation;
-        const videoId = state.params.video;
-        const currentUser = firebase.auth().currentUser.uid;
-        var that = this;
-
-        this.setState({
-          videoId: videoId,
-          currentUserId: currentUser
-        })
-
-
-
-            var key = this.getKey(videoId);
-             db.videosRef.child(key).child('comments').on("value", function(snapshot){
-
-                 var comments = [];
-            snapshot.forEach(function(childsnap){
-                 var comment = {
-                    username: childsnap.val().usuario,
-                    message:  childsnap.val().message
-                 }
-
-                 comments.push(comment);
-
-            }.bind(this));
-
-                that.setState({
-                    comments: comments
-                });
-
-             }.bind(this))
-  }
-
-
-  createNewComment(username, message, id){
-
-
-          if (message != "") {
-                var key = this.getKey(id);
-                db.videosRef.child(key).child('comments').push({
-                 message: message,
-                 usuario: username
-                })    
-          }
-  }
-
-  ListComment(){
-    return this.state.comments.map((data, index) => {
-        return (
-              <ListItem avatar key={index}>
-              <Left>
-                <Thumbnail source={{ uri: 'http://via.placeholder.com/350x150' }} />
-              </Left>
-              <Body>
-                <Text>{data.username}</Text>
-                <Text note>{data.message}</Text>
-              </Body>
-              <Right>
-                <Text note>3:43 pm</Text>
-              </Right>
-            </ListItem>
-           
-
-            )
-    })
-  }
    
 
+   handleSend = () => {
+    const { text } = this.state
+    const { uid, photoURL, displayName } = firebaseAuth.currentUser
+    const commentsRef = this.getUserCommentsRef()
+    var newCommentRef = commentsRef.push()
+    newCommentRef.set({ 
+      text,
+      userPhoto: photoURL,
+      uid: uid,
+      name: displayName
+     });
+    this.setState({ text: '' })
+  }
+
+  getUserCommentsRef = () => {
+       return db.videosRef.child('-KspR9aDt8_J-BQbXHLG').child('comments');
+      }
+
+   handleChangeText = (text) => this.setState({text})
+
+    componentDidMount() {
+    const {state} = this.props.navigation;
+    const videoId = state.params.video;
+    const currentUser = firebase.auth().currentUser.uid;
+    this.setState({
+        videoId: videoId,
+        currentUserId: currentUser
+    })
+
+    this.getUserCommentsRef().on('child_added', this.addComment)
+  }
   
+  addComment = (data) => {
+    const comment = data.val()
+    this.setState({
+      comments: this.state.comments.concat(comment)
+    })
+  }
+
+   componentWillUnmount() {
+    console.warn("Unmounting");
+     this.getUserCommentsRef().off('child_added', this.addComment)
+  }
+
 
     render(){
         const {goBack} = this.props.navigation;
+        const { comments } = this.state
+
         return (
             <Container >
-                <Header style={styles.headerBg}>
+                <Header style={{backgroundColor: '#212121'}}>
                   <Left>
                     <Button transparent onPress={() => goBack()}>
                       <Icon name='md-arrow-round-back' />
@@ -143,26 +91,48 @@ class CommentScreen extends React.Component{
                   </Body>
                   <Right />
                 </Header>
-                  <ScrollView ref="scrollView"
-             onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})} >        
+                        
+              <View style={styles.container}>
+                  <CommentList comments={comments} />
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      style={styles.input}
+                      value={this.state.text}
+                      placeholder="Write a comment"
+                      onChangeText={this.handleChangeText}
+                    />
+                    <TouchableOpacity onPress={this.handleSend}>
+                      <Icon name="ios-send-outline" size={30} color="gray" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
 
-                    <List>
-                        {this.ListComment()}
-                    </List>
-                    </ScrollView>
-                    <View style={styles.sendBox}>
-                        <Item>
-                            <Input id="comment-text" name="comment-text" placeholder='Write a comment' onChangeText={(message) => this.setState({message})} />
-                            <Icon name='md-send' onPress={() => {  
-                      this.createNewComment(this.getActualUsername(this.state.currentUserId), this.state.message, this.state.videoId)
-                    }} />
-                        </Item>
-                    </View>
+
 
             </Container>
         )
     }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'lightgray',
+  },
+
+  inputContainer: {
+    height: 50,
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  input: {
+    height: 50,
+    flex: 1
+  },
+  
+});
 
 CommentScreen.navigationOptions = {
     header: null,

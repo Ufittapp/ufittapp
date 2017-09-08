@@ -14,9 +14,11 @@ import ChatList from '../containers/ChatList'
 import ChatRoomNew from '../containers/ChatRoom'
 import PublishView from '../components/PublishView'
 import PublishVideoView from '../components/PublishVideoView'
+import CardMedia from '../components/CardMedia'
 
 
 module.exports = {
+    CardMedia,
     PublishVideoView,
     PublishView,
     ChatRoomNew,
