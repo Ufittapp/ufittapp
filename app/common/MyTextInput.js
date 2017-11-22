@@ -7,8 +7,8 @@ class MyTextInput extends Component{
         const { labelName, input, meta: { touched, error, dirty, invalid, valid }, ...inputProps} = this.props
         
         return(
-            <View>
-                <Item stackedLabel style={styles.itemContainer} success={dirty && valid ? true : false} error={invalid && dirty ? true : false}>
+            <View style={{marginTop: 30}}>
+                <Item floatingLabel success={dirty && valid ? true : false} error={invalid && dirty ? true : false}>
                     <Label style={styles.registerLabel}>{labelName}</Label>
                     <Input
                         {...inputProps}
@@ -18,7 +18,7 @@ class MyTextInput extends Component{
                     />
                     {dirty && invalid ? <Icon name='close-circle' /> : dirty && valid ? <Icon name='checkmark-circle' /> : undefined}
                 </Item>
-                {dirty && error && <Text style={ { color: '#e74c3c', fontSize: 15} }>{error}</Text>}
+                {dirty && error && <Text style={ { color: '#fff', fontSize: 15} }>{error}</Text>}
             </View>
         )
     }

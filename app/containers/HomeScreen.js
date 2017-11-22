@@ -30,6 +30,7 @@ class HomeScreen extends React.Component{
             isFollowing: false,
             visible: false,
             dataSource: dataSource, 
+            isLoading: true
         },
         this.refs={}
     }
@@ -68,11 +69,17 @@ class HomeScreen extends React.Component{
                      </Right>
                  </Header>
                 <Content>  
+
               <ListView
                   dataSource={this.state.dataSource}
                   enableEmptySections={true}
                   renderRow={this._renderItem.bind(this)}
                   />
+                   <ActivityIndicator
+                    animating = {this.state.isLoading}
+                    color = '#550e03'
+                    size = "large"
+                    />
                    
 
                 </Content>
@@ -123,7 +130,8 @@ class HomeScreen extends React.Component{
 
       // Update the state with the new tasks
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(tasks)
+        dataSource: this.state.dataSource.cloneWithRows(tasks),
+        isLoading: false
       });   
     });
   }

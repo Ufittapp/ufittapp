@@ -59,17 +59,17 @@ export default {
         },
         genreSelector: {
           flexDirection: 'row',
-          margin: 20,
+          marginVertical: 20,
           marginBottom: 0
         },
         maleButton: {
           borderRadius: 0,
-          width: 165,
+          width: deviceWidth / 2,
           backgroundColor: '#1a5262'
         },
         femaleButton: {
           borderRadius: 0,
-          width: 165,
+          width: deviceWidth / 2,
           backgroundColor: '#437b8b',
           alignItems: 'center'
         },

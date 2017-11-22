@@ -7,7 +7,7 @@ export default class NotificationRow extends React.Component{
         return(
             <ListItem avatar>
               <Left>
-                <Thumbnail source={{ uri: 'https://unsplash.it/200/300/?random' }} />
+                <Thumbnail source={{ uri: 'https://flipagram.com/assets/resources/img/fg-avatar-anonymous-user-retina.png' }} />
               </Left>
               <Body>
                 <Text>{this.props.data.sender.username}</Text>

@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { Container, Content, Footer, Text, 
-    Separator, ListItem, Left, Right, Body, Icon, Button
-} from 'native-base'
+import { Container, Content,  ListItem, Left, Icon, Right, Body, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation';
 import FooterTabs from '../common/FooterTabs'
 import firebase from 'firebase'
+import {  Image, View, Text, Dimensions } from 'react-native'
+import styles from '@assets/styles/landing'
+const height = Dimensions.get('window').height / 2 - 120
+
+
 
 class SettingsScreen extends Component{
   static navigationOptions = {
@@ -16,28 +19,34 @@ class SettingsScreen extends Component{
      const { navigate } = this.props.navigation;
 
     return(
-      <Container>
-        <Content>
-          <ListItem icon>
-            <Left>
-                <Icon name="log-out"  />
-            </Left>
-            <Body>
-                
-                <Button primary
-                    onPress={() => {
+   
+       <Image source={require('@assets/images/splash_bg.png')} style={styles.backgroundImage}>
+
+      <Container style={{ justifyContent: 'center', alignItems: 'center', marginTop: height }}>
+        <Content >
+         
+
+            <View style={styles.logoContainer}>
+                            <Image
+                                style={styles.userBg}
+                                source={{uri: 'https://flipagram.com/assets/resources/img/fg-avatar-anonymous-user-retina.png'}} />
+
+                    </View>
+             <View style={styles.buttonsContainer2}>
+                 <Button full 
+                 onPress={() => {
 
                       firebase.auth().signOut()
                       this.props.goToLogin()
-                    }}>
-                    <Text>Log out</Text>
-                </Button>
-            </Body>
-            <Right />
-        </ListItem>
-
+                    }}
+                 style={{ backgroundColor: '#7a1405'}}>
+                        <Text style={styles.white}>CERRAR SESION</Text>
+                      </Button>
+                
+              </View>
         </Content>
       </Container>
+    </Image>
     )
   }
 }
@@ -52,7 +61,7 @@ SettingsScreen.navigationOptions = {
 function mapDispatchToProps(dispatch){
   return{
     goToSettings: () => dispatch(NavigationActions.navigate({ routeName: 'Settings' })),
-    goToLogin: () => dispatch(NavigationActions.navigate({ routeName: 'Login' })),
+    goToLogin: () => dispatch(NavigationActions.navigate({ routeName: 'Landing' })),
   }
 }
 

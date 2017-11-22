@@ -1,15 +1,10 @@
 import React from 'react'
 import { TouchableWithoutFeedback, Image, StyleSheet, View,  ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
 import { Icon, Container, Content, Form, Label, Item, Input, Toast, Button, Header, Left, Body, Title, Right, Footer, List, ListItem, Thumbnail } from 'native-base'
-import { connect } from 'react-redux'
 import firebase from 'firebase'
 import db, { firebaseAuth } from '../config/database'
 import AutoScroll from 'react-native-auto-scroll'
 import CommentList from '../components/CommentList'
-
-
-
-
 
 class CommentScreen extends React.Component{
      static navigationOptions = {
@@ -28,7 +23,6 @@ class CommentScreen extends React.Component{
         }
         }
    
-
    handleSend = () => {
     const { text } = this.state
     const { uid, photoURL, displayName } = firebaseAuth.currentUser
@@ -44,12 +38,15 @@ class CommentScreen extends React.Component{
   }
 
   getUserCommentsRef = () => {
-       return db.videosRef.child('-KspR9aDt8_J-BQbXHLG').child('comments');
+       return db.videosRef.child(this.state.key).child('comments');
       }
 
    handleChangeText = (text) => this.setState({text})
 
-    componentDidMount() {
+   
+
+  componentDidMount(){
+
     const {state} = this.props.navigation;
     const videoId = state.params.video;
     const currentUser = firebase.auth().currentUser.uid;
@@ -58,8 +55,16 @@ class CommentScreen extends React.Component{
         currentUserId: currentUser
     })
 
-    this.getUserCommentsRef().on('child_added', this.addComment)
+     db.videosRef.orderByChild('videoID').equalTo(videoId).once('child_added').then((snap) => {
+        this.setState({ key: snap.key })
+        this.getUserCommentsRef().on('child_added', this.addComment)
+    })
+
+
+
   }
+
+ 
   
   addComment = (data) => {
     const comment = data.val()
@@ -69,14 +74,14 @@ class CommentScreen extends React.Component{
   }
 
    componentWillUnmount() {
-    console.warn("Unmounting");
-     this.getUserCommentsRef().off('child_added', this.addComment)
+       this.getUserCommentsRef().off('child_added', this.addComment)
   }
 
 
     render(){
         const {goBack} = this.props.navigation;
         const { comments } = this.state
+        console.warn("Profile", this.state.text);
 
         return (
             <Container >
@@ -87,7 +92,7 @@ class CommentScreen extends React.Component{
                     </Button>
                   </Left>
                   <Body>
-                    <Title>Comments</Title>
+                    <Title style={{ color: '#fff'}}>Comments</Title>
                   </Body>
                   <Right />
                 </Header>
@@ -141,4 +146,4 @@ CommentScreen.navigationOptions = {
 
 
 
-export default connect()(CommentScreen)
+export default CommentScreen

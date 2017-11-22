@@ -8,6 +8,7 @@ import styles from '@assets/styles/home'
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import firebase from 'firebase'
 import VideoPlayer from 'react-native-video-controls';
+import { firebaseAuth } from '../config/database'
 import { ListItem, Spinner,  Button, Icon, Thumbnail, Drawer, Container, Content, Card, CardItem,  Text,   Left, Body, Right, Header, Title} from 'native-base'
 
 
@@ -16,6 +17,15 @@ export default class CardMedia extends Component {
 
   static navigationOptions = {
         tabBarLabel: 'CardMedia'
+  }
+
+  constructor(props){
+        super(props)
+            this.state = {
+            profileMedia: ""
+        }
+
+        this.loadProfilePicture =this.loadProfilePicture.bind(this);
   }
 
    createLike(videoID){
@@ -88,6 +98,25 @@ export default class CardMedia extends Component {
 
     }
 
+    loadProfilePicture = () => {
+    const { userId } = this.props.task;
+     var that = this;
+        db.usersRef.orderByChild('userId').equalTo(userId).once('child_added').then(function(snapshot){
+          that.setState({ 
+            profileMedia: snapshot.val().profileMedia || "https://flipagram.com/assets/resources/img/fg-avatar-anonymous-user-retina.png"
+          })
+
+        }, function(error){
+            console.error(error);
+        })
+
+     
+    }
+
+    componentDidMount(){
+      this.loadProfilePicture();
+    }
+
 
      _shareTextWithTitle (mediaUrl) {
     Share.share({
@@ -147,7 +176,7 @@ export default class CardMedia extends Component {
               <Left>
                 <TouchableWithoutFeedback onPress={() =>  
                       navigate('PublicProfile', {usuario: userId})}>
-                <Thumbnail  source={{ uri: profileMedia }} />
+                <Thumbnail  source={{ uri: this.state.profileMedia }} />
                 </TouchableWithoutFeedback>
               
                 <Body>

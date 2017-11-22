@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, reduxForm, propTypes } from 'redux-form'
 import { Form, Button, Text, View } from 'native-base'
-import TextInput from '../common/MyTextInput'
+import ProfileTextInput from '../common/ProfileTextInput'
 import styles from '@assets/styles/signup'
 import { connect } from 'react-redux'
 
@@ -14,7 +14,7 @@ class UserProfileForm extends React.Component{
             <Form style={styles.registerForm}>
                 <Field
                     name="fullName"
-                    component={TextInput}
+                    component={ProfileTextInput}
                     labelName="FULL NAME"
                     returnKeyType="next"
                     autoCapitalize="words"
@@ -24,7 +24,7 @@ class UserProfileForm extends React.Component{
 
                 <Field
                     name="phoneNumber"
-                    component={TextInput}
+                    component={ProfileTextInput}
                     labelName="PHONE"
                     keyboardType="phone-pad"
                     returnKeyType="next"
@@ -34,7 +34,7 @@ class UserProfileForm extends React.Component{
 
                 <Field
                     name="birthdate"
-                    component={TextInput}
+                    component={ProfileTextInput}
                     labelName="DATE OF BIRTH"
                     returnKeyType="next"
                     editable={!submitting}

@@ -74,5 +74,27 @@ export default {
     paddingBottom: 12,
     width: deviceWidth - 20,
     marginTop: 10
-  }
+  },
+   logoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        //borderWidth: 1,
+    },
+    userBg:{
+        width: 100,
+        height: 100,
+        borderRadius: 50
+    },
+     buttonsContainer2: {
+        flex: 4,
+        alignItems: 'center',
+        marginTop: 20   
+       
+    },
+     white: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontFamily: 'Roboto' 
+
+    },
 }

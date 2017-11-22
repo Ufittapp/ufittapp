@@ -34,7 +34,7 @@ class ChatList extends React.Component{
               email:    childSnapshot.val().email,
               userId:   childSnapshot.val().userId,
               username: childSnapshot.val().username,
-              profileMedia: childSnapshot.val().profileMedia || 'http://via.placeholder.com/350x150'
+              profileMedia: childSnapshot.val().profileMedia || 'https://flipagram.com/assets/resources/img/fg-avatar-anonymous-user-retina.png'
             }
             users.push(user);
         })

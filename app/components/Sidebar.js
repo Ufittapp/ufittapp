@@ -202,10 +202,10 @@ class SideBar extends Component {
     getItems(kind){
       return this.state.activities.map((data, index) => {
         return (
-                 <ListItem key={index}>
+                 <ListItem key={index} onPress={()=> {this.selectActivity(data.activity, kind)}}>
                     <Text style={styles.ageText}>{data.activity}</Text>
                      <Right>
-                      <Radio selected={this.state.selected} onPress={()=> {this.selectActivity(data.activity, kind)}}  />
+                      <Radio selected={this.state.selected}   />
                      </Right>
                  </ListItem>
           )

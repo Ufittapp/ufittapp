@@ -6,8 +6,12 @@ target 'ufittapp' do
   # use_frameworks!
 
   # Pods for ufittapp
-   pod 'FirebaseMessaging'
-  pod 'Firebase/Core'
+    pod 'Firebase/Core'
+pod 'Firebase/Messaging'
+  target 'ufittapp-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
 
   target 'ufittappTests' do
     inherit! :search_paths
@@ -22,9 +26,9 @@ target 'ufittapp-tvOS' do
 
   # Pods for ufittapp-tvOS
 
-  target 'ufittapp-tvOSTests' do
-    inherit! :search_paths
+ # target 'ufittapp-tvOSTests' do
+  #inherit! :search_paths
     # Pods for testing
-  end
+ # end
 
 end
