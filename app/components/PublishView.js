@@ -47,7 +47,7 @@
 
         const options = {
         path,
-        url: 'http://senorcoders.com/ufittapp/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description + '&challenge=' + challenge,
+        url: 'https://sjdsdirectoryapp.senorcoders.com/ufittapp/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description + '&challenge=' + challenge,
        method: 'POST',
         headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
