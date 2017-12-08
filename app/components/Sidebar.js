@@ -35,7 +35,7 @@ class SideBar extends Component {
         //this.pickImageFromDevice = this.pickImageFromDevice.bind(this)
 
         this.state = {
-            imageUri: 'http://via.placeholder.com/350x150',
+            imageUri: 'https://via.placeholder.com/350x150',
             initialValues:{
                 fullName: '',
                 phoneNumber: '',

@@ -15,7 +15,7 @@ class ProfileImage extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            imageUri: 'http://via.placeholder.com/350x150',
+            imageUri: 'https://via.placeholder.com/350x150',
           
           isImagePickerShowing: false
         }
@@ -125,7 +125,7 @@ class ProfileImage extends React.Component{
           var imageUri = snapshot.val().profileMedia;
 
           that.setState({
-              imageUri: imageUri || 'http://via.placeholder.com/350x150'
+              imageUri: imageUri || 'https://via.placeholder.com/350x150'
           })
       }.bind(this))
   }

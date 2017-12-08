@@ -22,7 +22,7 @@ class PublicProfileScreen extends React.Component{
 
         this.state = {
             isFollowing: false,
-            imageUri: 'http://via.placeholder.com/350x150',
+            imageUri: 'https://via.placeholder.com/350x150',
             initialValues:{
                 fullName: '',
                 phoneNumber: '',

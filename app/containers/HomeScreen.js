@@ -120,7 +120,7 @@ class HomeScreen extends React.Component{
           userId: child.val().userId,
           username: child.val().username,
           videoId: child.val().videoID,
-          profileMedia: child.val().profileMedia || 'http://via.placeholder.com/350x150',
+          profileMedia: child.val().profileMedia || 'https://via.placeholder.com/350x150',
           description: child.val().description || "",
           challenge: child.val().challenge || "false",
           navigation: this.props.navigation
