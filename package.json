@@ -21,6 +21,7 @@
     "react-native-gifted-chat": "^0.1.4",
     "react-native-gifted-messenger": "^0.1.4",
     "react-native-hideable-view": "^1.0.3",
+    "react-native-icon": "^0.2.10",
     "react-native-image-picker": "^0.26.3",
     "react-native-lazyload": "^1.1.0",
     "react-native-share": "^1.0.20",

@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">ufittapp</string>
-     <string name="facebook_app_id">112622466092339</string>
-    <string name="fb_login_protocol_scheme">fb112622466092339</string>
 </resources>

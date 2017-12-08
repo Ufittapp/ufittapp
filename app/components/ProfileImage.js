@@ -28,7 +28,7 @@ class ProfileImage extends React.Component{
 
     const options = {
       path,
-      url: 'https://sjdsdirectoryapp.senorcoders.com/?senderID=' + senderID + '&path=' + path,
+      url: 'https://ufitt.provethisconcept.com/?senderID=' + senderID + '&path=' + path,
       method: 'POST',
       headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
