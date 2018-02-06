@@ -8,6 +8,7 @@
      import Upload from 'react-native-background-upload'
      import { NavigationActions } from 'react-navigation';
      import firebase from 'firebase'
+     import Geocoder from 'react-native-geocoder';
 
 
 
@@ -16,6 +17,8 @@
 
      const deviceWidth = Dimensions.get('window').width;
      const deviceHeight = Dimensions.get('window').height;
+     //Geocoder.setApiKey('AIzaSyAnrdKrL_pSQJC9bcu5HZyl9Ir8jaj7Roc'); // use a valid API key
+
 
      class PublishView extends React.Component{
 
@@ -26,11 +29,47 @@
         this.state = {
             path: "",
             description: "",
-            challenge: false
+            challenge: false,
+            lat: "",
+            lng: "",
+            error: null,
+            location: ''
 
         };
+
         this.toggleCheck = this.toggleCheck.bind(this);
 
+    }
+
+
+    componentDidMount() {
+        this.getCoords().then((coords) =>{
+          this.getPlaceName(coords);
+
+        });
+
+    }
+
+    getCoords(){
+
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // this.setState({
+            //   lat : position.coords.latitude,
+            //   lng: position.coords.longitude,
+            //   error: null,
+            // });
+
+            resolve(position.coords);
+
+          },
+          (error) => this.setState({ error: error.message }),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+
+      });
+     
     }
 
         componentWillMount(){
@@ -42,12 +81,33 @@
 
         }
 
+        
+
+        getPlaceName(coords){
+          var PLACE = {
+            lat: coords.latitude,
+            lng: coords.longitude
+          };
+          Geocoder.geocodePosition(PLACE).then(
+            json => {
+              // var address_component = json.results[0].address_components[0];
+              //alert(json[0].locality);
+              this.setState({
+                location: json[0].locality
+              });
+            },
+            error => {
+              console.warn(error);
+            }
+          );
+        }
+
          startUpload = (path, description, challenge) => {
           const senderID = firebase.auth().currentUser.uid
 
         const options = {
         path,
-        url: 'https://ufitt.provethisconcept.com/ufittapp/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description + '&challenge=' + challenge,
+        url: 'https://ufitt.senorcoders.com/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description + '&challenge=' + challenge,
        method: 'POST',
         headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
@@ -131,13 +191,14 @@
 
                      <InputGroup>
                          <Icon name='navigate' style={{color:'#898f94'}}/>
-                         <Input placeholder='Take a geolocation' style={styles.publishInput} placeholderTextColor="#898f94" />
+                         <Input disabled placeholder='Take a geolocation' style={styles.publishInput} placeholderTextColor="#898f94" value={this.state.location} />
                      </InputGroup>
 
-                     <InputGroup>
+                     {/* <InputGroup>
                          <Icon name='ios-person' style={{color:'#898f94'}}/>
                          <Input placeholder='Check the friends' style={styles.publishInput} placeholderTextColor="#898f94"/>
-                     </InputGroup>
+                     </InputGroup> */}
+                      
 
 
                  </Content>

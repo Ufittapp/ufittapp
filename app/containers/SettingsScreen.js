@@ -40,7 +40,7 @@ class SettingsScreen extends Component{
                       this.props.goToLogin()
                     }}
                  style={{ backgroundColor: '#7a1405'}}>
-                        <Text style={styles.white}>CERRAR SESION</Text>
+                        <Text style={styles.white}>LOG OUT</Text>
                       </Button>
                 
               </View>

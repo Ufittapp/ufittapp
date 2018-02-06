@@ -9,6 +9,7 @@
      import { NavigationActions } from 'react-navigation';
      import firebase from 'firebase'
 
+     import Geocoder from 'react-native-geocoder';
 
 
 
@@ -26,7 +27,11 @@
         this.state = {
             path: "",
             description: "",
-           challenge: false
+           challenge: false,
+           lat: "",
+           lng: "",
+           error: null,
+           location: ''
         };
        this.toggleCheck = this.toggleCheck.bind(this);
 
@@ -40,12 +45,61 @@
           })
 
         }
+
+        componentDidMount() {
+            this.getCoords().then((coords) =>{
+              this.getPlaceName(coords);
+    
+            });
+    
+        }
+    
+        getCoords(){
+    
+          return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                // this.setState({
+                //   lat : position.coords.latitude,
+                //   lng: position.coords.longitude,
+                //   error: null,
+                // });
+    
+                resolve(position.coords);
+    
+              },
+              (error) => this.setState({ error: error.message }),
+              { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+            );
+    
+          });
+         
+        }
+
+        getPlaceName(coords){
+            var PLACE = {
+              lat: coords.latitude,
+              lng: coords.longitude
+            };
+            Geocoder.geocodePosition(PLACE).then(
+              json => {
+                // var address_component = json.results[0].address_components[0];
+                //alert(json[0].locality);
+                this.setState({
+                  location: json[0].locality
+                });
+              },
+              error => {
+                console.warn(error);
+              }
+            );
+          }
            videoUpload = (path, description) => {
   const senderID = firebase.auth().currentUser.uid
 
         const options = {
         path,
-        url: 'https://ufitt.provethisconcept.com/ufittapp/videos/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description,
+        url: 'https://ufitt.senorcoders.com/videos/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description,
        method: 'POST',
         headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
@@ -118,13 +172,14 @@
 
                      <InputGroup>
                          <Icon name='navigate' style={{color:'#898f94'}}/>
-                         <Input placeholder='Take a geolocation' style={styles.publishInput} placeholderTextColor="#898f94" />
+                         <Input disabled placeholder='Take a geolocation' style={styles.publishInput} placeholderTextColor="#898f94" value={this.state.location} />
                      </InputGroup>
 
-                     <InputGroup>
+                     {/* <InputGroup>
                          <Icon name='ios-person' style={{color:'#898f94'}}/>
                          <Input placeholder='Check the friends' style={styles.publishInput} placeholderTextColor="#898f94"/>
-                     </InputGroup>
+                     </InputGroup> */}
+
 
 
                  </Content>
