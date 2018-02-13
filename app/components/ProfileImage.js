@@ -24,6 +24,7 @@ class ProfileImage extends React.Component{
    
 
   startUpload = (path) => {
+    console.warn(path);
   const senderID = firebase.auth().currentUser.uid
 
     const options = {

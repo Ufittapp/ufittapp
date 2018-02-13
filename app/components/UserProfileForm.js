@@ -4,11 +4,16 @@ import { Form, Button, Text, View } from 'native-base'
 import ProfileTextInput from '../common/ProfileTextInput'
 import styles from '@assets/styles/signup'
 import { connect } from 'react-redux'
+import DatePicker from 'react-native-datepicker'
 
 class UserProfileForm extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {date:"1960-01-01"}
+      }
     render(){
-        console.log(JSON.stringify(this.props))
-        const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine, fullName } = this.props
+        console.warn(JSON.stringify(this.props))
+        const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine, fullName, birthdate } = this.props
 
         return(
             <Form style={styles.registerForm}>
@@ -32,12 +37,30 @@ class UserProfileForm extends React.Component{
                     editable={!submitting}
                 />
 
-                <Field
+               
+                <DatePicker
+                    style={{width: 200}}
+                    date={this.state.date}
+                    mode="date"
+                    placeholder="DATE OF BIRTH"
+                    format="YYYY-MM-DD"
                     name="birthdate"
-                    component={ProfileTextInput}
-                    labelName="DATE OF BIRTH"
-                    returnKeyType="next"
-                    editable={!submitting}
+                    minDate="1960-01-01"
+                    maxDate="2018-12-31"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    }}
+                    onDateChange={(date) => {this.setState({date: date})}}
                 />
                 
                 <Button 

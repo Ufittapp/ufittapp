@@ -50,7 +50,8 @@ class SignupForm extends Component {
                 <Field
                     name="birthdate"
                     component={TextInput}
-                    labelName="DATE OF BIRTH"
+                    keyboardType="phone-pad"
+                    labelName="DATE OF BIRTH DD/MM/YYYY"
                     returnKeyType="next"
                     editable={!submitting}
                 />

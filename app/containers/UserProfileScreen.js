@@ -346,7 +346,7 @@ class UserProfileScreen extends React.Component{
                           </View>
                           <View style={styles.userInfo}>
                             <Text style={styles.userFullName}>{this.state.initialValues.fullName}</Text>
-                            <Text style={styles.ageText}>Age: 37</Text>
+                            {/* <Text style={styles.ageText}>Age: 37</Text> */}
                           </View>
                       </View>
 

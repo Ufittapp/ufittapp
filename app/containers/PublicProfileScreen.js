@@ -11,7 +11,6 @@ import db, { firebaseAuth } from '../config/database'
 
 
 
-
 class PublicProfileScreen extends React.Component{
      static navigationOptions = {
         tabBarLabel: 'PublicProfile'
@@ -29,7 +28,6 @@ class PublicProfileScreen extends React.Component{
                 birthdate: ''
             },
             userInfo: [],
-
         }
     }
 
@@ -207,10 +205,12 @@ class PublicProfileScreen extends React.Component{
                                 <Label style={styles.registerLabel}>BIRTHDATE</Label>
                                 <Input style={styles.registerInput} value={this.state.initialValues.birthdate} editable={false} />
                             </Item>
+                         
                           
             
                            
                         </Form>
+                           
                          {this.userCard()}
 
                 </Content>

@@ -62,9 +62,9 @@ class LoginScreen extends Component{
                         {this.state.error && <Text>{this.state.error}</Text>}
                         {this.state.isFetching && <Text>{'signing in...'}</Text>}
                          <LoginForm onSubmit={this.onLoginFormSubmit} />
-                    <TouchableWithoutFeedback onPress={this.props.goToSignup}>
+                    {/* <TouchableWithoutFeedback onPress={this.props.goToSignup}>
                         <Text style={ {marginTop: 30, color: '#fff', alignSelf: 'center'} }> Create Account </Text>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
                     </View>
                    
 

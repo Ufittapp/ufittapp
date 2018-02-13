@@ -3,7 +3,7 @@ import { Form, Button, Text, View } from 'native-base'
 import { Field, reduxForm, propTypes } from 'redux-form'
 
 class SignupForm extends Component {
-
+    
     render(){
         const { handleSubmit, onSubmit, dirty, submitting, invalid, pristine } = this.props
 
@@ -47,7 +47,7 @@ class SignupForm extends Component {
                     returnKeyType="next"
                     editable={!submitting}
                 />
-
+                  
                 <Field
                     name="username"
                     component={TextInput}

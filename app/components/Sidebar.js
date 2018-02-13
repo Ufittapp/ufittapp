@@ -262,7 +262,7 @@ class SideBar extends Component {
                           </View>
                           <View style={styles.userInfo}>
                             <Text style={styles.userFullName}>{this.state.initialValues.fullName}</Text>
-                            <Text style={styles.ageText}>Age: 37</Text>
+                            {/* <Text style={styles.ageText}>Age: 37</Text> */}
                             <Text style={styles.ageText}>Nicaragua</Text>
                             <Text style={styles.ageText}>USA Fittness, SE</Text>
                           </View>
