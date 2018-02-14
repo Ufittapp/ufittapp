@@ -10,7 +10,7 @@ function onNotificationsListSuccess(payload){
 
 function getNotifications(){
     return dispatch => {
-        return api.getNotifications()
+        return api.getNotifications() 
             .then(data => {
                 dispatch(onNotificationsListSuccess(data))
             })

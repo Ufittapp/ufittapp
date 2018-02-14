@@ -23,6 +23,7 @@ class HomeScreen extends React.Component{
       constructor(props){
         super(props)
          this.tasksRef = db.videosRef;
+         this.notificationsRef = db.notificationsRef;
           const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
           });

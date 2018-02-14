@@ -28,11 +28,13 @@ export default class CardMedia extends Component {
         this.loadProfilePicture =this.loadProfilePicture.bind(this);
   }
 
-   createLike(videoID){
+   createLike(videoID, userId){
+     var that = this;
         db.videosRef.orderByChild('videoID').equalTo(videoID).on('child_added', function(snapshot){
               var newLikeKey = snapshot.key;
               var username = snapshot.val().username;
-              const currentUserId = firebase.auth().currentUser.uid
+              const currentUserId = firebase.auth().currentUser.uid;
+              const currentUser = firebase.auth().currentUser;
 
             db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).once("value", function(snap){ 
                   if (snap.exists() !== true) {
@@ -43,11 +45,29 @@ export default class CardMedia extends Component {
                       videoID: videoID,
                       color: 'red'
                     })
+                    that.sendNotification(userId, currentUser);
                   }else{
                      db.videosRef.child(newLikeKey).child('likes_count').child(currentUserId).remove();
                   }
              });
         }.bind(this))
+    }
+
+
+    sendNotification(userId, currentUser){
+      console.log(userId);
+      console.log(currentUser);
+        const newNotification = {
+          type: 'NEW_LIKE',
+          text: 'has liked your post',
+          sender: {
+              userId: currentUser.uid,
+              username: currentUser.email.split('@')[0]
+          }
+      }
+        db.notificationsRef
+          .child(userId)
+          .push(newNotification);
     }
     
 
@@ -214,14 +234,14 @@ export default class CardMedia extends Component {
               <Left>
 
                  <Button transparent onPress={() => {  
-                      this.createLike(videoId)
+                      this.createLike(videoId, userId)
                     }}>
                   <Icon  name="thumbs-up" style={{color: this.buttonColor(videoId)}} />
                   <Text style={styles.status}> {Object.size(likes_count)} Likes</Text>
                 </Button>
               </Left>
               <Body>
-                <Button transparent onPress={() =>  navigate('Comments', {video: videoId, usuario: username})}>
+                <Button transparent onPress={() =>  navigate('Comments', {video: videoId, usuario: username, userId: userId})}>
                   <Icon  name="chatbubbles" style={styles.clockText} />
                   <Text style={styles.status}> {Object.size(comments)} Comments</Text>
                 </Button>

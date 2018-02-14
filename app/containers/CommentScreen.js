@@ -19,13 +19,15 @@ class CommentScreen extends React.Component{
             message: "",
             videoId: "",
             currentUserId: "",
-            key: ""
+            key: "",
+            userId: ""
         }
         }
    
    handleSend = () => {
     const { text } = this.state
     const { uid, photoURL, displayName } = firebaseAuth.currentUser
+    const currentUser = firebaseAuth.currentUser
     const commentsRef = this.getUserCommentsRef()
     var newCommentRef = commentsRef.push()
     newCommentRef.set({ 
@@ -34,7 +36,24 @@ class CommentScreen extends React.Component{
       uid: uid,
       name: displayName
      });
-    this.setState({ text: '' })
+    this.setState({ text: '' });
+    this.sendNotification(this.state.userId, currentUser);
+  }
+
+  sendNotification(userId, currentUser){
+    console.log(userId);
+    console.log(currentUser);
+      const newNotification = {
+        type: 'NEW_COMMENT',
+        text: 'has commented on your post',
+        sender: {
+            userId: currentUser.uid,
+            username: currentUser.email.split('@')[0]
+        }
+    }
+      db.notificationsRef
+        .child(userId)
+        .push(newNotification);
   }
 
   getUserCommentsRef = () => {
@@ -49,10 +68,13 @@ class CommentScreen extends React.Component{
 
     const {state} = this.props.navigation;
     const videoId = state.params.video;
+    const userId = state.params.userId;
     const currentUser = firebase.auth().currentUser.uid;
+    console.log("userId", userId);
     this.setState({
         videoId: videoId,
-        currentUserId: currentUser
+        currentUserId: currentUser,
+        userId: userId
     })
 
      db.videosRef.orderByChild('videoID').equalTo(videoId).once('child_added').then((snap) => {

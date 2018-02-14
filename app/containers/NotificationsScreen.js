@@ -13,7 +13,7 @@ class NotificationsScreen extends React.Component{
 
     componentDidMount(){
         this.props.getNotifications()
-    }
+    } 
 
     renderRow(item){
         return <NotificationRow data={item} />

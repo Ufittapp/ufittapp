@@ -87,12 +87,12 @@ export default class Api{
                     updates[`followers/${userId}/${currentUser.uid}`] = newFollower
                     updates[`followings/${currentUser.uid}/${userId}`] = newFollowing
                     updates[`notifications/${userId}/${newNotificationRef.key}`] = newNotification
-
+ 
                     return db.rootRef
                         .update(updates)
                         .then(() => Promise.resolve())
                         .catch(e => Promise.reject(e))
-
+ 
                 }else{
                     return Promise.reject('user id not found')
                 }
