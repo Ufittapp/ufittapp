@@ -103,11 +103,12 @@
         }
 
          startUpload = (path, description, challenge) => {
+           console.log("Write place");
           const senderID = firebase.auth().currentUser.uid
 
         const options = {
         path,
-        url: 'https://ufitt.senorcoders.com/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description + '&challenge=' + challenge,
+        url: 'https://ufitt.senorcoders.com/upload.php?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description + '&challenge=' + challenge,
        method: 'POST',
         headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',

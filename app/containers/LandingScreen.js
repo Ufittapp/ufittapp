@@ -96,7 +96,7 @@ class LandingScreen extends React.Component{
 
                 <View>
                   <TouchableHighlight  style={styles.fbButton} onPress={() => this._fbAuth()}>
-                    <Text style={styles.buttonText}>Join with Facebook</Text>
+                    <Text style={styles.buttonText}>Log on with Facebook</Text>
                   </TouchableHighlight>
                 </View>
            

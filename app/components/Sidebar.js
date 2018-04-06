@@ -11,6 +11,7 @@ import ProfileImage from '../components/ProfileImage'
 import HideableView from 'react-native-hideable-view';
 import db, { firebaseAuth } from '../config/database'
 
+import Geocoder from 'react-native-geocoder';
 
 
 
@@ -53,7 +54,10 @@ class SideBar extends Component {
            primaryText: "",
            secondaryText: "",
            primaryActivity: "",
-           secondaryActivity: ""
+           secondaryActivity: "",
+           lat: "",
+            lng: "",
+            location: ''
 
         };
         this.toggle = this.toggle.bind(this);
@@ -87,6 +91,48 @@ class SideBar extends Component {
     });
   }
 
+  getCoords(){
+
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // this.setState({
+          //   lat : position.coords.latitude,
+          //   lng: position.coords.longitude,
+          //   error: null,
+          // });
+
+          resolve(position.coords);
+
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      );
+
+    });
+   
+  }
+
+
+  getPlaceName(coords){
+    var PLACE = {
+      lat: coords.latitude,
+      lng: coords.longitude
+    };
+    Geocoder.geocodePosition(PLACE).then(
+      json => {
+        // var address_component = json.results[0].address_components[0];
+        //alert(json[0].locality);
+        this.setState({
+          location: json[0].locality
+        });
+      },
+      error => {
+        console.warn(error);
+      }
+    );
+  }
+
       componentDidMount(){
         const currentUserId = firebase.auth().currentUser.uid
 
@@ -101,7 +147,12 @@ class SideBar extends Component {
                     birthdate: user.birthdate
                 }
             })
-        })
+        });
+
+        this.getCoords().then((coords) =>{
+          this.getPlaceName(coords);
+
+        });
 
      
     }
@@ -263,8 +314,8 @@ class SideBar extends Component {
                           <View style={styles.userInfo}>
                             <Text style={styles.userFullName}>{this.state.initialValues.fullName}</Text>
                             {/* <Text style={styles.ageText}>Age: 37</Text> */}
-                            <Text style={styles.ageText}>Nicaragua</Text>
-                            <Text style={styles.ageText}>USA Fittness, SE</Text>
+                            <Text style={styles.ageText}>{this.state.location}</Text>
+                            <Text style={styles.ageText}>USA Fittness, SE</Text> 
                           </View>
                       </View> 
 

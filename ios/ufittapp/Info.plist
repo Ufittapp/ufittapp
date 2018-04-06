@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>3.1</string>
 	<key>FacebookAppID</key>
 	<string>112622466092339</string>
 	<key>FacebookDisplayName</key>
@@ -57,10 +57,10 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Get current Location</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take Profile Pictures</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Get current Location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Get Photos from your device</string>
 	<key>UIAppFonts</key>
