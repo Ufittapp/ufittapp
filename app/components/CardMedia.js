@@ -158,12 +158,12 @@ export default class CardMedia extends Component {
 
       displayMedia(url){
 
-        if (url.endsWith(".mp4")) {
+        if (url.includes("/videos/")) {
             return <VideoPlayer
                   
                     source={{uri: url}}
                     style={styles.videoBg}
-                        navigator={ this.props.navigator }
+                    navigator={ this.props.navigator }
 
                   />
 

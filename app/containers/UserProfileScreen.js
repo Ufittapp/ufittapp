@@ -157,8 +157,9 @@ class UserProfileScreen extends React.Component{
           this.props.onVideoNotFound()
         } 
       } else {
+        console.log("IOS Path", uri);
         //this.videoUpload(uri)
-        this.props.navigation.navigate('PublishVideo', {path: path})
+        this.props.navigation.navigate('PublishVideo', {path: uri})
 
       }
     })

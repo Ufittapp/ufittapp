@@ -8,12 +8,7 @@
      import Upload from 'react-native-background-upload'
      import { NavigationActions } from 'react-navigation';
      import firebase from 'firebase'
-
      import Geocoder from 'react-native-geocoder';
-
-
-
-
 
      const deviceWidth = Dimensions.get('window').width;
      const deviceHeight = Dimensions.get('window').height;
@@ -22,8 +17,6 @@
 
       constructor(props){
         super(props)
-
-
         this.state = {
             path: "",
             description: "",
@@ -95,11 +88,12 @@
             );
           }
            videoUpload = (path, description) => {
-  const senderID = firebase.auth().currentUser.uid
+         const senderID = firebase.auth().currentUser.uid
 
         const options = {
         path,
         url: 'https://ufitt.senorcoders.com/videos/?platform='+ Platform.OS +'&senderID=' + senderID + '&path=' + path + '&description=' + description,
+        // url: 'http://senorcoders.com:8888/ufittapp',
        method: 'POST',
         headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
@@ -136,15 +130,8 @@
 
           })
         }
-
-      
-
           render(){
-
-
               return (
-
-
                 <Container>
                   <Header style={styles.headerBg}>
                       <Left>
@@ -179,19 +166,11 @@
                          <Icon name='ios-person' style={{color:'#898f94'}}/>
                          <Input placeholder='Check the friends' style={styles.publishInput} placeholderTextColor="#898f94"/>
                      </InputGroup> */}
-
-
-
                  </Content>
-
-
             </Container>
-
-
               );
           }
       }
-
 
 PublishVideoView.navigationOptions = {
     header: null,
