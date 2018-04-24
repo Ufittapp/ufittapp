@@ -15,21 +15,17 @@ class ProfileImage extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            imageUri: 'https://via.placeholder.com/350x150',
-          
+          imageUri: 'https://via.placeholder.com/350x150',       
           isImagePickerShowing: false
         }
     }
-
-   
-
   startUpload = (path) => {
     console.warn(path);
   const senderID = firebase.auth().currentUser.uid
 
     const options = {
       path,
-      url: 'https://ufitt.senorcoders.com/profile/?senderID=' + senderID + '&path=' + path,
+      url: 'https://ufitt.senorcoders.com/profile/upload.php?senderID=' + senderID + '&path=' + path,
       method: 'POST',
       headers: {
       'Accept': 'application/json, application/xml, text/play, text/html, *.*',
